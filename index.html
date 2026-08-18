@@ -1,242 +1,179 @@
 <!doctype html>
-<html lang="en">
+<html lang="ms">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
-        <title>Saujana Putra Smart Resident - PUO</title>
+        <title>Sistem Pembahagian Lot Tanah Faraid - PUO</title>
         
+        <!-- CSS Resources -->
         <link rel="stylesheet" href="css/leaflet.css">
         <link rel="stylesheet" href="css/fontawesome-all.min.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
-        
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
         <style>
-            body, html { height: 100%; margin: 0; font-family: 'Poppins', sans-serif; overflow: hidden; }
+            body, html { height: 100%; margin: 0; font-family: 'Poppins', sans-serif; overflow: hidden; background-color: #f4f6f9; }
             
-            /* --- LOGIN STYLING --- */
-            #login-overlay {
-                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-                background: linear-gradient(135deg, #1a252f 0%, #2c3e50 100%);
-                z-index: 10000; display: flex; align-items: center; justify-content: center;
-            }
-            .login-card {
-                background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-                width: 100%; max-width: 400px; text-align: center;
-            }
-            .login-logos { display: flex; justify-content: center; align-items: center; gap: 20px; margin-bottom: 20px; }
-            .login-logos img { height: 60px; width: auto; }
-            .login-card h2 { font-weight: 800; color: #1a252f; margin-bottom: 5px; }
-            .login-card p { color: #7f8c8d; font-size: 14px; margin-bottom: 25px; }
-            .form-control { border-radius: 8px; padding: 10px; margin-bottom: 12px; border: 1px solid #ddd; font-size: 14px; }
-            .btn-login { background: #e74c3c; color: white; width: 100%; padding: 12px; border-radius: 8px; font-weight: 700; border: none; transition: 0.3s; }
-            .btn-login:hover { background: #c0392b; transform: translateY(-2px); }
-
-            /* --- MAIN INTERFACE STYLING --- */
+            /* --- HEADER STYLING --- */
             header {
-                position: relative; height: 130px; width: 100%; overflow: hidden;
+                height: 75px; width: 100%; background: #14532d;
                 display: flex; align-items: center; justify-content: center; color: white;
-                border-bottom: 5px solid #e74c3c; z-index: 1000;
+                border-bottom: 4px solid #16a34a; z-index: 1000; position: relative;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.15);
             }
-            #header-video {
-                position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%;
-                width: auto; height: auto; transform: translate(-50%, -50%);
-                z-index: -1; filter: brightness(40%); object-fit: cover;
-            }
-            .header-content { display: flex; align-items: center; width: 96%; justify-content: space-between; z-index: 1; }
-            .logo-poli, .logo-puo { height: 80px; }
+            .header-content { display: flex; align-items: center; width: 96%; justify-content: space-between; }
+            .logo-poli, .logo-puo { height: 50px; width: auto; }
 
-            #wrapper { display: flex; width: 100%; height: calc(100vh - 130px); }
-            #sidebar { min-width: 360px; width: 360px; background: #ffffff; display: flex; flex-direction: column; box-shadow: 5px 0 15px rgba(0,0,0,0.1); z-index: 1050; transition: 0.3s; overflow-y: auto; }
-            #sidebar.active { margin-left: -360px; }
+            /* --- MAIN LAYOUT STYLING --- */
+            #wrapper { display: flex; width: 100%; height: calc(100vh - 75px); }
+            
+            #sidebar { 
+                min-width: 380px; width: 380px; background: #ffffff; 
+                display: flex; flex-direction: column; box-shadow: 4px 0 15px rgba(0,0,0,0.08); 
+                z-index: 1050; transition: 0.3s; overflow-y: auto; padding-bottom: 20px;
+            }
+            #sidebar.active { margin-left: -380px; }
+            
             #map-container { flex-grow: 1; position: relative; background: #eee; overflow: hidden; }
             #map { width: 100%; height: 100%; cursor: crosshair; }
             
-            #sidebarCollapse { position: absolute; top: 15px; left: 15px; z-index: 1000; background: #1a252f; color: white; border: none; padding: 10px; cursor: pointer; border-radius: 5px; }
-            .card-menu { background: #fff; border-radius: 12px; padding: 15px; margin: 10px 15px; border: 1px solid #eee; }
-            .card-menu h6 { font-weight: 700; color: #1a252f; margin-bottom: 12px; border-bottom: 2px solid #e74c3c; padding-bottom: 8px; }
-            .info-box { background: #f8f9fa; padding: 10px; border-radius: 8px; border-left: 5px solid #e74c3c; margin-bottom: 10px; transition: 0.3s; }
-            .info-label { font-size: 10px; text-transform: uppercase; color: #95a5a6; font-weight: 800; display: block; }
-            .info-value { font-size: 15px; color: #2c3e50; font-weight: 700; display: block; }
-            .btn-pdf { background: #27ae60; color: white; width: 100%; border: none; padding: 12px; border-radius: 8px; font-weight: 700; transition: 0.3s; }
+            #sidebarCollapse { 
+                position: absolute; top: 15px; left: 15px; z-index: 1000; 
+                background: #14532d; color: white; border: none; padding: 10px 14px; 
+                cursor: pointer; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            }
+            
+            .card-menu { background: #fff; border-radius: 10px; padding: 16px; margin: 12px; border: 1px solid #e2e8f0; }
+            .card-menu h6 { font-weight: 700; color: #14532d; margin-bottom: 12px; border-bottom: 2px solid #16a34a; padding-bottom: 6px; }
+            
+            .info-box { background: #f8fafc; padding: 8px 12px; border-radius: 6px; border-left: 4px solid #16a34a; margin-bottom: 8px; }
+            .info-label { font-size: 10px; text-transform: uppercase; color: #64748b; font-weight: 700; display: block; }
+            .info-value { font-size: 14px; color: #0f172a; font-weight: 700; display: block; }
             
             /* --- FARAID CALCULATOR STYLING --- */
-            .faraid-card { border-top: 3px solid #14532d; }
-            .faraid-card h6 { border-bottom-color: #14532d; color: #14532d; }
-            .btn-faraid { background: #14532d; color: white; width: 100%; padding: 10px; border-radius: 8px; font-weight: 700; border: none; transition: 0.3s; }
-            .btn-faraid:hover { background: #0f3d21; }
-            .radio-group label { font-size: 13px; font-weight: normal; margin-right: 15px; cursor: pointer; }
-            #resultFaraid { margin-top: 15px; padding: 12px; background: #f0fdf4; border-radius: 8px; display: none; border-left: 4px solid #14532d; }
+            .btn-faraid { background: #14532d; color: white; width: 100%; padding: 10px; border-radius: 6px; font-weight: 700; border: none; transition: 0.2s; }
+            .btn-faraid:hover { background: #15803d; }
             
-            /* Faraid Table & Canvas */
+            .radio-group label { font-size: 13px; font-weight: 500; margin-right: 15px; cursor: pointer; }
+            
+            #resultFaraid { 
+                margin-top: 15px; padding: 12px; background: #f0fdf4; 
+                border-radius: 8px; display: none; border: 1px solid #bbf7d0; 
+            }
+            
             .faraid-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 11px; }
-            .faraid-table th { background: #14532d; color: white; padding: 6px; }
-            .faraid-table td { padding: 6px; border: 1px solid #ddd; text-align: center; }
-            .faraid-table tr:nth-child(even) { background: #f8fafc; }
-            #lotCanvas { width: 100%; border: 1px solid #333; margin-top: 10px; background: white; border-radius: 6px; }
-
-            .leaflet-tooltip-own {
-                background: rgba(26, 37, 47, 0.9);
-                border: 1px solid #e74c3c;
-                border-radius: 5px;
-                color: white;
-                padding: 10px;
-                font-family: 'Poppins', sans-serif;
-                box-shadow: 0 3px 10px rgba(0,0,0,0.3);
-                pointer-events: none !important; 
-            }
+            .faraid-table th { background: #14532d; color: white; padding: 6px; text-align: center; }
+            .faraid-table td { padding: 6px; border: 1px solid #cbd5e1; text-align: center; }
+            .faraid-table tr:nth-child(even) { background: #ffffff; }
             
-            .tooltip-coordinate {
-                background: #27ae60 !important;
-                border: 1px solid #fff !important;
-                font-weight: bold;
-                font-size: 11px;
-            }
+            #lotCanvas { width: 100%; border: 1px solid #94a3b8; margin-top: 10px; background: white; border-radius: 6px; }
 
+            /* --- MAP MAPPER & TOOLTIP STYLING --- */
+            .leaflet-tooltip-own {
+                background: rgba(15, 23, 42, 0.9); border: 1px solid #16a34a;
+                border-radius: 4px; color: white; padding: 6px 10px;
+                font-family: 'Poppins', sans-serif; box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+            }
             .polygon-label {
-                background: none !important;
-                border: none !important;
-                box-shadow: none !important;
-                color: #ffffff;
-                font-weight: 800;
-                text-shadow: 2px 2px 3px #000, -1px -1px 3px #000, 1px -1px 3px #000, -1px 1px 3px #000;
-                text-align: center;
-                pointer-events: none !important;
-                white-space: nowrap;
-                font-size: 12px;
-                line-height: 1.1;
-            }
-
-            #loading-overlay {
-                display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); 
-                z-index: 9999; color:white; text-align:center; padding-top:20%;
-            }
-
-            @keyframes shake {
-                0% { transform: translateX(0); }
-                25% { transform: translateX(-10px); }
-                50% { transform: translateX(10px); }
-                75% { transform: translateX(-10px); }
-                100% { transform: translateX(0); }
-            }
-
-            .leaflet-control-layers {
-                font-family: 'Poppins', sans-serif;
-                font-size: 13px;
-                font-weight: 600;
-                border-radius: 8px !important;
-                border: 2px solid #e74c3c !important;
-                box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important;
+                background: none !important; border: none !important; box-shadow: none !important;
+                color: #ffffff; font-weight: 800; text-shadow: 2px 2px 3px #000;
+                text-align: center; white-space: nowrap; font-size: 11px;
             }
         </style>
     </head>
     <body>
 
-        <div id="login-overlay">
-            <div class="login-card">
-                <div class="login-logos">
-                    <img src="Poli_Logo.png" alt="Logo Politeknik">
-                    <img src="image_247e7c.png" alt="Logo PUO">
-                </div>
-                <h2>Log Masuk</h2>
-                <p>Sistem Maklumat Lot Saujana Putra</p>
-                <input type="text" id="username" class="form-control" placeholder="ID Pengguna">
-                <input type="password" id="password" class="form-control" placeholder="Kata Laluan">
-                <button class="btn-login" onclick="checkLogin()">MASUK SISTEM</button>
-                <div id="login-error" class="text-danger mt-3" style="display:none; font-size: 13px;">
-                    ID Pengguna atau Kata Laluan Salah!
-                </div>
-            </div>
-        </div>
-
-        <div id="loading-overlay">
-            <div class="spinner-border text-light mb-3"></div>
-            <h3>Menjana Laporan PDF...</h3>
-            <p>Sila tunggu, sistem sedang menyusun kedudukan lot ke tengah paparan.</p>
-        </div>
-
-        <img id="logoPuoRef" src="image_247e7c.png" style="display:none;">
-        <img id="logoPoliRef" src="Poli_Logo.png" style="display:none;">
-
         <header>
-            <video autoplay muted loop playsinline id="header-video">
-                <source src="video1.mp4" type="video/mp4">
-            </video>
             <div class="header-content">
-                <img src="Poli_Logo.png" class="logo-poli">
+                <img src="Poli_Logo.png" class="logo-poli" alt="Logo Politeknik" onerror="this.style.display='none'">
                 <div class="text-center">
-                    <h1 class="m-0 fw-bold">Saujana Putra Smart Resident</h1>
-                    <p class="m-0 text-warning">Sistem Maklumat Lot Tanah Terdigital (Jabatan Geomatik)</p>
+                    <h2 class="m-0 fw-bold fs-5">Sistem Maklumat Lot Tanah & Pembahagian Faraid</h2>
+                    <p class="m-0 text-light style-sub" style="font-size: 11px;">Jabatan Geomatik - Politeknik Ungku Omar</p>
                 </div>
-                <img src="image_247e7c.png" class="logo-puo">
+                <img src="image_247e7c.png" class="logo-puo" alt="Logo PUO" onerror="this.style.display='none'">
             </div>
         </header>
 
         <div id="wrapper">
             <nav id="sidebar">
+                <!-- CARIAN LOT -->
                 <div class="card-menu">
-                    <h6>Butiran Lot (Hover/Klik)</h6>
-                    <div id="lotDataDisplay">
-                        <div class="info-box">
-                            <span class="info-label">Nombor Lot</span>
-                            <span id="res-no-lot" class="info-value">-</span>
-                        </div>
-                        <div class="info-box">
-                            <span class="info-label">Keluasan</span>
-                            <span id="res-luas" class="info-value">-</span>
-                        </div>
-                        <div class="info-box">
-                            <span class="info-label">Pemilik</span>
-                            <span id="res-owner" class="info-value">-</span>
-                        </div>
-                        <button class="btn btn-pdf" onclick="generateFinalPDF()">
-                            <i class="fas fa-file-download"></i> MUAT TURUN LAPORAN PDF
-                        </button>
-                    </div>
-                </div>
-
-                <div class="card-menu">
-                    <h6>Carian Lot</h6>
-                    <select id="lotSearchSelector" class="form-select">
+                    <h6><i class="fas fa-search me-2"></i>Carian Lot Tanah</h6>
+                    <select id="lotSearchSelector" class="form-select form-select-sm">
                         <option value="">-- Pilih Nombor Lot --</option>
                     </select>
                 </div>
 
-                <!-- KALKULATOR FARAID TANAH LENGKAP -->
-                <div class="card-menu faraid-card">
+                <!-- BUTIRAN LOT -->
+                <div class="card-menu">
+                    <h6><i class="fas fa-map-marker-alt me-2"></i>Maklumat Lot Dipilih</h6>
+                    <div id="lotDataDisplay">
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <div class="info-box">
+                                    <span class="info-label">No. Lot</span>
+                                    <span id="res-no-lot" class="info-value">-</span>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="info-box">
+                                    <span class="info-label">Luas Lot</span>
+                                    <span id="res-luas" class="info-value">-</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="info-box mt-1">
+                            <span class="info-label">Pemilik Berdaftar</span>
+                            <span id="res-owner" class="info-value">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KALKULATOR FARAID TANAH -->
+                <div class="card-menu">
                     <h6><i class="fas fa-calculator me-2"></i>Kalkulator Faraid Lot Tanah</h6>
                     
-                    <label class="form-label text-dark fw-bold mb-1" style="font-size: 12px;">1. Luas Lot Tanah (m²)</label>
-                    <input type="number" id="luasTanah" class="form-control" placeholder="Contoh: 10000" min="0">
-
-                    <label class="form-label text-dark fw-bold mb-1" style="font-size: 12px;">2. Adakah anda mempunyai isteri?</label>
-                    <div class="radio-group mb-2">
-                        <label><input type="radio" name="isteri" value="ya"> Ya</label>
-                        <label><input type="radio" name="isteri" value="tidak" checked> Tidak</label>
+                    <div class="mb-2">
+                        <label class="form-label text-dark fw-bold mb-1" style="font-size: 11px;">1. Luas Lot Tanah (m²)</label>
+                        <input type="number" id="luasTanah" class="form-control form-control-sm" placeholder="Sila pilih lot di peta" min="0" readonly>
                     </div>
 
-                    <label class="form-label text-dark fw-bold mb-1" style="font-size: 12px;">3. Bilangan Anak Lelaki</label>
-                    <input type="number" id="anakLelaki" class="form-control" min="0" value="0">
+                    <div class="mb-2">
+                        <label class="form-label text-dark fw-bold mb-1" style="font-size: 11px;">2. Status Isteri Gemulah (Si Mati)</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="isteri" value="ya"> Ada (1 Isteri)</label>
+                            <label><input type="radio" name="isteri" value="tidak" checked> Tiada / Meninggal</label>
+                        </div>
+                    </div>
 
-                    <label class="form-label text-dark fw-bold mb-1" style="font-size: 12px;">4. Bilangan Anak Perempuan</label>
-                    <input type="number" id="anakPerempuan" class="form-control" min="0" value="0">
+                    <div class="row g-2 mb-2">
+                        <div class="col-6">
+                            <label class="form-label text-dark fw-bold mb-1" style="font-size: 11px;">3. Anak Lelaki</label>
+                            <input type="number" id="anakLelaki" class="form-control form-control-sm" min="0" value="1">
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label text-dark fw-bold mb-1" style="font-size: 11px;">4. Anak Perempuan</label>
+                            <input type="number" id="anakPerempuan" class="form-control form-control-sm" min="0" value="1">
+                        </div>
+                    </div>
 
-                    <button class="btn-faraid mt-2" onclick="kiraFaraid()">KIRA FARAID & PELAN</button>
+                    <button class="btn-faraid mt-2" onclick="kiraFaraid()">
+                        <i class="fas fa-balance-scale me-1"></i> KIRA PEMBAHAGIAN FARAID
+                    </button>
 
+                    <!-- KEPUTUSAN FARAID -->
                     <div id="resultFaraid">
-                        <h6 class="m-0 mb-2 fw-bold text-dark">Keputusan Faraid:</h6>
-                        <div class="d-flex justify-content-between mb-2" style="font-size:12px;">
+                        <h6 class="m-0 mb-2 fw-bold text-dark fs-6">Keputusan Pembahagian:</h6>
+                        <div class="d-flex justify-content-between mb-2" style="font-size:11px;">
                             <span>Jumlah Waris: <strong id="resultWaris">0</strong></span>
-                            <span>Status: <strong id="status" class="text-success">OK</strong></span>
+                            <span>Status: <strong id="status" class="text-success">Selesai</strong></span>
                         </div>
 
                         <div id="faraidTableContainer"></div>
 
-                        <h6 class="mt-3 mb-1 fw-bold text-dark" style="font-size: 12px;">Pelan Pembahagian Lot:</h6>
-                        <canvas id="lotCanvas" width="300" height="200"></canvas>
+                        <h6 class="mt-3 mb-1 fw-bold text-dark" style="font-size: 11px;">Pelan Pembahagian Lot (Visual):</h6>
+                        <canvas id="lotCanvas" width="300" height="180"></canvas>
                     </div>
                 </div>
             </nav>
@@ -247,63 +184,46 @@
             </div>
         </div>
 
+        <!-- JS Resources -->
         <script src="js/leaflet.js"></script>
         <script src="data/LOTFINAL_0.js"></script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
         <script>
-            function checkLogin() {
-                const user = document.getElementById('username').value;
-                const pass = document.getElementById('password').value;
-                if (user === "1" && pass === "admin") {
-                    document.getElementById('login-overlay').style.display = 'none';
-                    setTimeout(() => { map.invalidateSize(); }, 500);
-                } else {
-                    document.getElementById('login-error').style.display = 'block';
-                    const card = document.querySelector('.login-card');
-                    card.style.animation = "shake 0.5s";
-                    setTimeout(() => card.style.animation = "", 500);
-                }
-            }
-
-            // --- MAP LOGIC ---
+            // --- INSIALISASI PETA LEAFLET ---
             var map = L.map('map', { 
-                zoomControl: false, 
+                zoomControl: true, 
                 attributionControl: false, 
-                preferCanvas: true,
-                trackResize: true
+                preferCanvas: true 
             }).setView([2.10385, 102.5214], 19);
             
-            var googleSatellite = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', { maxZoom: 22, crossOrigin: 'anonymous' }).addTo(map);
-            var googleStreets = L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', { maxZoom: 22, crossOrigin: 'anonymous' });
+            var googleSatellite = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', { maxZoom: 22 }).addTo(map);
+            var googleStreets = L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', { maxZoom: 22 });
 
             var highlightLayer;
-            window.selectedLotData = { lot: "-", owner: "-", area: "-" };
-
+            var batuSempadanGroup = L.layerGroup().addTo(map);
+            var labelGroup = L.layerGroup().addTo(map); 
+            
+            // --- FUNGSI MENGEMASKINI PAPARAN DAN INPUT FARAID ---
             function updateDisplay(props) {
                 const lot = props['NO LOT'] || "-";
                 const owner = props['tsp — pe'] || props['Pemilik'] || "Jabatan Geomatik (PUO)";
                 const rawArea = props['AREA'] ? parseFloat(props['AREA']) : null;
-                const area = rawArea ? rawArea.toFixed(3) + " m²" : "-";
+                const areaFormatted = rawArea ? rawArea.toFixed(3) + " m²" : "-";
 
-                if(window.selectedLotData.lot !== lot) {
-                    document.getElementById('res-no-lot').innerText = lot;
-                    document.getElementById('res-owner').innerText = owner;
-                    document.getElementById('res-luas').innerText = area;
-                    window.selectedLotData = { lot, owner, area };
+                document.getElementById('res-no-lot').innerText = lot;
+                document.getElementById('res-owner').innerText = owner;
+                document.getElementById('res-luas').innerText = areaFormatted;
 
-                    // Masukkan automatik luas lot ke dalam Kalkulator Faraid
-                    if (rawArea) {
-                        document.getElementById('luasTanah').value = rawArea.toFixed(2);
-                    }
+                // Memasukkan nilai keluasan secara automatik ke input Kalkulator Faraid
+                if (rawArea) {
+                    document.getElementById('luasTanah').value = rawArea.toFixed(2);
                 }
             }
 
-            var batuSempadanGroup = L.layerGroup().addTo(map);
-            var labelGroup = L.layerGroup().addTo(map); 
-            
+            // --- POPULASIKAN LAYER GEOJSON LOT ---
             var lotLayer = L.geoJson(json_LOTFINAL_0, {
-                style: { color: 'white', weight: 1.5, fillColor: '#e74c3c', fillOpacity: 0.3 },
+                style: { color: '#ffffff', weight: 1.5, fillColor: '#16a34a', fillOpacity: 0.35 },
                 onEachFeature: function(feature, layer) {
                     
                     if (feature.properties['NO LOT']) {
@@ -327,57 +247,45 @@
                     var lotContent = `<b>LOT: ${feature.properties['NO LOT']}</b><br>Luas: ${parseFloat(feature.properties['AREA']).toFixed(2)} m²`;
                     layer.bindTooltip(lotContent, { sticky: true, className: 'leaflet-tooltip-own' });
 
-                    if (feature.geometry && (feature.geometry.type === 'Polygon' || feature.geometry.type === 'MultiPolygon')) {
-                        var coords = layer.getLatLngs();
-                        var vertices = feature.geometry.type === 'MultiPolygon' ? coords.flat(2) : coords[0];
-                        vertices.forEach(function(latlng) {
-                            var marker = L.circleMarker(latlng, { radius: 4, fillColor: "white", color: "#000", weight: 1, fillOpacity: 1 }).addTo(batuSempadanGroup);
-                            marker.bindTooltip(`Lat: ${latlng.lat.toFixed(7)}<br>Lng: ${latlng.lng.toFixed(7)}`, { sticky: true, className: 'leaflet-tooltip-own tooltip-coordinate' });
-                        });
-                    }
-
-                    layer.on('mouseover', function(e) {
-                        e.target.setStyle({ weight: 3, color: '#ffff00', fillOpacity: 0.6 });
-                        updateDisplay(e.target.feature.properties);
-                    });
-
-                    layer.on('mouseout', function(e) {
-                        if (highlightLayer !== e.target) { lotLayer.resetStyle(e.target); }
-                    });
-
+                    // Tetapan Klik Lot
                     layer.on('click', function(e) {
                         if (highlightLayer) { lotLayer.resetStyle(highlightLayer); }
                         highlightLayer = e.target;
-                        highlightLayer.setStyle({ weight: 5, color: '#ffff00', fillOpacity: 0.4 });
-                        map.flyToBounds(e.target.getBounds(), { padding: [100, 100] });
+                        highlightLayer.setStyle({ weight: 4, color: '#f59e0b', fillOpacity: 0.5 });
+                        map.flyToBounds(e.target.getBounds(), { padding: [50, 50] });
+                        
+                        // Kemaskini data dan fokus kepada Faraid
                         updateDisplay(e.target.feature.properties);
                     });
                 }
             }).addTo(map);
 
+            // Layer Control
             var baseMaps = { "Google Satellite": googleSatellite, "Google Streets": googleStreets };
-            var overlays = { "Garisan Sempadan": lotLayer, "Batu Sempadan": batuSempadanGroup, "Label Nombor Lot": labelGroup };
-            L.control.layers(baseMaps, overlays, { collapsed: false, position: 'topright' }).addTo(map);
+            var overlays = { "Garisan Sempadan": lotLayer, "Label Nombor Lot": labelGroup };
+            L.control.layers(baseMaps, overlays, { position: 'topright' }).addTo(map);
 
+            // Carian Lot Handler
             $('#lotSearchSelector').change(function() {
                 var val = $(this).val();
                 lotLayer.eachLayer(layer => {
                     if (layer.feature.properties['NO LOT'] == val) {
                         if (highlightLayer) { lotLayer.resetStyle(highlightLayer); }
                         highlightLayer = layer;
-                        highlightLayer.setStyle({ weight: 5, color: '#ffff00', fillOpacity: 0.4 });
-                        map.flyToBounds(layer.getBounds(), { padding: [100, 100] });
+                        highlightLayer.setStyle({ weight: 4, color: '#f59e0b', fillOpacity: 0.5 });
+                        map.flyToBounds(layer.getBounds(), { padding: [50, 50] });
                         updateDisplay(layer.feature.properties);
                     }
                 });
             });
 
+            // Toggle Sidebar
             $('#sidebarCollapse').click(function() { 
                 $('#sidebar').toggleClass('active'); 
                 setTimeout(() => { map.invalidateSize(); }, 350);
             });
 
-            // --- KALKULATOR FARAID LENGKAP LOGIC ---
+            // --- LOGIK PENGIRAAN FARAID ---
             function kiraFaraid() {
                 let luas = parseFloat(document.getElementById("luasTanah").value);
                 let adaIsteri = document.querySelector('input[name="isteri"]:checked').value === "ya";
@@ -385,7 +293,12 @@
                 let anakPerempuan = parseInt(document.getElementById("anakPerempuan").value) || 0;
 
                 if (isNaN(luas) || luas <= 0) {
-                    alert("Sila masukkan keluasan tanah yang sah.");
+                    alert("Sila pilih satu lot tanah daripada peta terlebih dahulu.");
+                    return;
+                }
+
+                if (!adaIsteri && anakLelaki === 0 && anakPerempuan === 0) {
+                    alert("Sila masukkan sekurang-kurangnya seorang waris.");
                     return;
                 }
 
@@ -393,7 +306,7 @@
                 let bahagianIsteri = 0;
                 let baki = 1.0;
 
-                // 1. Kirim bahagian isteri
+                // 1. Pengiraan Bahagian Isteri (Fardhu)
                 if (adaIsteri) {
                     let adaAnak = (anakLelaki + anakPerempuan) > 0;
                     bahagianIsteri = adaAnak ? (1 / 8) : (1 / 4);
@@ -401,12 +314,13 @@
 
                     senaraiWaris.push({
                         nama: "Isteri",
+                        nisbahText: adaAnak ? "1/8" : "1/4",
                         peratus: bahagianIsteri,
                         luas: luas * bahagianIsteri
                     });
                 }
 
-                // 2. Kirim bahagian anak-anak (Asabah)
+                // 2. Pengiraan Bahagian Anak-Anak (Asabah - Nisbah 2 Lelaki : 1 Perempuan)
                 let jumlahAnak = anakLelaki + anakPerempuan;
 
                 if (jumlahAnak > 0) {
@@ -417,6 +331,7 @@
                         let p = nilaiSatuUnit * 2;
                         senaraiWaris.push({
                             nama: "Anak Lelaki " + i,
+                            nisbahText: "2 Bahagian",
                             peratus: p,
                             luas: luas * p
                         });
@@ -426,47 +341,45 @@
                         let p = nilaiSatuUnit * 1;
                         senaraiWaris.push({
                             nama: "Anak Perempuan " + j,
+                            nisbahText: "1 Bahagian",
                             peratus: p,
                             luas: luas * p
                         });
                     }
-                } else if (!adaIsteri) {
-                    alert("Sila pilih sekurang-kurangnya satu waris.");
-                    return;
                 }
 
-                // Kemaskini Paparan Ringkasan
+                // Kemaskini Ringkasan Status
                 document.getElementById("resultWaris").innerText = senaraiWaris.length;
-                document.getElementById("status").innerText = "Selesai";
 
-                // Bina Jadual Keputusan
+                // Bina Jadual Output
                 let htmlJadual = `<table class="faraid-table">
                     <thead>
                         <tr>
                             <th>Waris</th>
-                            <th>Nisbah/Pecahan</th>
-                            <th>Luas (m²)</th>
+                            <th>Kadar / Peratus</th>
+                            <th>Luas Diperolehi (m²)</th>
                         </tr>
                     </thead>
                     <tbody>`;
 
                 senaraiWaris.forEach(w => {
                     htmlJadual += `<tr>
-                        <td>${w.nama}</td>
-                        <td>${(w.peratus * 100).toFixed(1)}%</td>
-                        <td>${w.luas.toFixed(2)}</td>
+                        <td><strong>${w.nama}</strong></td>
+                        <td>${(w.peratus * 100).toFixed(2)}%</td>
+                        <td><strong>${w.luas.toFixed(2)} m²</strong></td>
                     </tr>`;
                 });
 
                 htmlJadual += `</tbody></table>`;
                 document.getElementById("faraidTableContainer").innerHTML = htmlJadual;
 
-                // Lukis Visual Lot pada Canvas
+                // Lukis Visual Pelan Lot
                 lukisPelanLot(senaraiWaris);
 
                 document.getElementById("resultFaraid").style.display = "block";
             }
 
+            // --- LOGIK MELUKIS PELAN LOT (CANVAS) ---
             function lukisPelanLot(senaraiWaris) {
                 let canvas = document.getElementById("lotCanvas");
                 let ctx = canvas.getContext("2d");
@@ -474,30 +387,30 @@
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
                 let currentX = 0;
-                let colors = ["#22c55e", "#3b82f6", "#f59e0b", "#ec4899", "#8b5cf6", "#14b8a6", "#ef4444"];
+                let colors = ["#16a34a", "#2563eb", "#d97706", "#db2777", "#9333ea", "#0d9488", "#dc2626"];
 
                 senaraiWaris.forEach((w, index) => {
                     let lebar = canvas.width * w.peratus;
                     let color = colors[index % colors.length];
 
-                    // Blok petak
+                    // Lukis Petak Waris
                     ctx.fillStyle = color;
                     ctx.fillRect(currentX, 0, lebar, canvas.height);
 
-                    // Sempadan
+                    // Sempadan Petak
                     ctx.strokeStyle = "#ffffff";
-                    ctx.lineWidth = 1.5;
+                    ctx.lineWidth = 2;
                     ctx.strokeRect(currentX, 0, lebar, canvas.height);
 
-                    // Label nama
-                    if (lebar > 20) {
+                    // Label Nama & Luas
+                    if (lebar > 25) {
                         ctx.fillStyle = "#ffffff";
                         ctx.font = "bold 10px Poppins, sans-serif";
                         ctx.textAlign = "center";
                         ctx.save();
                         ctx.translate(currentX + lebar / 2, canvas.height / 2);
                         ctx.rotate(-Math.PI / 2);
-                        ctx.fillText(w.nama, 0, -2);
+                        ctx.fillText(w.nama, 0, -3);
                         ctx.font = "9px Poppins, sans-serif";
                         ctx.fillText(w.luas.toFixed(1) + "m²", 0, 10);
                         ctx.restore();
@@ -505,84 +418,6 @@
 
                     currentX += lebar;
                 });
-            }
-
-            // --- PDF GENERATION WITH CENTERING FIX ---
-            async function generateFinalPDF() {
-                if(window.selectedLotData.lot === "-") { alert("Sila pilih satu lot."); return; }
-                const overlay = document.getElementById('loading-overlay');
-                overlay.style.display = "block";
-
-                let tempMarker;
-                if(highlightLayer) {
-                    map.setView(highlightLayer.getBounds().getCenter(), map.getBoundsZoom(highlightLayer.getBounds()));
-                    map.invalidateSize();
-                    map.fitBounds(highlightLayer.getBounds(), { padding: [150, 150], animate: false });
-                    
-                    var center = highlightLayer.getBounds().getCenter();
-                    tempMarker = L.marker(center, {
-                        icon: L.divIcon({ 
-                            className: 'map-label-focused', 
-                            html: `<div style="background:rgba(26,37,47,0.8); color:white; padding:5px 10px; border:2px solid #ffff00; border-radius:5px; font-weight:bold; font-size:12px; white-space:nowrap;">LOT ${window.selectedLotData.lot}</div>`, 
-                            iconSize: [100, 40],
-                            iconAnchor: [50, 20]
-                        })
-                    }).addTo(map);
-                }
-
-                await new Promise(r => setTimeout(r, 2000));
-
-                try {
-                    const { jsPDF } = window.jspdf;
-                    const doc = new jsPDF('l', 'mm', 'a3'); 
-                    
-                    const canvas = await html2canvas(document.getElementById('map'), { 
-                        useCORS: true, 
-                        scale: 2,
-                        logging: false,
-                        allowTaint: true
-                    });
-                    
-                    const imgData = canvas.toDataURL('image/png');
-
-                    doc.setDrawColor(30); doc.rect(10, 10, 400, 277); doc.line(95, 10, 95, 287); 
-
-                    try {
-                        doc.addImage(document.getElementById("logoPoliRef"), 'PNG', 20, 20, 25, 25);
-                        doc.addImage(document.getElementById("logoPuoRef"), 'PNG', 65, 20, 22, 25);
-                    } catch(e) {}
-
-                    doc.setFont("times", "bold"); doc.setFontSize(16);
-                    doc.text("LAPORAN RASMI", 52.5, 55, {align: "center"});
-                    doc.text("LOT TANAH DIGITAL", 52.5, 62, {align: "center"});
-                    doc.setFontSize(10); doc.text("Jabatan Geomatik, PUO", 52.5, 70, {align: "center"});
-                    doc.line(20, 75, 85, 75);
-
-                    let startY = 95;
-                    const data = [
-                        ["NOMBOR LOT", window.selectedLotData.lot], 
-                        ["PEMILIK", window.selectedLotData.owner.toUpperCase()], 
-                        ["KELUASAN", window.selectedLotData.area], 
-                        ["TARIKH", new Date().toLocaleDateString('ms-MY')]
-                    ];
-                    data.forEach(row => {
-                        doc.setFillColor(248, 249, 250); doc.rect(18, startY, 70, 20, 'F');
-                        doc.setFontSize(8); doc.setTextColor(120); doc.text(row[0], 22, startY + 6);
-                        doc.setFontSize(11); doc.setTextColor(0); doc.text(doc.splitTextToSize(row[1], 65), 22, startY + 13);
-                        startY += 28;
-                    });
-
-                    doc.addImage(imgData, 'PNG', 97, 14, 308, 269);
-                    
-                    doc.setFontSize(8); doc.text("Sistem Saujana Putra Smart Resident © 2026", 52.5, 275, {align: "center"});
-                    doc.save(`Laporan_Lot_${window.selectedLotData.lot}.pdf`);
-                } catch (err) { 
-                    console.error(err);
-                    alert("Ralat menjana laporan."); 
-                } finally { 
-                    if(tempMarker) map.removeLayer(tempMarker); 
-                    overlay.style.display = "none"; 
-                }
             }
         </script>
     </body>
