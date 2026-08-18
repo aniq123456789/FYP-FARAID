@@ -50,8 +50,8 @@
             .logo-poli, .logo-puo { height: 80px; }
 
             #wrapper { display: flex; width: 100%; height: calc(100vh - 130px); }
-            #sidebar { min-width: 340px; width: 340px; background: #ffffff; display: flex; flex-direction: column; box-shadow: 5px 0 15px rgba(0,0,0,0.1); z-index: 1050; transition: 0.3s; overflow-y: auto; }
-            #sidebar.active { margin-left: -340px; }
+            #sidebar { min-width: 360px; width: 360px; background: #ffffff; display: flex; flex-direction: column; box-shadow: 5px 0 15px rgba(0,0,0,0.1); z-index: 1050; transition: 0.3s; overflow-y: auto; }
+            #sidebar.active { margin-left: -360px; }
             #map-container { flex-grow: 1; position: relative; background: #eee; overflow: hidden; }
             #map { width: 100%; height: 100%; cursor: crosshair; }
             
@@ -64,11 +64,19 @@
             .btn-pdf { background: #27ae60; color: white; width: 100%; border: none; padding: 12px; border-radius: 8px; font-weight: 700; transition: 0.3s; }
             
             /* --- FARAID CALCULATOR STYLING --- */
-            .faraid-card { border-top: 3px solid #1f4d3b; }
-            .faraid-card h6 { border-bottom-color: #1f4d3b; color: #1f4d3b; }
-            .btn-faraid { background: #1f4d3b; color: white; width: 100%; padding: 10px; border-radius: 8px; font-weight: 700; border: none; transition: 0.3s; }
-            .btn-faraid:hover { background: #16392c; }
-            #resultFaraid { margin-top: 15px; padding: 12px; background: #eef7f1; border-radius: 8px; display: none; border-left: 4px solid #1f4d3b; }
+            .faraid-card { border-top: 3px solid #14532d; }
+            .faraid-card h6 { border-bottom-color: #14532d; color: #14532d; }
+            .btn-faraid { background: #14532d; color: white; width: 100%; padding: 10px; border-radius: 8px; font-weight: 700; border: none; transition: 0.3s; }
+            .btn-faraid:hover { background: #0f3d21; }
+            .radio-group label { font-size: 13px; font-weight: normal; margin-right: 15px; cursor: pointer; }
+            #resultFaraid { margin-top: 15px; padding: 12px; background: #f0fdf4; border-radius: 8px; display: none; border-left: 4px solid #14532d; }
+            
+            /* Faraid Table & Canvas */
+            .faraid-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 11px; }
+            .faraid-table th { background: #14532d; color: white; padding: 6px; }
+            .faraid-table td { padding: 6px; border: 1px solid #ddd; text-align: center; }
+            .faraid-table tr:nth-child(even) { background: #f8fafc; }
+            #lotCanvas { width: 100%; border: 1px solid #333; margin-top: 10px; background: white; border-radius: 6px; }
 
             .leaflet-tooltip-own {
                 background: rgba(26, 37, 47, 0.9);
@@ -197,33 +205,38 @@
                     </select>
                 </div>
 
-                <!-- KALKULATOR FARAID TANAH -->
+                <!-- KALKULATOR FARAID TANAH LENGKAP -->
                 <div class="card-menu faraid-card">
-                    <h6><i class="fas fa-calculator me-2"></i>Kalkulator Faraid Tanah</h6>
-                    <label class="form-label text-dark fw-bold mb-1" style="font-size: 12px;">Luas Tanah (m²)</label>
-                    <input type="number" id="luasTanah" class="form-control" placeholder="Contoh: 10000">
+                    <h6><i class="fas fa-calculator me-2"></i>Kalkulator Faraid Lot Tanah</h6>
+                    
+                    <label class="form-label text-dark fw-bold mb-1" style="font-size: 12px;">1. Luas Lot Tanah (m²)</label>
+                    <input type="number" id="luasTanah" class="form-control" placeholder="Contoh: 10000" min="0">
 
-                    <div class="row g-2 mb-2">
-                        <div class="col-6">
-                            <label class="form-label text-dark fw-bold mb-1" style="font-size: 12px;">Pengangka</label>
-                            <input type="number" id="pengangka" class="form-control" placeholder="Contoh: 1">
-                        </div>
-                        <div class="col-6">
-                            <label class="form-label text-dark fw-bold mb-1" style="font-size: 12px;">Penyebut</label>
-                            <input type="number" id="penyebut" class="form-control" placeholder="Contoh: 8">
-                        </div>
+                    <label class="form-label text-dark fw-bold mb-1" style="font-size: 12px;">2. Adakah anda mempunyai isteri?</label>
+                    <div class="radio-group mb-2">
+                        <label><input type="radio" name="isteri" value="ya"> Ya</label>
+                        <label><input type="radio" name="isteri" value="tidak" checked> Tidak</label>
                     </div>
 
-                    <button class="btn-faraid" onclick="kiraFaraid()">KIRA BAHAGIAN</button>
+                    <label class="form-label text-dark fw-bold mb-1" style="font-size: 12px;">3. Bilangan Anak Lelaki</label>
+                    <input type="number" id="anakLelaki" class="form-control" min="0" value="0">
+
+                    <label class="form-label text-dark fw-bold mb-1" style="font-size: 12px;">4. Bilangan Anak Perempuan</label>
+                    <input type="number" id="anakPerempuan" class="form-control" min="0" value="0">
+
+                    <button class="btn-faraid mt-2" onclick="kiraFaraid()">KIRA FARAID & PELAN</button>
 
                     <div id="resultFaraid">
-                        <h6 class="m-0 mb-2 fw-bold text-dark">Keputusan:</h6>
-                        <p class="m-0 text-secondary" style="font-size: 13px;">
-                            Pecahan Faraid: <strong id="pecahan" class="text-dark"></strong>
-                        </p>
-                        <p class="m-0 text-secondary" style="font-size: 13px;">
-                            Luas Bahagian Waris: <strong id="hasil" class="text-success fs-6"></strong> m²
-                        </p>
+                        <h6 class="m-0 mb-2 fw-bold text-dark">Keputusan Faraid:</h6>
+                        <div class="d-flex justify-content-between mb-2" style="font-size:12px;">
+                            <span>Jumlah Waris: <strong id="resultWaris">0</strong></span>
+                            <span>Status: <strong id="status" class="text-success">OK</strong></span>
+                        </div>
+
+                        <div id="faraidTableContainer"></div>
+
+                        <h6 class="mt-3 mb-1 fw-bold text-dark" style="font-size: 12px;">Pelan Pembahagian Lot:</h6>
+                        <canvas id="lotCanvas" width="300" height="200"></canvas>
                     </div>
                 </div>
             </nav>
@@ -364,23 +377,134 @@
                 setTimeout(() => { map.invalidateSize(); }, 350);
             });
 
-            // --- KALKULATOR FARAID LOGIC ---
+            // --- KALKULATOR FARAID LENGKAP LOGIC ---
             function kiraFaraid() {
-                let luasTanah = parseFloat(document.getElementById("luasTanah").value);
-                let pengangka = parseFloat(document.getElementById("pengangka").value);
-                let penyebut = parseFloat(document.getElementById("penyebut").value);
+                let luas = parseFloat(document.getElementById("luasTanah").value);
+                let adaIsteri = document.querySelector('input[name="isteri"]:checked').value === "ya";
+                let anakLelaki = parseInt(document.getElementById("anakLelaki").value) || 0;
+                let anakPerempuan = parseInt(document.getElementById("anakPerempuan").value) || 0;
 
-                if (isNaN(luasTanah) || isNaN(pengangka) || isNaN(penyebut) || penyebut <= 0) {
-                    alert("Sila masukkan semua maklumat dengan betul.");
+                if (isNaN(luas) || luas <= 0) {
+                    alert("Sila masukkan keluasan tanah yang sah.");
                     return;
                 }
 
-                let pecahan = pengangka / penyebut;
-                let luasBahagian = luasTanah * pecahan;
+                let senaraiWaris = [];
+                let bahagianIsteri = 0;
+                let baki = 1.0;
 
-                document.getElementById("pecahan").innerText = pengangka + "/" + penyebut;
-                document.getElementById("hasil").innerText = luasBahagian.toFixed(2);
+                // 1. Kirim bahagian isteri
+                if (adaIsteri) {
+                    let adaAnak = (anakLelaki + anakPerempuan) > 0;
+                    bahagianIsteri = adaAnak ? (1 / 8) : (1 / 4);
+                    baki -= bahagianIsteri;
+
+                    senaraiWaris.push({
+                        nama: "Isteri",
+                        peratus: bahagianIsteri,
+                        luas: luas * bahagianIsteri
+                    });
+                }
+
+                // 2. Kirim bahagian anak-anak (Asabah)
+                let jumlahAnak = anakLelaki + anakPerempuan;
+
+                if (jumlahAnak > 0) {
+                    let jumlahUnit = (anakLelaki * 2) + (anakPerempuan * 1);
+                    let nilaiSatuUnit = baki / jumlahUnit;
+
+                    for (let i = 1; i <= anakLelaki; i++) {
+                        let p = nilaiSatuUnit * 2;
+                        senaraiWaris.push({
+                            nama: "Anak Lelaki " + i,
+                            peratus: p,
+                            luas: luas * p
+                        });
+                    }
+
+                    for (let j = 1; j <= anakPerempuan; j++) {
+                        let p = nilaiSatuUnit * 1;
+                        senaraiWaris.push({
+                            nama: "Anak Perempuan " + j,
+                            peratus: p,
+                            luas: luas * p
+                        });
+                    }
+                } else if (!adaIsteri) {
+                    alert("Sila pilih sekurang-kurangnya satu waris.");
+                    return;
+                }
+
+                // Kemaskini Paparan Ringkasan
+                document.getElementById("resultWaris").innerText = senaraiWaris.length;
+                document.getElementById("status").innerText = "Selesai";
+
+                // Bina Jadual Keputusan
+                let htmlJadual = `<table class="faraid-table">
+                    <thead>
+                        <tr>
+                            <th>Waris</th>
+                            <th>Nisbah/Pecahan</th>
+                            <th>Luas (m²)</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+
+                senaraiWaris.forEach(w => {
+                    htmlJadual += `<tr>
+                        <td>${w.nama}</td>
+                        <td>${(w.peratus * 100).toFixed(1)}%</td>
+                        <td>${w.luas.toFixed(2)}</td>
+                    </tr>`;
+                });
+
+                htmlJadual += `</tbody></table>`;
+                document.getElementById("faraidTableContainer").innerHTML = htmlJadual;
+
+                // Lukis Visual Lot pada Canvas
+                lukisPelanLot(senaraiWaris);
+
                 document.getElementById("resultFaraid").style.display = "block";
+            }
+
+            function lukisPelanLot(senaraiWaris) {
+                let canvas = document.getElementById("lotCanvas");
+                let ctx = canvas.getContext("2d");
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                let currentX = 0;
+                let colors = ["#22c55e", "#3b82f6", "#f59e0b", "#ec4899", "#8b5cf6", "#14b8a6", "#ef4444"];
+
+                senaraiWaris.forEach((w, index) => {
+                    let lebar = canvas.width * w.peratus;
+                    let color = colors[index % colors.length];
+
+                    // Blok petak
+                    ctx.fillStyle = color;
+                    ctx.fillRect(currentX, 0, lebar, canvas.height);
+
+                    // Sempadan
+                    ctx.strokeStyle = "#ffffff";
+                    ctx.lineWidth = 1.5;
+                    ctx.strokeRect(currentX, 0, lebar, canvas.height);
+
+                    // Label nama
+                    if (lebar > 20) {
+                        ctx.fillStyle = "#ffffff";
+                        ctx.font = "bold 10px Poppins, sans-serif";
+                        ctx.textAlign = "center";
+                        ctx.save();
+                        ctx.translate(currentX + lebar / 2, canvas.height / 2);
+                        ctx.rotate(-Math.PI / 2);
+                        ctx.fillText(w.nama, 0, -2);
+                        ctx.font = "9px Poppins, sans-serif";
+                        ctx.fillText(w.luas.toFixed(1) + "m²", 0, 10);
+                        ctx.restore();
+                    }
+
+                    currentX += lebar;
+                });
             }
 
             // --- PDF GENERATION WITH CENTERING FIX ---
