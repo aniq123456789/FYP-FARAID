@@ -3330,8 +3330,13 @@
                VISUAL LOT
             ====================================================== */
 
+            /* Gunakan lot yang sedang dipilih pada peta.
+             * Jika parameter tidak dihantar, fungsi visual akan cuba
+             * menggunakan highlightLayer sebagai fallback.
+             */
             lukisPelanLot(
-                senaraiWaris
+                senaraiWaris,
+                highlightLayer
             );
 
 
@@ -3853,9 +3858,12 @@
             const roadH = 34;
             const roadY = H - roadH;
 
-            /* Latar belakang */
-            ctx.fillStyle = "#ffffff";
-            ctx.fillRect(0, 0, W, H);
+            /*
+             * JANGAN melukis semula seluruh canvas di sini kerana
+             * fungsi ini dipanggil SELEPAS polygon lot dilukis.
+             * Melukis fillRect(0,0,W,H) akan memadam keseluruhan
+             * visual lot. Hanya kawasan rizab jalan dilukis semula.
+             */
 
             /*
              * Rizab jalan kekal sebagai komponen visual berasingan,
@@ -3916,6 +3924,9 @@
         }
 
         function lukisPelanLot(senaraiWaris, selectedLayer) {
+
+            /* Pastikan lot semasa sentiasa digunakan. */
+            selectedLayer = selectedLayer || highlightLayer;
 
             const canvas =
                 document.getElementById("lotCanvas");
