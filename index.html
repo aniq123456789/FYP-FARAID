@@ -3348,37 +3348,44 @@
            VISUAL PEMBAHAGIAN LOT
         ========================================================== */
 
-        function lukisPelanLot(
-            senaraiWaris
-        ) {
+        /* =========================================================
+           VISUAL PEMBAHAGIAN LOT + RIZAB JALAN
+           Rizab jalan dipaparkan sebagai komponen berasingan dan
+           TIDAK ditolak daripada saham waris. Visual ini bersifat
+           skematik kerana data lot sedia ada hanya menyimpan keluasan,
+           bukan dimensi panjang/lebar lot.
 
+           NOTA TEKNIKAL:
+           JUPEM mengawal aspek ukur kadaster dan penyediaan maklumat
+           rizab, tetapi tidak menetapkan satu lebar rizab jalan yang
+           seragam untuk semua kategori jalan. Untuk visual sistem ini,
+           nilai lalai 20 m digunakan sebagai rizab jalan akses minimum
+           yang dirujuk dalam garis panduan pembangunan jalan JKR.
+           ========================================================== */
+        const RIZAB_JALAN_LEBAR_M = 20;
 
-            let canvas =
-                document.getElementById(
-                    "lotCanvas"
-                );
+        function lukisPelanLot(senaraiWaris) {
 
+            let canvas = document.getElementById("lotCanvas");
+            if (!canvas) return;
 
-            let ctx =
-                canvas.getContext(
-                    "2d"
-                );
+            let ctx = canvas.getContext("2d");
 
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            ctx.clearRect(
-                0,
-                0,
-                canvas.width,
-                canvas.height
-            );
+            const W = canvas.width;
+            const H = canvas.height;
 
-
-
+            /* -----------------------------------------------------
+               1. RUANG LOT WARIS
+               Rizab jalan diletakkan di bahagian bawah sebagai
+               jalur berasingan.
+            ----------------------------------------------------- */
+            const roadH = 34;
+            const lotH = H - roadH;
             let currentX = 0;
 
-
             let colors = [
-
                 "#79502b",
                 "#2563eb",
                 "#d97706",
@@ -3386,131 +3393,124 @@
                 "#9333ea",
                 "#0d9488",
                 "#dc2626"
-
             ];
 
+            /* Latar belakang lot */
+            ctx.fillStyle = "#fffdf8";
+            ctx.fillRect(0, 0, W, lotH);
 
+            senaraiWaris.forEach((w, index) => {
 
-            senaraiWaris.forEach(
-                (w, index) => {
+                let lebar = W * w.peratus;
 
+                let color = colors[index % colors.length];
 
-                    let lebar =
-                        canvas.width *
-                        w.peratus;
+                /* PETAK WARIS */
+                ctx.fillStyle = color;
+                ctx.fillRect(currentX, 0, lebar, lotH);
 
+                /* SEMPADAN PETAK */
+                ctx.strokeStyle = "#ffffff";
+                ctx.lineWidth = 2;
+                ctx.strokeRect(currentX, 0, lebar, lotH);
 
-                    let color =
-                        colors[
-                            index %
-                            colors.length
-                        ];
+                /* LABEL */
+                if (lebar > 25) {
+                    ctx.fillStyle = "#ffffff";
+                    ctx.font = "bold 10px Poppins, sans-serif";
+                    ctx.textAlign = "center";
+                    ctx.textBaseline = "middle";
 
+                    ctx.save();
+                    ctx.translate(
+                        currentX + lebar / 2,
+                        lotH / 2
+                    );
+                    ctx.rotate(-Math.PI / 2);
 
+                    ctx.fillText(w.nama, 0, -3);
 
-                    /* PETAK */
-
-                    ctx.fillStyle =
-                        color;
-
-
-                    ctx.fillRect(
-                        currentX,
+                    ctx.font = "9px Poppins, sans-serif";
+                    ctx.fillText(
+                        w.luas.toFixed(1) + "m²",
                         0,
-                        lebar,
-                        canvas.height
+                        10
                     );
 
-
-
-                    /* SEMPADAN */
-
-                    ctx.strokeStyle =
-                        "#ffffff";
-
-
-                    ctx.lineWidth =
-                        2;
-
-
-                    ctx.strokeRect(
-                        currentX,
-                        0,
-                        lebar,
-                        canvas.height
-                    );
-
-
-
-                    /* LABEL */
-
-                    if (
-                        lebar > 25
-                    ) {
-
-
-                        ctx.fillStyle =
-                            "#ffffff";
-
-
-                        ctx.font =
-                            "bold 10px Poppins, sans-serif";
-
-
-                        ctx.textAlign =
-                            "center";
-
-
-                        ctx.save();
-
-
-
-                        ctx.translate(
-                            currentX +
-                            lebar / 2,
-
-                            canvas.height / 2
-                        );
-
-
-                        ctx.rotate(
-                            -Math.PI / 2
-                        );
-
-
-                        ctx.fillText(
-                            w.nama,
-                            0,
-                            -3
-                        );
-
-
-                        ctx.font =
-                            "9px Poppins, sans-serif";
-
-
-                        ctx.fillText(
-                            w.luas.toFixed(1)
-                            + "m²",
-
-                            0,
-                            10
-                        );
-
-
-                        ctx.restore();
-
-                    }
-
-
-
-                    currentX +=
-                        lebar;
-
+                    ctx.restore();
                 }
+
+                currentX += lebar;
+            });
+
+            /* -----------------------------------------------------
+               2. RIZAB JALAN
+               20 m = nilai lalai visual. Ia tidak dianggap sebagai
+               bahagian mana-mana waris.
+            ----------------------------------------------------- */
+            const roadY = lotH;
+
+            /* Badan rizab jalan */
+            ctx.fillStyle = "#d9dde1";
+            ctx.fillRect(0, roadY, W, roadH);
+
+            /* Garisan sempadan rizab jalan */
+            ctx.strokeStyle = "#4b5563";
+            ctx.lineWidth = 2;
+            ctx.setLineDash([6, 4]);
+            ctx.beginPath();
+            ctx.moveTo(0, roadY);
+            ctx.lineTo(W, roadY);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            /* Garisan tengah jalan */
+            ctx.strokeStyle = "#ffffff";
+            ctx.lineWidth = 2;
+            ctx.setLineDash([12, 8]);
+            ctx.beginPath();
+            ctx.moveTo(0, roadY + roadH / 2);
+            ctx.lineTo(W, roadY + roadH / 2);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            /* Label rizab jalan */
+            ctx.fillStyle = "#374151";
+            ctx.font = "bold 9px Poppins, sans-serif";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(
+                "RIZAB JALAN " + RIZAB_JALAN_LEBAR_M + " m",
+                W / 2,
+                roadY + roadH / 2
             );
 
+            /* Anak panah / tanda ukuran */
+            ctx.strokeStyle = "#6b7280";
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(8, roadY + 5);
+            ctx.lineTo(8, H - 5);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(5, roadY + 8);
+            ctx.lineTo(8, roadY + 4);
+            ctx.lineTo(11, roadY + 8);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(5, H - 8);
+            ctx.lineTo(8, H - 4);
+            ctx.lineTo(11, H - 8);
+            ctx.stroke();
+
+            /* Bingkai keseluruhan */
+            ctx.strokeStyle = "#6b4b2a";
+            ctx.lineWidth = 1.5;
+            ctx.strokeRect(0.75, 0.75, W - 1.5, H - 1.5);
         }
+
 
     
 /* =========================================================
@@ -3584,4 +3584,4 @@ function focusDashboardSearch(e){
 
 </body>
 
-</html>
+</html>S
