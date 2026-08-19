@@ -348,6 +348,29 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- PENAMBAHAN MAKLUMAT NEGERI, DAERAH & MUKIM -->
+                        <div class="row g-2 mt-0">
+                            <div class="col-4">
+                                <div class="info-box">
+                                    <span class="info-label">Negeri</span>
+                                    <span id="res-negeri" class="info-value" style="font-size: 12px;">-</span>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="info-box">
+                                    <span class="info-label">Daerah</span>
+                                    <span id="res-daerah" class="info-value" style="font-size: 12px;">-</span>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="info-box">
+                                    <span class="info-label">Mukim</span>
+                                    <span id="res-mukim" class="info-value" style="font-size: 12px;">-</span>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="info-box mt-1">
                             <span class="info-label">Pemilik Berdaftar</span>
                             <span id="res-owner" class="info-value">-</span>
@@ -443,9 +466,19 @@
                 const rawArea = props['AREA'] ? parseFloat(props['AREA']) : null;
                 const areaFormatted = rawArea ? rawArea.toFixed(3) + " m²" : "-";
 
+                // Membaca data Negeri, Daerah, dan Mukim daripada properties GeoJSON
+                const negeri = props['NEGERI'] || props['Negeri'] || "-";
+                const daerah = props['DAERAH'] || props['Daerah'] || "-";
+                const mukim = props['MUKIM'] || props['Mukim'] || "-";
+
                 document.getElementById('res-no-lot').innerText = lot;
                 document.getElementById('res-owner').innerText = owner;
                 document.getElementById('res-luas').innerText = areaFormatted;
+
+                // Papar Negeri, Daerah, dan Mukim
+                document.getElementById('res-negeri').innerText = negeri;
+                document.getElementById('res-daerah').innerText = daerah;
+                document.getElementById('res-mukim').innerText = mukim;
 
                 // Memasukkan nilai keluasan secara automatik ke input Kalkulator Faraid
                 if (rawArea) {
