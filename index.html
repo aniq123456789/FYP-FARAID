@@ -3362,30 +3362,580 @@
            nilai lalai 20 m digunakan sebagai rizab jalan akses minimum
            yang dirujuk dalam garis panduan pembangunan jalan JKR.
            ========================================================== */
+        
+
+        
+        /* =========================================================
+           VISUAL PEMBAHAGIAN LOT MENGIKUT BENTUK LOT ASAL
+           ---------------------------------------------------------
+           PEMBAIKAN:
+           - Bentuk asal lot diambil terus daripada polygon Leaflet.
+           - Setiap bahagian waris dipotong daripada polygon asal.
+           - Luas setiap bahagian mengikut peratus Faraid.
+           - Garisan pecahan mengikuti bentuk sebenar lot, jadi lot
+             tidak lagi dipaparkan sebagai segi empat tepat.
+           - Rizab jalan kekal sebagai komponen visual berasingan.
+        ========================================================== */
+
         const RIZAB_JALAN_LEBAR_M = 20;
 
-        function lukisPelanLot(senaraiWaris) {
+        function polygonSignedArea(points) {
+            let area = 0;
 
-            let canvas = document.getElementById("lotCanvas");
+            for (let i = 0; i < points.length; i++) {
+                const a = points[i];
+                const b = points[(i + 1) % points.length];
+
+                area += (a.x * b.y) - (b.x * a.y);
+            }
+
+            return area / 2;
+        }
+
+        function polygonArea(points) {
+            return Math.abs(polygonSignedArea(points));
+        }
+
+        function centroidOfPoints(points) {
+            let sx = 0;
+            let sy = 0;
+
+            points.forEach(p => {
+                sx += p.x;
+                sy += p.y;
+            });
+
+            return {
+                x: sx / points.length,
+                y: sy / points.length
+            };
+        }
+
+        /*
+         * Dapatkan semua ring polygon daripada Leaflet Polygon /
+         * MultiPolygon. Untuk lot kadaster biasa, satu ring luar
+         * sudah memadai. Jika terdapat MultiPolygon, semua komponen
+         * akan dilukis bersama.
+         */
+        function extractLotRings(layer) {
+
+            if (!layer || typeof layer.getLatLngs !== "function") {
+                return [];
+            }
+
+            const source = layer.getLatLngs();
+            const rings = [];
+
+            function walk(value) {
+
+                if (!Array.isArray(value) || value.length === 0) {
+                    return;
+                }
+
+                const first = value[0];
+
+                if (
+                    first &&
+                    typeof first.lat === "number" &&
+                    typeof first.lng === "number"
+                ) {
+                    const ring = value
+                        .map(ll => ({
+                            x: ll.lng,
+                            y: ll.lat
+                        }))
+                        .filter(p =>
+                            Number.isFinite(p.x) &&
+                            Number.isFinite(p.y)
+                        );
+
+                    if (ring.length >= 3) {
+                        rings.push(ring);
+                    }
+
+                    return;
+                }
+
+                value.forEach(walk);
+            }
+
+            walk(source);
+
+            return rings;
+        }
+
+        /*
+         * Sutherland-Hodgman clipping terhadap garisan:
+         *
+         *      u <= limit
+         *
+         * atau
+         *
+         *      u >= limit
+         *
+         * "u" ialah koordinat sepanjang arah pembahagian lot.
+         */
+        function clipPolygonByU(points, limit, keepLess) {
+
+            if (!points || points.length < 3) {
+                return [];
+            }
+
+            const output = [];
+
+            function inside(p) {
+                return keepLess
+                    ? p.u <= limit + 1e-10
+                    : p.u >= limit - 1e-10;
+            }
+
+            function intersection(a, b) {
+
+                const du = b.u - a.u;
+
+                if (Math.abs(du) < 1e-12) {
+                    return {
+                        x: a.x,
+                        y: a.y,
+                        u: limit,
+                        v: a.v
+                    };
+                }
+
+                const t = (limit - a.u) / du;
+
+                return {
+                    x: a.x + (b.x - a.x) * t,
+                    y: a.y + (b.y - a.y) * t,
+                    u: limit,
+                    v: a.v + (b.v - a.v) * t
+                };
+            }
+
+            let previous = points[points.length - 1];
+            let previousInside = inside(previous);
+
+            for (let i = 0; i < points.length; i++) {
+
+                const current = points[i];
+                const currentInside = inside(current);
+
+                if (currentInside) {
+
+                    if (!previousInside) {
+                        output.push(
+                            intersection(previous, current)
+                        );
+                    }
+
+                    output.push(current);
+
+                } else if (previousInside) {
+
+                    output.push(
+                        intersection(previous, current)
+                    );
+                }
+
+                previous = current;
+                previousInside = currentInside;
+            }
+
+            return output;
+        }
+
+        /*
+         * Cari sempadan U yang memberikan luas terkumpul tertentu.
+         * Ini menyebabkan bahagian waris benar-benar mengikut
+         * bentuk polygon dan bukannya sekadar membahagi lebar canvas.
+         */
+        function findAreaCut(rings, targetArea, minU, maxU, totalArea) {
+
+            let low = minU;
+            let high = maxU;
+
+            for (let iteration = 0; iteration < 45; iteration++) {
+
+                const mid = (low + high) / 2;
+
+                let areaAtMid = 0;
+
+                rings.forEach(ring => {
+
+                    const clipped =
+                        clipPolygonByU(ring, mid, true);
+
+                    if (clipped.length >= 3) {
+                        areaAtMid += polygonArea(clipped);
+                    }
+
+                });
+
+                if (areaAtMid < targetArea) {
+                    low = mid;
+                } else {
+                    high = mid;
+                }
+            }
+
+            return (low + high) / 2;
+        }
+
+        /*
+         * Tukarkan titik geografi kepada sistem koordinat tempatan.
+         * cos(latitude) digunakan supaya bentuk tidak terlalu
+         * diregangkan kerana perbezaan skala longitude/latitude.
+         */
+        function prepareLotGeometry(layer) {
+
+            const ringsGeo = extractLotRings(layer);
+
+            if (!ringsGeo.length) {
+                return null;
+            }
+
+            let meanLat = 0;
+            let count = 0;
+
+            ringsGeo.forEach(ring => {
+                ring.forEach(p => {
+                    meanLat += p.y;
+                    count++;
+                });
+            });
+
+            meanLat = count ? meanLat / count : 0;
+
+            const cosLat =
+                Math.cos(meanLat * Math.PI / 180) || 1;
+
+            const rawPoints = [];
+
+            ringsGeo.forEach(ring => {
+                ring.forEach(p => {
+                    rawPoints.push({
+                        x: p.x * cosLat,
+                        y: p.y
+                    });
+                });
+            });
+
+            if (rawPoints.length < 3) {
+                return null;
+            }
+
+            /*
+             * PCA ringkas untuk mencari arah panjang utama lot.
+             * Pembahagian akan dibuat sepanjang arah utama ini supaya
+             * hasil lebih natural untuk lot yang memanjang / senget.
+             */
+            let cx = 0;
+            let cy = 0;
+
+            rawPoints.forEach(p => {
+                cx += p.x;
+                cy += p.y;
+            });
+
+            cx /= rawPoints.length;
+            cy /= rawPoints.length;
+
+            let xx = 0;
+            let xy = 0;
+            let yy = 0;
+
+            rawPoints.forEach(p => {
+
+                const dx = p.x - cx;
+                const dy = p.y - cy;
+
+                xx += dx * dx;
+                xy += dx * dy;
+                yy += dy * dy;
+            });
+
+            const angle =
+                0.5 * Math.atan2(
+                    2 * xy,
+                    xx - yy
+                );
+
+            const ux = Math.cos(angle);
+            const uy = Math.sin(angle);
+
+            /*
+             * Vektor V berserenjang dengan U.
+             */
+            const vx = -uy;
+            const vy = ux;
+
+            const rings = ringsGeo.map(ring => {
+
+                return ring.map(p => {
+
+                    const x = p.x * cosLat;
+                    const y = p.y;
+
+                    const dx = x - cx;
+                    const dy = y - cy;
+
+                    return {
+                        x: x,
+                        y: y,
+                        u: dx * ux + dy * uy,
+                        v: dx * vx + dy * vy
+                    };
+                });
+
+            });
+
+            let minU = Infinity;
+            let maxU = -Infinity;
+            let minV = Infinity;
+            let maxV = -Infinity;
+
+            rings.forEach(ring => {
+
+                ring.forEach(p => {
+
+                    minU = Math.min(minU, p.u);
+                    maxU = Math.max(maxU, p.u);
+
+                    minV = Math.min(minV, p.v);
+                    maxV = Math.max(maxV, p.v);
+
+                });
+
+            });
+
+            let totalArea = 0;
+
+            rings.forEach(ring => {
+                totalArea += polygonArea(ring);
+            });
+
+            if (
+                !Number.isFinite(totalArea) ||
+                totalArea <= 0
+            ) {
+                return null;
+            }
+
+            return {
+                rings,
+                minU,
+                maxU,
+                minV,
+                maxV,
+                totalArea,
+                centerX: cx,
+                centerY: cy,
+                ux,
+                uy,
+                vx,
+                vy,
+                cosLat
+            };
+        }
+
+        function drawPolygonPath(ctx, points, geometry, scale, offsetX, offsetY) {
+
+            if (!points || points.length < 3) {
+                return;
+            }
+
+            ctx.beginPath();
+
+            points.forEach((p, index) => {
+
+                const u = p.u;
+                const v = p.v;
+
+                const px =
+                    offsetX +
+                    (u - geometry.minU) * scale;
+
+                const py =
+                    offsetY +
+                    (geometry.maxV - v) * scale;
+
+                if (index === 0) {
+                    ctx.moveTo(px, py);
+                } else {
+                    ctx.lineTo(px, py);
+                }
+
+            });
+
+            ctx.closePath();
+        }
+
+        function getPieceRings(geometry, lowerU, upperU) {
+
+            const result = [];
+
+            geometry.rings.forEach(ring => {
+
+                const first =
+                    clipPolygonByU(
+                        ring,
+                        upperU,
+                        true
+                    );
+
+                const second =
+                    clipPolygonByU(
+                        first,
+                        lowerU,
+                        false
+                    );
+
+                if (second.length >= 3) {
+                    result.push(second);
+                }
+
+            });
+
+            return result;
+        }
+
+        function getPieceCentroid(pieceRings) {
+
+            let total = 0;
+            let sx = 0;
+            let sy = 0;
+
+            pieceRings.forEach(ring => {
+
+                const a =
+                    polygonSignedArea(ring);
+
+                if (Math.abs(a) < 1e-12) {
+                    return;
+                }
+
+                let cu = 0;
+                let cv = 0;
+
+                for (let i = 0; i < ring.length; i++) {
+
+                    const p = ring[i];
+                    const q = ring[(i + 1) % ring.length];
+
+                    const cross =
+                        (p.u * q.v) -
+                        (q.u * p.v);
+
+                    cu += (p.u + q.u) * cross;
+                    cv += (p.v + q.v) * cross;
+                }
+
+                cu /= (6 * a);
+                cv /= (6 * a);
+
+                sx += cu * Math.abs(a);
+                sy += cv * Math.abs(a);
+                total += Math.abs(a);
+            });
+
+            if (total <= 0) {
+                return null;
+            }
+
+            return {
+                u: sx / total,
+                v: sy / total
+            };
+        }
+
+        function drawRoadAndFrame(ctx, W, H, lotBox) {
+
+            const roadH = 34;
+            const roadY = H - roadH;
+
+            /* Latar belakang */
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, W, H);
+
+            /*
+             * Rizab jalan kekal sebagai komponen visual berasingan,
+             * seperti fungsi asal sistem.
+             */
+            ctx.fillStyle = "#d9dde1";
+            ctx.fillRect(0, roadY, W, roadH);
+
+            ctx.strokeStyle = "#4b5563";
+            ctx.lineWidth = 2;
+            ctx.setLineDash([6, 4]);
+
+            ctx.beginPath();
+            ctx.moveTo(0, roadY);
+            ctx.lineTo(W, roadY);
+            ctx.stroke();
+
+            ctx.setLineDash([]);
+
+            ctx.strokeStyle = "#ffffff";
+            ctx.lineWidth = 2;
+            ctx.setLineDash([12, 8]);
+
+            ctx.beginPath();
+            ctx.moveTo(0, roadY + roadH / 2);
+            ctx.lineTo(W, roadY + roadH / 2);
+            ctx.stroke();
+
+            ctx.setLineDash([]);
+
+            ctx.fillStyle = "#374151";
+            ctx.font = "bold 9px Poppins, sans-serif";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+
+            ctx.fillText(
+                "RIZAB JALAN " +
+                RIZAB_JALAN_LEBAR_M +
+                " m",
+                W / 2,
+                roadY + roadH / 2
+            );
+
+            /* Bingkai */
+            ctx.strokeStyle = "#6b4b2a";
+            ctx.lineWidth = 1.5;
+            ctx.strokeRect(
+                0.75,
+                0.75,
+                W - 1.5,
+                H - 1.5
+            );
+
+            return {
+                roadY,
+                lotH: roadY
+            };
+        }
+
+        function lukisPelanLot(senaraiWaris, selectedLayer) {
+
+            const canvas =
+                document.getElementById("lotCanvas");
+
             if (!canvas) return;
 
-            let ctx = canvas.getContext("2d");
-
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const ctx =
+                canvas.getContext("2d");
 
             const W = canvas.width;
             const H = canvas.height;
 
-            /* -----------------------------------------------------
-               1. RUANG LOT WARIS
-               Rizab jalan diletakkan di bahagian bawah sebagai
-               jalur berasingan.
-            ----------------------------------------------------- */
-            const roadH = 34;
-            const lotH = H - roadH;
-            let currentX = 0;
+            ctx.clearRect(
+                0,
+                0,
+                W,
+                H
+            );
 
-            let colors = [
+            const colors = [
                 "#79502b",
                 "#2563eb",
                 "#d97706",
@@ -3395,125 +3945,361 @@
                 "#dc2626"
             ];
 
-            /* Latar belakang lot */
+            /*
+             * Cuba mendapatkan bentuk lot sebenar daripada polygon
+             * yang sedang dipilih.
+             */
+            let geometry =
+                prepareLotGeometry(selectedLayer);
+
+            /*
+             * Jika geometry tidak tersedia, gunakan visual lama
+             * sebagai fallback supaya fungsi asal tidak rosak.
+             */
+            if (!geometry) {
+
+                const roadH = 34;
+                const lotH = H - roadH;
+                let currentX = 0;
+
+                ctx.fillStyle = "#fffdf8";
+                ctx.fillRect(
+                    0,
+                    0,
+                    W,
+                    lotH
+                );
+
+                senaraiWaris.forEach((w, index) => {
+
+                    const lebar =
+                        W * w.peratus;
+
+                    ctx.fillStyle =
+                        colors[index % colors.length];
+
+                    ctx.fillRect(
+                        currentX,
+                        0,
+                        lebar,
+                        lotH
+                    );
+
+                    ctx.strokeStyle =
+                        "#ffffff";
+
+                    ctx.lineWidth = 2;
+
+                    ctx.strokeRect(
+                        currentX,
+                        0,
+                        lebar,
+                        lotH
+                    );
+
+                    if (lebar > 25) {
+
+                        ctx.fillStyle =
+                            "#ffffff";
+
+                        ctx.font =
+                            "bold 10px Poppins, sans-serif";
+
+                        ctx.textAlign =
+                            "center";
+
+                        ctx.textBaseline =
+                            "middle";
+
+                        ctx.save();
+
+                        ctx.translate(
+                            currentX + lebar / 2,
+                            lotH / 2
+                        );
+
+                        ctx.rotate(-Math.PI / 2);
+
+                        ctx.fillText(
+                            w.nama,
+                            0,
+                            -3
+                        );
+
+                        ctx.font =
+                            "9px Poppins, sans-serif";
+
+                        ctx.fillText(
+                            w.luas.toFixed(1) + "m²",
+                            0,
+                            10
+                        );
+
+                        ctx.restore();
+                    }
+
+                    currentX += lebar;
+                });
+
+                drawRoadAndFrame(
+                    ctx,
+                    W,
+                    H
+                );
+
+                return;
+            }
+
+            /*
+             * Padding supaya sempadan lot tidak melekat pada tepi
+             * canvas.
+             */
+            const padding = 10;
+
+            const lotH =
+                H - 34;
+
+            const geomWidth =
+                geometry.maxU -
+                geometry.minU;
+
+            const geomHeight =
+                geometry.maxV -
+                geometry.minV;
+
+            const scale =
+                Math.min(
+                    (W - padding * 2) / geomWidth,
+                    (lotH - padding * 2) / geomHeight
+                );
+
+            const drawWidth =
+                geomWidth * scale;
+
+            const drawHeight =
+                geomHeight * scale;
+
+            const offsetX =
+                (W - drawWidth) / 2;
+
+            const offsetY =
+                padding +
+                (lotH - drawHeight - padding) / 2;
+
+            /*
+             * Latar lot.
+             */
             ctx.fillStyle = "#fffdf8";
-            ctx.fillRect(0, 0, W, lotH);
+            ctx.fillRect(
+                0,
+                0,
+                W,
+                lotH
+            );
+
+            /*
+             * Cari sempadan U untuk setiap bahagian waris.
+             * Setiap bahagian menggunakan luas sebenar polygon,
+             * bukan sekadar lebar rectangle.
+             */
+            let lowerU =
+                geometry.minU;
+
+            let cumulativeFraction = 0;
 
             senaraiWaris.forEach((w, index) => {
 
-                let lebar = W * w.peratus;
-
-                let color = colors[index % colors.length];
-
-                /* PETAK WARIS */
-                ctx.fillStyle = color;
-                ctx.fillRect(currentX, 0, lebar, lotH);
-
-                /* SEMPADAN PETAK */
-                ctx.strokeStyle = "#ffffff";
-                ctx.lineWidth = 2;
-                ctx.strokeRect(currentX, 0, lebar, lotH);
-
-                /* LABEL */
-                if (lebar > 25) {
-                    ctx.fillStyle = "#ffffff";
-                    ctx.font = "bold 10px Poppins, sans-serif";
-                    ctx.textAlign = "center";
-                    ctx.textBaseline = "middle";
-
-                    ctx.save();
-                    ctx.translate(
-                        currentX + lebar / 2,
-                        lotH / 2
-                    );
-                    ctx.rotate(-Math.PI / 2);
-
-                    ctx.fillText(w.nama, 0, -3);
-
-                    ctx.font = "9px Poppins, sans-serif";
-                    ctx.fillText(
-                        w.luas.toFixed(1) + "m²",
+                const fraction =
+                    Math.max(
                         0,
-                        10
+                        Number(w.peratus) || 0
                     );
 
-                    ctx.restore();
+                const isLast =
+                    index ===
+                    senaraiWaris.length - 1;
+
+                let upperU;
+
+                if (isLast) {
+                    upperU = geometry.maxU;
+                } else {
+
+                    cumulativeFraction +=
+                        fraction;
+
+                    const targetArea =
+                        geometry.totalArea *
+                        Math.min(
+                            1,
+                            cumulativeFraction
+                        );
+
+                    upperU =
+                        findAreaCut(
+                            geometry.rings,
+                            targetArea,
+                            geometry.minU,
+                            geometry.maxU,
+                            geometry.totalArea
+                        );
                 }
 
-                currentX += lebar;
+                const pieceRings =
+                    getPieceRings(
+                        geometry,
+                        lowerU,
+                        upperU
+                    );
+
+                const color =
+                    colors[index % colors.length];
+
+                /*
+                 * Lukis setiap komponen polygon yang dimiliki
+                 * oleh bahagian waris.
+                 */
+                pieceRings.forEach(ring => {
+
+                    drawPolygonPath(
+                        ctx,
+                        ring,
+                        geometry,
+                        scale,
+                        offsetX,
+                        offsetY
+                    );
+
+                    ctx.fillStyle =
+                        color;
+
+                    ctx.fill();
+
+                    ctx.strokeStyle =
+                        "#ffffff";
+
+                    ctx.lineWidth = 2;
+
+                    ctx.stroke();
+                });
+
+                /*
+                 * Cari centroid untuk label.
+                 */
+                const centroid =
+                    getPieceCentroid(
+                        pieceRings
+                    );
+
+                if (centroid) {
+
+                    const labelX =
+                        offsetX +
+                        (centroid.u -
+                            geometry.minU) *
+                        scale;
+
+                    const labelY =
+                        offsetY +
+                        (geometry.maxV -
+                            centroid.v) *
+                        scale;
+
+                    /*
+                     * Label hanya dipaparkan jika bahagian cukup
+                     * besar supaya tidak bertindih.
+                     */
+                    const approxWidth =
+                        Math.max(
+                            18,
+                            (upperU - lowerU) *
+                            scale
+                        );
+
+                    if (approxWidth > 35) {
+
+                        ctx.fillStyle =
+                            "#ffffff";
+
+                        ctx.textAlign =
+                            "center";
+
+                        ctx.textBaseline =
+                            "middle";
+
+                        ctx.font =
+                            "bold 9px Poppins, sans-serif";
+
+                        ctx.save();
+
+                        ctx.translate(
+                            labelX,
+                            labelY
+                        );
+
+                        /*
+                         * Tidak lagi dipaksa menegak seperti visual
+                         * lama; label mengikuti ruang polygon.
+                         */
+                        ctx.fillText(
+                            w.nama,
+                            0,
+                            -5
+                        );
+
+                        ctx.font =
+                            "8px Poppins, sans-serif";
+
+                        ctx.fillText(
+                            w.luas.toFixed(1) +
+                            " m²",
+                            0,
+                            7
+                        );
+
+                        ctx.restore();
+                    }
+                }
+
+                lowerU =
+                    upperU;
             });
 
-            /* -----------------------------------------------------
-               2. RIZAB JALAN
-               20 m = nilai lalai visual. Ia tidak dianggap sebagai
-               bahagian mana-mana waris.
-            ----------------------------------------------------- */
-            const roadY = lotH;
+            /*
+             * Garisan luar lot asal.
+             */
+            geometry.rings.forEach(ring => {
 
-            /* Badan rizab jalan */
-            ctx.fillStyle = "#d9dde1";
-            ctx.fillRect(0, roadY, W, roadH);
+                drawPolygonPath(
+                    ctx,
+                    ring,
+                    geometry,
+                    scale,
+                    offsetX,
+                    offsetY
+                );
 
-            /* Garisan sempadan rizab jalan */
-            ctx.strokeStyle = "#4b5563";
-            ctx.lineWidth = 2;
-            ctx.setLineDash([6, 4]);
-            ctx.beginPath();
-            ctx.moveTo(0, roadY);
-            ctx.lineTo(W, roadY);
-            ctx.stroke();
-            ctx.setLineDash([]);
+                ctx.strokeStyle =
+                    "#6b4b2a";
 
-            /* Garisan tengah jalan */
-            ctx.strokeStyle = "#ffffff";
-            ctx.lineWidth = 2;
-            ctx.setLineDash([12, 8]);
-            ctx.beginPath();
-            ctx.moveTo(0, roadY + roadH / 2);
-            ctx.lineTo(W, roadY + roadH / 2);
-            ctx.stroke();
-            ctx.setLineDash([]);
+                ctx.lineWidth =
+                    2.2;
 
-            /* Label rizab jalan */
-            ctx.fillStyle = "#374151";
-            ctx.font = "bold 9px Poppins, sans-serif";
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            ctx.fillText(
-                "RIZAB JALAN " + RIZAB_JALAN_LEBAR_M + " m",
-                W / 2,
-                roadY + roadH / 2
+                ctx.stroke();
+            });
+
+            /*
+             * Rizab jalan kekal sebagai komponen berasingan.
+             */
+            drawRoadAndFrame(
+                ctx,
+                W,
+                H
             );
-
-            /* Anak panah / tanda ukuran */
-            ctx.strokeStyle = "#6b7280";
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(8, roadY + 5);
-            ctx.lineTo(8, H - 5);
-            ctx.stroke();
-
-            ctx.beginPath();
-            ctx.moveTo(5, roadY + 8);
-            ctx.lineTo(8, roadY + 4);
-            ctx.lineTo(11, roadY + 8);
-            ctx.stroke();
-
-            ctx.beginPath();
-            ctx.moveTo(5, H - 8);
-            ctx.lineTo(8, H - 4);
-            ctx.lineTo(11, H - 8);
-            ctx.stroke();
-
-            /* Bingkai keseluruhan */
-            ctx.strokeStyle = "#6b4b2a";
-            ctx.lineWidth = 1.5;
-            ctx.strokeRect(0.75, 0.75, W - 1.5, H - 1.5);
         }
 
 
-    
-/* =========================================================
+    /* =========================================================
    NAVIGATION DASHBOARD
    Tidak mengubah fungsi WebGIS/Faraid asal.
 ========================================================= */
