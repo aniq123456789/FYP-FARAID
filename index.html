@@ -1120,7 +1120,346 @@
             #sidebar.active { margin-left: -100%; }
         }
 
-    </style>
+    
+/* =========================================================
+   E-FARAID STYLE DASHBOARD PAGES
+   Tambahan sahaja - fungsi WebGIS/Faraid asal dikekalkan
+========================================================= */
+:root{
+    --ef-green:#20c997;
+    --ef-green-dark:#159f78;
+    --ef-text:#34495e;
+    --ef-muted:#6c757d;
+    --ef-bg:#f6f7f8;
+    --ef-border:#e3e6e8;
+}
+
+.header-content{
+    width:96%;
+}
+
+.brand-title{
+    text-decoration:none;
+    color:#1d9f72;
+    font-weight:700;
+    font-size:17px;
+    line-height:1.15;
+    min-width:260px;
+}
+.brand-title span{
+    display:block;
+    color:#6b7280;
+    font-size:10px;
+    font-weight:500;
+    margin-top:3px;
+}
+.top-nav{
+    height:78px;
+    display:flex;
+    align-items:stretch;
+    gap:0;
+}
+.top-nav > .nav-item{
+    position:relative;
+    display:flex;
+    align-items:center;
+}
+.top-nav a{
+    height:78px;
+    display:flex;
+    align-items:center;
+    text-decoration:none;
+    color:#334155;
+    padding:0 16px !important;
+    font-size:13px !important;
+    font-weight:400;
+    border-bottom:3px solid transparent;
+    transition:.2s;
+    white-space:nowrap;
+}
+.top-nav a:hover,
+.top-nav a.active{
+    background:#20c997 !important;
+    color:#fff !important;
+    border-bottom-color:#11a97c;
+}
+.top-nav .nav-search{
+    width:45px;
+    padding:0 !important;
+    justify-content:center;
+    color:#4b5563;
+}
+.top-nav .dropdown-menu-custom{
+    position:absolute;
+    top:78px;
+    left:0;
+    min-width:220px;
+    background:#fff;
+    border:1px solid #e2e8f0;
+    box-shadow:0 8px 22px rgba(0,0,0,.12);
+    display:none;
+    z-index:5000;
+}
+.top-nav .nav-item:hover > .dropdown-menu-custom{
+    display:block;
+}
+.dropdown-menu-custom a{
+    height:auto !important;
+    min-height:39px;
+    width:100%;
+    padding:10px 14px !important;
+    color:#3f4650 !important;
+    background:#fff !important;
+    border-bottom:1px solid #edf0f2 !important;
+    font-size:12px !important;
+    justify-content:space-between;
+}
+.dropdown-menu-custom a:hover{
+    background:#f2fbf8 !important;
+    color:#159f78 !important;
+}
+.dropdown-menu-custom .has-arrow::after{
+    content:"\f054";
+    font-family:"Font Awesome 5 Free";
+    font-weight:900;
+    font-size:9px;
+}
+.dropdown-menu-custom .nested{
+    position:relative;
+}
+.dropdown-menu-custom .nested-menu{
+    position:absolute;
+    top:-1px;
+    left:100%;
+    min-width:220px;
+    display:none;
+    background:#fff;
+    border:1px solid #e2e8f0;
+    box-shadow:0 8px 22px rgba(0,0,0,.12);
+}
+.dropdown-menu-custom .nested:hover .nested-menu{
+    display:block;
+}
+
+.dashboard-page{
+    display:none;
+    height:calc(100vh - 78px);
+    overflow-y:auto;
+    background:var(--ef-bg);
+    color:var(--ef-text);
+}
+.dashboard-page.active{
+    display:block;
+}
+.dashboard-hero{
+    background:#f1f2f3;
+    border-bottom:1px solid #e7e7e7;
+    padding:28px 5.5%;
+}
+.dashboard-hero h1{
+    font-size:25px;
+    font-weight:500;
+    margin:0;
+    color:#263746;
+}
+.dashboard-hero p{
+    margin:7px 0 0;
+    color:#74808a;
+    font-size:13px;
+}
+.dashboard-breadcrumb{
+    float:right;
+    margin-top:-30px;
+    color:#6c757d;
+    font-size:12px;
+}
+.dashboard-container{
+    width:89%;
+    margin:0 auto;
+    padding:34px 0 60px;
+}
+.dashboard-grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:18px;
+}
+.dashboard-card{
+    background:#fff;
+    border:1px solid var(--ef-border);
+    border-radius:2px;
+    padding:22px;
+    box-shadow:0 2px 8px rgba(31,41,55,.045);
+}
+.dashboard-card h3{
+    font-size:17px;
+    margin:0 0 10px;
+    color:#273746;
+}
+.dashboard-card h4{
+    font-size:14px;
+    margin:18px 0 8px;
+    color:#2f4352;
+}
+.dashboard-card p,
+.dashboard-card li{
+    font-size:13px;
+    line-height:1.75;
+    color:#52616d;
+}
+.dashboard-card ul,
+.dashboard-card ol{
+    padding-left:20px;
+}
+.dashboard-card.full{
+    grid-column:1/-1;
+}
+.dashboard-icon{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#e8faf4;
+    color:#18ad80;
+    margin-bottom:12px;
+}
+.info-faraid-table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:14px;
+    font-size:12px;
+}
+.info-faraid-table th{
+    background:#f0f2f3;
+    color:#3e4b55;
+    font-weight:600;
+    text-align:left;
+    padding:11px;
+    border:1px solid #d8dde1;
+}
+.info-faraid-table td{
+    padding:10px 11px;
+    border:1px solid #e1e5e8;
+    vertical-align:top;
+    color:#52616d;
+}
+.fraction-grid{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    border:1px solid #4b5359;
+    margin:16px 0 25px;
+}
+.fraction-grid div{
+    text-align:center;
+    padding:12px 5px;
+    font-weight:600;
+    border-right:1px solid #4b5359;
+    background:#f7f7f7;
+}
+.fraction-grid div:last-child{border-right:0;}
+.arabic-box{
+    background:#fafafa;
+    border-left:3px solid #20c997;
+    padding:13px 16px;
+    margin:8px 0 12px;
+    font-family:Amiri,serif;
+    font-size:20px;
+    line-height:1.9;
+    text-align:right;
+}
+.notice-box{
+    background:#eefaf6;
+    border:1px solid #c7eee2;
+    border-left:4px solid #20c997;
+    padding:15px 17px;
+    font-size:13px;
+    color:#4d5b64;
+    margin-bottom:18px;
+}
+.dashboard-list-card{
+    display:flex;
+    gap:15px;
+    align-items:flex-start;
+    padding:16px 0;
+    border-bottom:1px solid #edf0f2;
+}
+.dashboard-list-card:last-child{border-bottom:0;}
+.dashboard-list-card .num{
+    min-width:32px;
+    height:32px;
+    border-radius:50%;
+    background:#e8faf4;
+    color:#159f78;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+    font-size:12px;
+}
+.service-card{
+    cursor:pointer;
+    transition:.2s;
+}
+.service-card:hover{
+    transform:translateY(-2px);
+    box-shadow:0 7px 18px rgba(31,41,55,.09);
+}
+.dashboard-search{
+    width:100%;
+    border:1px solid #d6dce0;
+    padding:12px 14px;
+    font-size:13px;
+    outline:none;
+}
+.dashboard-search:focus{border-color:#20c997;}
+.contact-box{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+}
+.contact-item{
+    background:#fff;
+    border:1px solid #e3e6e8;
+    padding:20px;
+}
+.contact-item i{color:#20c997;font-size:20px;margin-bottom:10px;}
+.login-panel{
+    max-width:520px;
+    margin:0 auto;
+    background:#fff;
+    padding:28px;
+    border:1px solid #e1e5e8;
+}
+.login-panel input{
+    width:100%;
+    padding:12px;
+    border:1px solid #d8dde1;
+    margin:6px 0 14px;
+}
+.green-btn{
+    border:0;
+    background:#20c997;
+    color:#fff;
+    padding:11px 18px;
+    font-size:13px;
+    cursor:pointer;
+}
+@media(max-width:1100px){
+    .top-nav a{padding:0 9px !important;font-size:11px !important;}
+    .brand-title{font-size:14px;min-width:210px;}
+    .dashboard-grid{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:800px){
+    .brand-title{display:none;}
+    .top-nav{width:100%;overflow-x:auto;}
+    .top-nav a{padding:0 11px !important;}
+    .dashboard-grid,.contact-box{grid-template-columns:1fr;}
+    .fraction-grid{grid-template-columns:repeat(4,1fr);}
+    .dashboard-breadcrumb{float:none;margin:8px 0 0;}
+}
+
+</style>
 
 </head>
 
@@ -1253,20 +1592,463 @@
             </a>
 
             <nav class="top-nav" aria-label="Navigasi utama">
-                <a href="#" class="active" onclick="return false;">Utama</a>
-                <a href="#" onclick="return false;">Tentang Sistem <i class="fas fa-chevron-down"></i></a>
-                <a href="#" onclick="document.getElementById('resultFaraid').scrollIntoView({behavior:'smooth'}); return false;">Informasi Faraid <i class="fas fa-chevron-down"></i></a>
-                <a href="#" onclick="return false;">Perkhidmatan <i class="fas fa-chevron-down"></i></a>
-                <a href="#" onclick="document.getElementById('luasTanah').focus(); return false;">K-Faraid</a>
-                <a href="#" onclick="return false;">Informasi <i class="fas fa-chevron-down"></i></a>
-                <a href="#" onclick="return false;">Hubungi</a>
-                <a href="#" onclick="return false;">Log Masuk</a>
-                <a href="#" class="nav-search" title="Carian"><i class="fas fa-search"></i></a>
-            </nav>
+
+    <div class="nav-item">
+        <a href="#" class="active page-link" data-page="utama">
+            Utama
+        </a>
+    </div>
+
+    <div class="nav-item">
+        <a href="#" class="page-link" data-page="tentang">
+            Tentang Kami <i class="fas fa-chevron-down"></i>
+        </a>
+        <div class="dropdown-menu-custom">
+            <a href="#" class="page-link" data-page="tentang">Pengenalan Sistem</a>
+            <a href="#" class="page-link" data-page="tentang">Objektif Sistem</a>
+            <a href="#" class="page-link" data-page="tentang">Fungsi Utama</a>
+            <a href="#" class="page-link" data-page="tentang">Teknologi Sistem</a>
+        </div>
+    </div>
+
+    <div class="nav-item">
+        <a href="#" class="page-link" data-page="faraid">
+            Informasi Faraid <i class="fas fa-chevron-down"></i>
+        </a>
+        <div class="dropdown-menu-custom">
+            <a href="#" class="page-link" data-page="faraid">Pengenalan</a>
+            <a href="#" class="page-link" data-page="faraid">Perkara Asas</a>
+            <a href="#" class="page-link" data-page="faraid">Waris-Waris</a>
+            <a href="#" class="page-link" data-page="faraid">Cara Mewarisi</a>
+            <a href="#" class="page-link" data-page="faraid">Pendindingan</a>
+            <a href="#" class="page-link" data-page="faraid">'Aul</a>
+            <a href="#" class="page-link" data-page="faraid">Kes Khusus</a>
+            <a href="#" class="page-link" data-page="faraid">Munasakhat</a>
+            <a href="#" class="page-link" data-page="faraid">Takharuj</a>
+            <a href="#" class="page-link" data-page="faraid">Baitulmal</a>
+            <a href="#" class="page-link" data-page="faraid">Pentadbiran Harta Pusaka</a>
+        </div>
+    </div>
+
+    <div class="nav-item">
+        <a href="#" class="page-link" data-page="perkhidmatan">
+            Perkhidmatan <i class="fas fa-chevron-down"></i>
+        </a>
+        <div class="dropdown-menu-custom">
+            <a href="#" class="page-link" data-page="utama">WebGIS Lot Tanah</a>
+            <a href="#" class="page-link" data-page="k-faraid">Pengiraan Faraid</a>
+            <a href="#" class="page-link" data-page="perkhidmatan">Panduan Penggunaan</a>
+        </div>
+    </div>
+
+    <div class="nav-item">
+        <a href="#" class="page-link" data-page="k-faraid">
+            K-Faraid
+        </a>
+    </div>
+
+    <div class="nav-item">
+        <a href="#" class="page-link" data-page="informasi">
+            Informasi <i class="fas fa-chevron-down"></i>
+        </a>
+        <div class="dropdown-menu-custom">
+            <a href="#" class="page-link" data-page="informasi">Soalan Lazim</a>
+            <a href="#" class="page-link" data-page="informasi">Panduan Sistem</a>
+            <a href="#" class="page-link" data-page="informasi">Istilah Faraid</a>
+        </div>
+    </div>
+
+    <div class="nav-item">
+        <a href="#" class="page-link" data-page="hubungi">Hubungi</a>
+    </div>
+
+    <div class="nav-item">
+        <a href="#" class="page-link" data-page="login">Log Masuk</a>
+    </div>
+
+    <div class="nav-item">
+        <a href="#" class="nav-search" title="Carian" onclick="focusDashboardSearch(event)">
+            <i class="fas fa-search"></i>
+        </a>
+    </div>
+
+</nav>
         </div>
     </header>
 
 
+
+
+    <!-- =========================================================
+         DASHBOARD PAGES
+         Halaman tambahan; WebGIS asal berada pada halaman Utama.
+    ========================================================== -->
+
+        <section id="page-tentang" class="dashboard-page">
+        <div class="dashboard-hero">
+            <div class="dashboard-breadcrumb"><i class="fas fa-home"></i> &nbsp;>&nbsp; Tentang Kami</div>
+            <h1>Tentang Sistem</h1>
+            <p>Sistem Maklumat Lot Tanah &amp; Pembahagian Faraid</p>
+        </div>
+        <div class="dashboard-container">
+            <div class="dashboard-grid">
+                <div class="dashboard-card full">
+                    <div class="dashboard-icon"><i class="fas fa-info-circle"></i></div>
+                    <h3>Pengenalan Sistem</h3>
+                    <p>
+                        Sistem ini menggabungkan maklumat lot tanah berasaskan WebGIS dengan
+                        modul pengiraan pembahagian Faraid. Pengguna boleh memilih lot pada peta,
+                        melihat maklumat lot dan menjalankan simulasi pembahagian berdasarkan
+                        maklumat waris yang dimasukkan.
+                    </p>
+                    <div class="notice-box">
+                        <strong>Nota:</strong> Modul pengiraan yang tersedia dalam sistem ini
+                        hendaklah digunakan sebagai rujukan dan pendidikan. Untuk urusan pusaka
+                        sebenar, pengguna perlu mendapatkan pengesahan daripada pihak berkuasa
+                        atau pihak yang berkelayakan.
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="dashboard-icon"><i class="fas fa-bullseye"></i></div>
+                    <h3>Objektif</h3>
+                    <ul>
+                        <li>Memudahkan carian dan pemilihan lot tanah.</li>
+                        <li>Memaparkan maklumat lot secara interaktif.</li>
+                        <li>Membantu pengguna memahami asas pembahagian Faraid.</li>
+                        <li>Menghasilkan simulasi pembahagian lot secara visual.</li>
+                    </ul>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="dashboard-icon"><i class="fas fa-map-marked-alt"></i></div>
+                    <h3>WebGIS</h3>
+                    <p>Memaparkan lot tanah pada peta, label nombor lot, sempadan lot serta pilihan Google Satellite dan Google Streets.</p>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="dashboard-icon"><i class="fas fa-calculator"></i></div>
+                    <h3>Pengiraan Faraid</h3>
+                    <p>Modul sedia ada membolehkan pengguna memasukkan status isteri dan bilangan anak lelaki serta anak perempuan untuk menghasilkan keputusan pembahagian.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="page-faraid" class="dashboard-page">
+        <div class="dashboard-hero">
+            <div class="dashboard-breadcrumb"><i class="fas fa-home"></i> &nbsp;>&nbsp; Informasi Faraid</div>
+            <h1>Informasi Faraid</h1>
+            <p>Rujukan asas berkaitan waris fardu, asobah dan kaedah pembahagian harta pusaka.</p>
+        </div>
+
+        <div class="dashboard-container">
+            <div class="notice-box">
+                Kandungan ringkas di bawah disusun berdasarkan maklumat rujukan E-FARAID MAIS,
+                termasuk penerangan tentang waris fardu, asobah, pendindingan, 'aul dan munasakhat.
+                Ia dipaparkan sebagai maklumat pendidikan dan rujukan.
+            </div>
+
+            <div class="dashboard-card full">
+                <div class="dashboard-icon"><i class="fas fa-book-open"></i></div>
+                <h3>1. Pengenalan</h3>
+                <p>
+                    Faraid ialah ilmu berkaitan pembahagian harta pusaka kepada waris yang berhak
+                    mengikut Hukum Syarak. Kadar bahagian waris tertentu ditetapkan berdasarkan
+                    hubungan waris dengan si mati dan keadaan waris-waris yang ditinggalkan.
+                </p>
+                <p>
+                    Antara perkara penting sebelum pembahagian pusaka ialah mengenal pasti waris
+                    yang berhak, menentukan harta pusaka, menyelesaikan pengurusan jenazah,
+                    hutang, tuntutan harta sepencarian jika berkenaan dan wasiat yang sah.
+                </p>
+            </div>
+
+            <div class="dashboard-grid" style="margin-top:18px;">
+                <div class="dashboard-card">
+                    <div class="dashboard-icon"><i class="fas fa-layer-group"></i></div>
+                    <h3>2. Perkara Asas</h3>
+                    <p>
+                        Dalam asas pembahagian pusaka, penentuan waris dan kedudukan mereka
+                        amat penting kerana sesetengah waris boleh mendindingkan waris lain.
+                    </p>
+                    <ul>
+                        <li>Kenal pasti waris.</li>
+                        <li>Kenal pasti harta pusaka.</li>
+                        <li>Selesaikan tanggungan berkaitan.</li>
+                        <li>Tentukan bahagian waris.</li>
+                    </ul>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="dashboard-icon"><i class="fas fa-users"></i></div>
+                    <h3>3. Waris-Waris</h3>
+                    <p>Waris yang berhak boleh terdiri daripada waris lelaki dan perempuan.</p>
+                    <h4>Waris lelaki</h4>
+                    <p>Anak lelaki, cucu lelaki daripada anak lelaki, bapa, datuk sebelah bapa, saudara lelaki dan waris lelaki lain mengikut susunan faraid; termasuk suami.</p>
+                    <h4>Waris perempuan</h4>
+                    <p>Anak perempuan, cucu perempuan daripada anak lelaki, ibu, nenek, saudara perempuan dan isteri antara waris perempuan yang dinyatakan dalam rujukan.</p>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="dashboard-icon"><i class="fas fa-route"></i></div>
+                    <h3>4. Cara Mewarisi</h3>
+                    <p>Terdapat waris yang menerima secara fardu dan waris yang menerima secara asobah.</p>
+                    <ul>
+                        <li><strong>Waris Fardu</strong> – mempunyai kadar bahagian tertentu.</li>
+                        <li><strong>Waris Asobah</strong> – menerima keseluruhan atau baki bergantung keadaan.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="dashboard-card full" style="margin-top:18px;">
+                <h3>Kadar Bahagian Waris Fardu</h3>
+                <p>
+                    Enam kadar utama yang dinyatakan ialah 1/2, 1/3, 2/3, 1/4, 1/6 dan 1/8.
+                    Selain itu terdapat 1/3 baki bagi keadaan tertentu.
+                </p>
+                <div class="fraction-grid">
+                    <div>1/2</div><div>1/3</div><div>2/3</div><div>1/4</div>
+                    <div>1/6</div><div>1/8</div><div>1/3 Baki</div>
+                </div>
+
+                <table class="info-faraid-table">
+                    <thead>
+                        <tr><th>Bahagian</th><th>Waris / Contoh</th><th>Syarat Ringkas</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1/2</td><td>Suami; 1 anak perempuan; 1 cucu perempuan; beberapa waris perempuan tertentu.</td><td>Contohnya suami mendapat 1/2 apabila tiada keturunan ke bawah.</td></tr>
+                        <tr><td>1/3</td><td>Ibu; 2 saudara seibu atau lebih.</td><td>Tertakluk kepada keadaan keturunan dan bilangan saudara.</td></tr>
+                        <tr><td>1/4</td><td>Suami; isteri.</td><td>Suami 1/4 apabila mempunyai keturunan ke bawah; isteri 1/4 apabila tiada keturunan ke bawah.</td></tr>
+                        <tr><td>2/3</td><td>2 anak perempuan atau lebih; 2 cucu perempuan atau lebih; waris perempuan tertentu.</td><td>Tertakluk kepada ketiadaan waris lelaki atau waris yang mendindingkan.</td></tr>
+                        <tr><td>1/6</td><td>Bapa; ibu; datuk; nenek; cucu perempuan dalam keadaan tertentu; saudara sebapa perempuan dalam keadaan tertentu; saudara seibu.</td><td>Syarat berbeza mengikut jenis waris dan kewujudan waris lain.</td></tr>
+                        <tr><td>1/8</td><td>Isteri.</td><td>Mempunyai keturunan ke bawah.</td></tr>
+                        <tr><td>1/3 Baki</td><td>Ibu dalam masalah tertentu.</td><td>Berkaitan keadaan 'Umariyyatain / Gharrawain.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="dashboard-card full" style="margin-top:18px;">
+                <h3>Dalil Bahagian Fardu</h3>
+                <p>Antara ayat al-Quran yang berkaitan kadar bahagian fardu ialah:</p>
+                <div class="arabic-box">وَلَكُمْ نِصْفُ مَا تَرَكَ أَزْوَاجُكُمْ إِنْ لَمْ يَكُنْ لَهُنَّ وَلَدٌ</div>
+                <div class="arabic-box">فَإِنْ لَمْ يَكُنْ لَهُ وَلَدٌ وَوَرِثَهُ أَبَوَاهُ فَلِأُمِّهِ الثُّلُثُ</div>
+                <div class="arabic-box">فَإِنْ كَانَ لَهُنَّ وَلَدٌ فَلَكُمُ الرُّبُعُ مِمَّا تَرَكْنَ</div>
+            </div>
+
+            <div class="dashboard-grid" style="margin-top:18px;">
+                <div class="dashboard-card">
+                    <div class="dashboard-icon"><i class="fas fa-balance-scale"></i></div>
+                    <h3>5. Pendindingan</h3>
+                    <p>
+                        Pendindingan bermaksud seseorang waris ditegah daripada mewarisi sama ada
+                        sebahagiannya atau keseluruhannya kerana kewujudan waris lain yang lebih
+                        hampir atau lebih kuat.
+                    </p>
+                    <h4>Pendindingan Kurang</h4>
+                    <p>Bahagian berubah daripada banyak kepada sedikit, contohnya ibu daripada 1/3 kepada 1/6 dalam keadaan tertentu.</p>
+                    <h4>Pendindingan Semua</h4>
+                    <p>Waris gugur sepenuhnya kerana terdapat waris lain yang lebih hampir, seperti anak lelaki mendindingkan cucu.</p>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="dashboard-icon"><i class="fas fa-divide"></i></div>
+                    <h3>6. 'Aul</h3>
+                    <p>
+                        'Aul ialah kaedah penyelesaian apabila jumlah bahagian waris fardu melebihi
+                        harta yang boleh dibahagikan berdasarkan asal masalah. Dalam keadaan ini
+                        angka asal masalah dinaikkan mengikut jumlah saham.
+                    </p>
+                    <ul>
+                        <li>6 → 7, 8, 9 atau 10</li>
+                        <li>12 → 13, 15 atau 17</li>
+                        <li>24 → 27</li>
+                    </ul>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="dashboard-icon"><i class="fas fa-project-diagram"></i></div>
+                    <h3>7. Kes Khusus</h3>
+                    <p>
+                        Sesetengah masalah faraid memerlukan kaedah dan keadaan khusus. Pengguna
+                        hendaklah merujuk pengiraan yang lengkap serta mendapatkan pengesahan
+                        pihak berautoriti untuk kes sebenar.
+                    </p>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="dashboard-icon"><i class="fas fa-sync-alt"></i></div>
+                    <h3>8. Munasakhat</h3>
+                    <p>
+                        Munasakhat berlaku apabila sebahagian waris yang sepatutnya menerima
+                        pusaka meninggal dunia sebelum pembahagian pusaka selesai dan bahagiannya
+                        berpindah kepada warisnya pula.
+                    </p>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="dashboard-icon"><i class="fas fa-exchange-alt"></i></div>
+                    <h3>9. Takharuj</h3>
+                    <p>
+                        Takharuj merujuk kepada keadaan waris membuat persetujuan untuk keluar
+                        atau melepaskan hak tertentu dalam pembahagian pusaka mengikut syarat
+                        dan proses yang dibenarkan.
+                    </p>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="dashboard-icon"><i class="fas fa-mosque"></i></div>
+                    <h3>10. Baitulmal</h3>
+                    <p>
+                        Baitulmal mempunyai peranan dalam pengurusan harta tertentu yang
+                        berkaitan dengan umat Islam. Kes dan bidang kuasa hendaklah dirujuk
+                        kepada institusi agama negeri yang berkaitan.
+                    </p>
+                </div>
+
+                <div class="dashboard-card full">
+                    <div class="dashboard-icon"><i class="fas fa-file-alt"></i></div>
+                    <h3>11. Pentadbiran Harta Pusaka</h3>
+                    <p>
+                        Pentadbiran pusaka melibatkan pengenalpastian harta dan waris, penyelesaian
+                        tanggungan yang berkaitan serta proses pembahagian kepada waris yang berhak.
+                        Prosedur sebenar bergantung kepada jenis harta, nilai harta dan bidang
+                        kuasa agensi yang mengendalikan pusaka.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="page-perkhidmatan" class="dashboard-page">
+        <div class="dashboard-hero">
+            <div class="dashboard-breadcrumb"><i class="fas fa-home"></i> &nbsp;>&nbsp; Perkhidmatan</div>
+            <h1>Perkhidmatan</h1>
+            <p>Modul yang tersedia dalam Sistem Maklumat Lot Tanah &amp; Pembahagian Faraid.</p>
+        </div>
+        <div class="dashboard-container">
+            <div class="dashboard-grid">
+                <div class="dashboard-card service-card" onclick="showPage('utama')">
+                    <div class="dashboard-icon"><i class="fas fa-map"></i></div>
+                    <h3>WebGIS Lot Tanah</h3>
+                    <p>Cari, pilih dan lihat lot tanah secara interaktif pada peta.</p>
+                </div>
+                <div class="dashboard-card service-card" onclick="showPage('k-faraid')">
+                    <div class="dashboard-icon"><i class="fas fa-calculator"></i></div>
+                    <h3>Pengiraan Faraid</h3>
+                    <p>Gunakan modul pengiraan sedia ada selepas memilih lot tanah.</p>
+                </div>
+                <div class="dashboard-card service-card">
+                    <div class="dashboard-icon"><i class="fas fa-book"></i></div>
+                    <h3>Panduan Penggunaan</h3>
+                    <p>Panduan ringkas untuk memilih lot, memasukkan maklumat waris dan membaca keputusan.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="page-k-faraid" class="dashboard-page">
+        <div class="dashboard-hero">
+            <div class="dashboard-breadcrumb"><i class="fas fa-home"></i> &nbsp;>&nbsp; K-Faraid</div>
+            <h1>K-Faraid</h1>
+            <p>Akses terus ke modul pengiraan Faraid yang telah tersedia dalam sistem.</p>
+        </div>
+        <div class="dashboard-container">
+            <div class="dashboard-card full">
+                <div class="dashboard-icon"><i class="fas fa-calculator"></i></div>
+                <h3>Mulakan Pengiraan</h3>
+                <p>
+                    Pilih lot tanah melalui WebGIS terlebih dahulu. Selepas lot dipilih,
+                    maklumat luas tanah akan digunakan oleh modul pengiraan Faraid sedia ada.
+                </p>
+                <button class="green-btn" onclick="showPage('utama'); setTimeout(function(){document.getElementById('luasTanah').focus();},350);">
+                    <i class="fas fa-map-marker-alt"></i> PILIH LOT &amp; KIRA
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section id="page-informasi" class="dashboard-page">
+        <div class="dashboard-hero">
+            <div class="dashboard-breadcrumb"><i class="fas fa-home"></i> &nbsp;>&nbsp; Informasi</div>
+            <h1>Informasi &amp; Panduan</h1>
+            <p>Maklumat tambahan untuk membantu pengguna menggunakan sistem.</p>
+        </div>
+        <div class="dashboard-container">
+            <input id="dashboardSearch" class="dashboard-search" type="search" placeholder="Cari informasi, istilah atau panduan...">
+            <div class="dashboard-grid" style="margin-top:18px;">
+                <div class="dashboard-card">
+                    <h3>Soalan Lazim</h3>
+                    <h4>Bagaimana memilih lot?</h4>
+                    <p>Pilih nombor lot daripada kotak carian atau klik terus pada lot di peta.</p>
+                    <h4>Bagaimana membuat pengiraan?</h4>
+                    <p>Pilih lot, masukkan maklumat waris dan tekan butang pengiraan Faraid.</p>
+                </div>
+                <div class="dashboard-card">
+                    <h3>Panduan Sistem</h3>
+                    <ol>
+                        <li>Pilih lot tanah.</li>
+                        <li>Semak maklumat lot.</li>
+                        <li>Masukkan maklumat waris.</li>
+                        <li>Tekan Kira Pembahagian Faraid.</li>
+                        <li>Semak jadual dan visual pembahagian.</li>
+                    </ol>
+                </div>
+                <div class="dashboard-card">
+                    <h3>Istilah Faraid</h3>
+                    <p><strong>Fardu</strong> – kadar bahagian yang telah ditetapkan.</p>
+                    <p><strong>Asobah</strong> – waris yang menerima keseluruhan atau baki mengikut keadaan.</p>
+                    <p><strong>Pendindingan</strong> – kesan kewujudan waris lain terhadap hak waris.</p>
+                    <p><strong>'Aul</strong> – kaedah apabila jumlah saham fardu memerlukan pelarasan asal masalah.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="page-hubungi" class="dashboard-page">
+        <div class="dashboard-hero">
+            <div class="dashboard-breadcrumb"><i class="fas fa-home"></i> &nbsp;>&nbsp; Hubungi</div>
+            <h1>Hubungi</h1>
+            <p>Maklumat hubungan dan saluran pertanyaan.</p>
+        </div>
+        <div class="dashboard-container">
+            <div class="contact-box">
+                <div class="contact-item">
+                    <i class="fas fa-university"></i>
+                    <h3>Jabatan Geomatik</h3>
+                    <p>Politeknik Ungku Omar</p>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <h3>E-mel</h3>
+                    <p>Gunakan saluran rasmi institusi untuk pertanyaan berkaitan sistem.</p>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h3>Lokasi</h3>
+                    <p>Politeknik Ungku Omar, Perak, Malaysia.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="page-login" class="dashboard-page">
+        <div class="dashboard-hero">
+            <div class="dashboard-breadcrumb"><i class="fas fa-home"></i> &nbsp;>&nbsp; Log Masuk</div>
+            <h1>Log Masuk</h1>
+            <p>Ruang log masuk boleh digunakan apabila modul pengguna diperkenalkan.</p>
+        </div>
+        <div class="dashboard-container">
+            <div class="login-panel">
+                <h3>Log Masuk Sistem</h3>
+                <label>Nama Pengguna</label>
+                <input type="text" placeholder="Masukkan nama pengguna">
+                <label>Kata Laluan</label>
+                <input type="password" placeholder="Masukkan kata laluan">
+                <button class="green-btn" onclick="alert('Modul log masuk belum diaktifkan.')">LOG MASUK</button>
+            </div>
+        </div>
+    </section>
 
     <!-- =========================================================
          MAIN WRAPPER
@@ -2730,7 +3512,75 @@
 
         }
 
-    </script>
+    
+/* =========================================================
+   NAVIGATION DASHBOARD
+   Tidak mengubah fungsi WebGIS/Faraid asal.
+========================================================= */
+function showPage(page){
+    document.querySelectorAll('.dashboard-page').forEach(function(p){
+        p.classList.remove('active');
+    });
+
+    if(page === 'utama'){
+        var mainWrapper = document.getElementById('wrapper');
+        if(mainWrapper) mainWrapper.style.display = 'flex';
+    }else{
+        var mainWrapper = document.getElementById('wrapper');
+        if(mainWrapper) mainWrapper.style.display = 'none';
+
+        var target = document.getElementById('page-' + page);
+        if(target) target.classList.add('active');
+    }
+
+    document.querySelectorAll('.top-nav .page-link').forEach(function(a){
+        a.classList.remove('active');
+        if(a.getAttribute('data-page') === page){
+            a.classList.add('active');
+        }
+    });
+
+    if(page === 'utama'){
+        setTimeout(function(){
+            if(typeof map !== 'undefined' && map){
+                map.invalidateSize();
+            }
+        }, 350);
+    }
+
+    window.scrollTo({top:0, behavior:'smooth'});
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+    document.querySelectorAll('.top-nav .page-link').forEach(function(link){
+        link.addEventListener('click', function(e){
+            e.preventDefault();
+            var page = this.getAttribute('data-page');
+            if(page) showPage(page);
+        });
+    });
+
+    var search = document.getElementById('dashboardSearch');
+    if(search){
+        search.addEventListener('input', function(){
+            var q = this.value.toLowerCase().trim();
+            document.querySelectorAll('#page-informasi .dashboard-card').forEach(function(card){
+                card.style.display = (!q || card.innerText.toLowerCase().indexOf(q) !== -1) ? '' : 'none';
+            });
+        });
+    }
+});
+
+function focusDashboardSearch(e){
+    if(e) e.preventDefault();
+    showPage('informasi');
+    setTimeout(function(){
+        var el = document.getElementById('dashboardSearch');
+        if(el) el.focus();
+    }, 250);
+}
+
+</script>
 
 </body>
 
