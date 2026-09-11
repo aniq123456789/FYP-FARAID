@@ -1647,7 +1647,457 @@
     }
 }
 
-</style>
+
+        /* =========================================================
+           MYFARAIDLOT - WELCOME SCREEN FULL LANDSCAPE
+           Pembetulan: skrin selamat datang memenuhi keseluruhan
+           ruang browser tanpa mengubah fungsi WebGIS/Faraid.
+        ========================================================= */
+
+        .islamic-modal {
+            padding: 0 !important;
+        }
+
+        .islamic-modal .modal-dialog {
+            width: 100vw !important;
+            max-width: none !important;
+            height: 100vh !important;
+            height: 100dvh !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        .islamic-modal .modal-content {
+            width: 100vw !important;
+            max-width: none !important;
+            height: 100vh !important;
+            height: 100dvh !important;
+            min-height: 100vh;
+            min-height: 100dvh;
+            margin: 0 !important;
+            padding: 0 !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(24, 15, 8, 0.97) 0%,
+                    rgba(42, 23, 11, 0.93) 43%,
+                    rgba(24, 14, 7, 0.32) 63%,
+                    rgba(24, 14, 7, 0.12) 100%
+                ),
+                url("corak-islamik.png") center / cover no-repeat;
+            display: grid !important;
+            grid-template-columns: minmax(430px, 48%) minmax(0, 52%);
+            grid-template-rows: 1fr;
+            overflow: hidden !important;
+            box-shadow: none !important;
+            position: relative;
+        }
+
+        .islamic-modal .modal-content::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(circle at 18% 35%, rgba(212,175,55,.12), transparent 30%),
+                linear-gradient(135deg, rgba(255,255,255,.03), transparent 45%);
+        }
+
+        .welcome-left {
+            position: relative;
+            z-index: 3;
+            min-width: 0;
+            height: 100%;
+            padding: clamp(38px, 6vh, 82px) clamp(38px, 5vw, 90px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            text-align: left;
+            border-right: 1px solid rgba(212,175,55,.30);
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(35,18,7,.88),
+                    rgba(62,31,12,.72)
+                ),
+                url("corak-islamik.png") center / cover no-repeat;
+        }
+
+        .welcome-left::before,
+        .welcome-left::after {
+            content: "";
+            position: absolute;
+            width: 95px;
+            height: 95px;
+            border-color: rgba(212,175,55,.75);
+            pointer-events: none;
+        }
+
+        .welcome-left::before {
+            top: 24px;
+            left: 24px;
+            border-top: 2px solid;
+            border-left: 2px solid;
+            border-radius: 18px 0 0 0;
+        }
+
+        .welcome-left::after {
+            right: 24px;
+            bottom: 24px;
+            border-right: 2px solid;
+            border-bottom: 2px solid;
+            border-radius: 0 0 18px 0;
+        }
+
+        .welcome-left .arabic-bismillah {
+            width: 100%;
+            text-align: left;
+            font-size: clamp(27px, 2.4vw, 40px);
+            margin-bottom: 18px;
+            color: #ffe58a;
+        }
+
+        .welcome-left .islamic-badge {
+            margin-bottom: 24px;
+            font-size: 13px;
+            padding: 8px 18px;
+            letter-spacing: .2px;
+        }
+
+        .welcome-heading {
+            margin: 0;
+            color: #f5d76e;
+            font-size: clamp(28px, 3vw, 48px);
+            font-weight: 800;
+            line-height: 1.08;
+            letter-spacing: 1px;
+            text-shadow: 0 3px 12px rgba(0,0,0,.55);
+        }
+
+        .welcome-brand {
+            margin: 4px 0 0;
+            color: #ffffff;
+            font-size: clamp(42px, 5vw, 76px);
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: 2px;
+            text-shadow: 0 4px 15px rgba(0,0,0,.55);
+        }
+
+        .welcome-brand span {
+            color: #e2b94d;
+        }
+
+        .welcome-divider {
+            width: min(460px, 100%);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin: 28px 0 24px;
+            color: #e5bd4a;
+        }
+
+        .welcome-divider::before,
+        .welcome-divider::after {
+            content: "";
+            height: 1px;
+            flex: 1;
+            background: linear-gradient(90deg, transparent, #d4af37);
+        }
+
+        .welcome-divider::after {
+            background: linear-gradient(90deg, #d4af37, transparent);
+        }
+
+        .welcome-divider span {
+            font-size: 17px;
+            white-space: nowrap;
+        }
+
+        .welcome-description {
+            max-width: 620px;
+            margin: 0;
+            color: rgba(255,255,255,.92);
+            font-size: clamp(14px, 1.15vw, 18px);
+            line-height: 1.8;
+        }
+
+        .welcome-description strong {
+            color: #f6d875;
+            font-weight: 600;
+        }
+
+        .welcome-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 28px;
+        }
+
+        .welcome-meta-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 13px;
+            border: 1px solid rgba(212,175,55,.42);
+            border-radius: 8px;
+            background: rgba(0,0,0,.20);
+            color: #f8e5a1;
+            font-size: 11px;
+        }
+
+        .welcome-meta-item i {
+            color: #d4af37;
+        }
+
+        .welcome-start {
+            margin-top: 34px;
+            min-width: 220px;
+            padding: 14px 28px !important;
+            border-radius: 10px !important;
+            font-size: 14px !important;
+            letter-spacing: .4px;
+        }
+
+        .welcome-right {
+            position: relative;
+            z-index: 2;
+            min-width: 0;
+            height: 100%;
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-end;
+            padding: clamp(25px, 4vw, 65px);
+            overflow: hidden;
+        }
+
+        .welcome-right::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background:
+                linear-gradient(rgba(212,175,55,.09) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(212,175,55,.09) 1px, transparent 1px);
+            background-size: 42px 42px;
+            mask-image: linear-gradient(to right, transparent 0%, black 45%, black 100%);
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 45%, black 100%);
+        }
+
+        .gis-welcome-card {
+            position: relative;
+            z-index: 4;
+            width: min(430px, 100%);
+            padding: 22px;
+            border: 1px solid rgba(255,226,119,.60);
+            border-radius: 14px;
+            background: rgba(25,17,10,.72);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            box-shadow: 0 16px 40px rgba(0,0,0,.38);
+            color: #fff;
+        }
+
+        .gis-welcome-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+            color: #ffe58a;
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .gis-welcome-subtitle {
+            color: rgba(255,255,255,.72);
+            font-size: 11px;
+            margin-bottom: 16px;
+        }
+
+        .gis-layer-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 9px 0;
+            border-bottom: 1px solid rgba(255,255,255,.12);
+            font-size: 12px;
+        }
+
+        .gis-layer-row:last-child {
+            border-bottom: 0;
+        }
+
+        .gis-layer-left {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .gis-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+            background: #d4af37;
+            box-shadow: 0 0 0 2px rgba(212,175,55,.15);
+        }
+
+        .gis-dot.green {
+            background: #20c997;
+        }
+
+        .gis-dot.white {
+            background: #ffffff;
+        }
+
+        .gis-status {
+            color: #b9f4df;
+            font-size: 10px;
+        }
+
+        .islamic-modal .modal-header,
+        .islamic-modal .modal-body,
+        .islamic-modal .modal-footer {
+            position: static;
+            z-index: auto;
+        }
+
+        .islamic-modal .modal-header {
+            display: contents !important;
+            border: 0 !important;
+            padding: 0 !important;
+        }
+
+        .islamic-modal .modal-body {
+            display: contents !important;
+            padding: 0 !important;
+        }
+
+        .islamic-modal .modal-footer {
+            display: contents !important;
+            border: 0 !important;
+            padding: 0 !important;
+        }
+
+        .islamic-modal .modal-header > .w-100 {
+            width: auto !important;
+        }
+
+        .islamic-modal .modal-header > .w-100 .arabic-bismillah,
+        .islamic-modal .modal-header > .w-100 .islamic-badge,
+        .islamic-modal .modal-header > .w-100 .islamic-title,
+        .islamic-modal .modal-header > .w-100 .welcome-brand {
+            /* Elemen lama dikawal oleh struktur welcome baharu. */
+        }
+
+        /* Pada skrin sederhana, kekalkan rupa landscape tetapi lebih padat. */
+        @media (max-width: 1050px) {
+            .islamic-modal .modal-content {
+                grid-template-columns: minmax(360px, 55%) minmax(0, 45%);
+            }
+
+            .welcome-left {
+                padding: 42px 44px;
+            }
+
+            .welcome-right {
+                padding: 24px;
+            }
+
+            .gis-welcome-card {
+                width: 100%;
+            }
+        }
+
+        /* Tablet / telefon: susun menegak supaya tiada kandungan terpotong. */
+        @media (max-width: 760px) {
+            .islamic-modal .modal-content {
+                grid-template-columns: 1fr;
+                grid-template-rows: 1fr auto;
+                overflow-y: auto !important;
+                background:
+                    linear-gradient(
+                        rgba(31,17,8,.94),
+                        rgba(31,17,8,.97)
+                    ),
+                    url("corak-islamik.png") center / cover no-repeat;
+            }
+
+            .welcome-left {
+                min-height: 72vh;
+                padding: 54px 26px 32px;
+                border-right: 0;
+                border-bottom: 1px solid rgba(212,175,55,.35);
+            }
+
+            .welcome-left::before {
+                top: 14px;
+                left: 14px;
+            }
+
+            .welcome-left::after {
+                right: 14px;
+                bottom: 14px;
+            }
+
+            .welcome-right {
+                min-height: 28vh;
+                padding: 24px 20px 30px;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .welcome-right::before {
+                mask-image: none;
+                -webkit-mask-image: none;
+            }
+
+            .gis-welcome-card {
+                max-width: 520px;
+            }
+        }
+
+        @media (max-width: 430px) {
+            .welcome-left {
+                padding: 45px 20px 28px;
+            }
+
+            .welcome-left .arabic-bismillah {
+                font-size: 24px;
+            }
+
+            .welcome-brand {
+                font-size: 40px;
+            }
+
+            .welcome-heading {
+                font-size: 25px;
+            }
+
+            .welcome-description {
+                font-size: 13px;
+                line-height: 1.7;
+            }
+
+            .welcome-meta {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .welcome-start {
+                width: 100%;
+            }
+
+            .welcome-right {
+                min-height: 30vh;
+                padding: 18px;
+            }
+        }
+
+    </style>
 
 </head>
 
@@ -1656,109 +2106,122 @@
 
 
     <!-- =========================================================
-         MODAL SELAMAT DATANG
+         MODAL SELAMAT DATANG - FULL SCREEN
     ========================================================== -->
 
     <div class="modal fade islamic-modal"
         id="welcomeModal"
         tabindex="-1"
         aria-hidden="true"
-        data-bs-backdrop="static">
+        data-bs-backdrop="static"
+        data-bs-keyboard="false">
 
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog">
 
-            <div class="modal-content text-center p-3">
+            <div class="modal-content">
 
-                <div class="modal-header border-0 pb-0">
+                <!-- PANEL KIRI: IDENTITI MyFaraidLot -->
+                <section class="welcome-left">
 
-                    <div class="w-100">
-
-                        <div class="arabic-bismillah">
-                            بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
-                        </div>
-
-                        <span class="islamic-badge">
-
-                            <i class="fas fa-star me-1"></i>
-
-                            Sistem Syariah & Geomatik
-
-                        </span>
-
-                        <h3 class="islamic-title m-0 fs-4">
-                            SELAMAT DATANG KE
-                        </h3>
-
-                        <h2 class="fw-bold text-white fs-2 mb-0"
-                            style="letter-spacing: 2px;">
-
-                            MyFaraidLot
-
-                        </h2>
-
+                    <div class="arabic-bismillah">
+                        بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
                     </div>
 
-                </div>
+                    <span class="islamic-badge">
+                        <i class="fas fa-star me-1"></i>
+                        Sistem Syariah &amp; Geomatik
+                    </span>
 
+                    <h1 class="welcome-heading">
+                        SELAMAT DATANG KE
+                    </h1>
 
-                <div class="modal-body">
+                    <h2 class="welcome-brand">
+                        My<span>Faraid</span>Lot
+                    </h2>
 
-                    <div class="islamic-divider">
-
-                        <span class="islamic-divider-icon">
-                            ◆ ۞ ◆
-                        </span>
-
+                    <div class="welcome-divider">
+                        <span>◆ ۞ ◆</span>
                     </div>
 
-
-                    <p class="text-light mb-3"
-                        style="
-                            font-size:13px;
-                            opacity:0.95;
-                        ">
-
-                        Aplikasi Pengiraan Pembahagian Faraid
-                        Lot Tanah berasaskan WebGIS dan Hukum Syarak.
-
+                    <p class="welcome-description">
+                        Aplikasi <strong>Pengiraan dan Pembahagian Lot Tanah
+                        Mengikut Hukum Faraid</strong> yang menggabungkan
+                        teknologi <strong>WebGIS</strong> dengan maklumat
+                        pembahagian harta pusaka.
                     </p>
 
+                    <div class="welcome-meta">
+                        <div class="welcome-meta-item">
+                            <i class="fas fa-map-marked-alt"></i>
+                            WebGIS &amp; Pemetaan Lot
+                        </div>
 
-                    <div class="p-3 mb-3 rounded"
-                        style="
-                            background:rgba(0,0,0,0.28);
-                            border:1px dashed
-                            rgba(234,179,8,0.5);
-                        ">
+                        <div class="welcome-meta-item">
+                            <i class="fas fa-calculator"></i>
+                            Pengiraan Faraid
+                        </div>
 
-                        <small class="text-warning d-block font-monospace"
-                            style="font-size:11px;">
-
-                            <i class="fas fa-university me-1"></i>
-
-                            Jabatan Geomatik —
-                            Politeknik Ungku Omar
-
-                        </small>
-
+                        <div class="welcome-meta-item">
+                            <i class="fas fa-university"></i>
+                            Jabatan Geomatik – PUO
+                        </div>
                     </div>
 
-                </div>
-
-
-                <div class="modal-footer border-0 justify-content-center pt-0">
-
                     <button type="button"
-                        class="btn btn-islamic-start"
+                        class="btn btn-islamic-start welcome-start"
                         data-bs-dismiss="modal">
 
                         <i class="fas fa-map-marked-alt me-2"></i>
-
                         MULA SIMULASI
+                        <i class="fas fa-arrow-right ms-2"></i>
 
                     </button>
 
-                </div>
+                </section>
+
+                <!-- PANEL KANAN: KONSEP GIS / PETA -->
+                <section class="welcome-right">
+
+                    <div class="gis-welcome-card">
+
+                        <div class="gis-welcome-title">
+                            <i class="fas fa-layer-group"></i>
+                            <span>WEBGIS LOT TANAH</span>
+                        </div>
+
+                        <div class="gis-welcome-subtitle">
+                            Paparan peta, sempadan lot dan simulasi
+                            pembahagian secara visual.
+                        </div>
+
+                        <div class="gis-layer-row">
+                            <div class="gis-layer-left">
+                                <span class="gis-dot green"></span>
+                                <span>Lapisan Peta Satelit</span>
+                            </div>
+                            <span class="gis-status">AKTIF</span>
+                        </div>
+
+                        <div class="gis-layer-row">
+                            <div class="gis-layer-left">
+                                <span class="gis-dot white"></span>
+                                <span>Sempadan Lot Tanah</span>
+                            </div>
+                            <span class="gis-status">AKTIF</span>
+                        </div>
+
+                        <div class="gis-layer-row">
+                            <div class="gis-layer-left">
+                                <span class="gis-dot"></span>
+                                <span>Visualisasi Pembahagian</span>
+                            </div>
+                            <span class="gis-status">SEDIA</span>
+                        </div>
+
+                    </div>
+
+                </section>
 
             </div>
 
