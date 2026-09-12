@@ -2097,7 +2097,93 @@
             }
         }
 
-    </style>
+    
+/* =========================================================
+   MYFARAIDLOT COVER - REKA BENTUK MENGIKUT RUJUKAN BAHARU
+   Hanya mengubah paparan skrin Selamat Datang.
+   Fungsi WebGIS, Faraid, menu dan JavaScript lain dikekalkan.
+========================================================= */
+
+.islamic-modal{
+    padding:0 !important;
+    background:#0b3c32 !important;
+}
+
+.islamic-modal .modal-dialog{
+    width:100vw !important;
+    max-width:none !important;
+    height:100vh !important;
+    height:100dvh !important;
+    margin:0 !important;
+    padding:0 !important;
+}
+
+.islamic-modal .modal-content{
+    width:100vw !important;
+    max-width:none !important;
+    height:100vh !important;
+    height:100dvh !important;
+    min-height:100vh !important;
+    min-height:100dvh !important;
+    margin:0 !important;
+    padding:0 !important;
+    border:0 !important;
+    border-radius:0 !important;
+    overflow:hidden !important;
+    display:block !important;
+    position:relative !important;
+    background:#0b3c32 url("myfaraidlot-cover.png") center center / cover no-repeat !important;
+    box-shadow:none !important;
+    cursor:pointer;
+}
+
+/* Matikan semua kandungan reka bentuk lama pada cover.
+   Struktur asal masih ada supaya fungsi lain tidak disentuh. */
+.islamic-modal .modal-content::before,
+.islamic-modal .welcome-left,
+.islamic-modal .welcome-right{
+    display:none !important;
+}
+
+/* Kawasan klik penuh: Bootstrap akan menutup modal melalui data-bs-dismiss. */
+.myfaraid-cover-click{
+    position:absolute;
+    inset:0;
+    z-index:20;
+    display:block;
+    text-decoration:none;
+    background:transparent;
+    border:0;
+    outline:0;
+    cursor:pointer;
+}
+
+.myfaraid-cover-click:focus-visible{
+    box-shadow:inset 0 0 0 3px rgba(218,177,70,.9);
+}
+
+/* Pastikan modal Bootstrap tidak menambah ruang/paparan putih. */
+.islamic-modal .modal-header,
+.islamic-modal .modal-body,
+.islamic-modal .modal-footer{
+    display:none !important;
+}
+
+@media (max-width:760px){
+    .islamic-modal .modal-content{
+        background-size:cover !important;
+        background-position:center center !important;
+    }
+}
+
+@media (max-aspect-ratio: 4/3){
+    .islamic-modal .modal-content{
+        background-size:cover !important;
+        background-position:center center !important;
+    }
+}
+
+</style>
 
 </head>
 
@@ -2109,6 +2195,11 @@
          MODAL SELAMAT DATANG - FULL SCREEN
     ========================================================== -->
 
+    <!-- =========================================================
+         MODAL SELAMAT DATANG - COVER MyFaraidLot
+         Reka bentuk berdasarkan interface rujukan baharu.
+         Klik pada cover untuk masuk ke sistem.
+    ========================================================== -->
     <div class="modal fade islamic-modal"
         id="welcomeModal"
         tabindex="-1"
@@ -2117,118 +2208,16 @@
         data-bs-keyboard="false">
 
         <div class="modal-dialog">
-
             <div class="modal-content">
 
-                <!-- PANEL KIRI: IDENTITI MyFaraidLot -->
-                <section class="welcome-left">
-
-                    <div class="arabic-bismillah">
-                        بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
-                    </div>
-
-                    <span class="islamic-badge">
-                        <i class="fas fa-star me-1"></i>
-                        Sistem Syariah &amp; Geomatik
-                    </span>
-
-                    <h1 class="welcome-heading">
-                        SELAMAT DATANG KE
-                    </h1>
-
-                    <h2 class="welcome-brand">
-                        My<span>Faraid</span>Lot
-                    </h2>
-
-                    <div class="welcome-divider">
-                        <span>◆ ۞ ◆</span>
-                    </div>
-
-                    <p class="welcome-description">
-                        Aplikasi <strong>Pengiraan dan Pembahagian Lot Tanah
-                        Mengikut Hukum Faraid</strong> yang menggabungkan
-                        teknologi <strong>WebGIS</strong> dengan maklumat
-                        pembahagian harta pusaka.
-                    </p>
-
-                    <div class="welcome-meta">
-                        <div class="welcome-meta-item">
-                            <i class="fas fa-map-marked-alt"></i>
-                            WebGIS &amp; Pemetaan Lot
-                        </div>
-
-                        <div class="welcome-meta-item">
-                            <i class="fas fa-calculator"></i>
-                            Pengiraan Faraid
-                        </div>
-
-                        <div class="welcome-meta-item">
-                            <i class="fas fa-university"></i>
-                            Jabatan Geomatik – PUO
-                        </div>
-                    </div>
-
-                    <button type="button"
-                        class="btn btn-islamic-start welcome-start"
-                        data-bs-dismiss="modal">
-
-                        <i class="fas fa-map-marked-alt me-2"></i>
-                        MULA SIMULASI
-                        <i class="fas fa-arrow-right ms-2"></i>
-
-                    </button>
-
-                </section>
-
-                <!-- PANEL KANAN: KONSEP GIS / PETA -->
-                <section class="welcome-right">
-
-                    <div class="gis-welcome-card">
-
-                        <div class="gis-welcome-title">
-                            <i class="fas fa-layer-group"></i>
-                            <span>WEBGIS LOT TANAH</span>
-                        </div>
-
-                        <div class="gis-welcome-subtitle">
-                            Paparan peta, sempadan lot dan simulasi
-                            pembahagian secara visual.
-                        </div>
-
-                        <div class="gis-layer-row">
-                            <div class="gis-layer-left">
-                                <span class="gis-dot green"></span>
-                                <span>Lapisan Peta Satelit</span>
-                            </div>
-                            <span class="gis-status">AKTIF</span>
-                        </div>
-
-                        <div class="gis-layer-row">
-                            <div class="gis-layer-left">
-                                <span class="gis-dot white"></span>
-                                <span>Sempadan Lot Tanah</span>
-                            </div>
-                            <span class="gis-status">AKTIF</span>
-                        </div>
-
-                        <div class="gis-layer-row">
-                            <div class="gis-layer-left">
-                                <span class="gis-dot"></span>
-                                <span>Visualisasi Pembahagian</span>
-                            </div>
-                            <span class="gis-status">SEDIA</span>
-                        </div>
-
-                    </div>
-
-                </section>
+                <button type="button"
+                    class="myfaraid-cover-click"
+                    data-bs-dismiss="modal"
+                    aria-label="Masuk ke sistem MyFaraidLot"></button>
 
             </div>
-
         </div>
-
     </div>
-
 
 
     <!-- =========================================================
