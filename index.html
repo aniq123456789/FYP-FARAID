@@ -3458,7 +3458,229 @@ header::after {
     .fcalc-result-summary > div{flex:1;min-width:0;}
 }
 
-</style>
+
+
+/* =========================================================
+   PETA LOT - FULL SCREEN + MAKLUMAT LOT APABILA DIKLIK
+   Carian lot dan sidebar maklumat lama dibuang daripada paparan.
+   Google Satellite kekal sebagai base map utama.
+========================================================= */
+#wrapper{
+    width:100% !important;
+    height:calc(100vh - 78px) !important;
+    min-height:0 !important;
+    display:flex;
+    background:#0b1512;
+}
+
+#map-container{
+    flex:1 1 100% !important;
+    width:100% !important;
+    max-width:none !important;
+    height:100% !important;
+    min-width:0 !important;
+    position:relative !important;
+    overflow:hidden !important;
+    background:#0b1512 !important;
+}
+
+#map{
+    position:absolute;
+    inset:0;
+    width:100% !important;
+    height:100% !important;
+    cursor:crosshair;
+}
+
+/* Kad maklumat lot hanya muncul selepas lot dipilih. */
+#lotInfoPanel{
+    position:absolute;
+    left:22px;
+    bottom:22px;
+    z-index:1400;
+    width:min(410px, calc(100% - 44px));
+    padding:0;
+    background:rgba(255,253,247,.97);
+    border:1px solid rgba(200,183,125,.95);
+    border-radius:14px;
+    box-shadow:0 16px 40px rgba(0,0,0,.28);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+    overflow:hidden;
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+    transform:translateY(18px) scale(.985);
+    transition:opacity .22s ease, transform .22s ease, visibility .22s ease;
+}
+
+#lotInfoPanel.is-visible{
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+    transform:translateY(0) scale(1);
+}
+
+.lot-info-panel-header{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:14px;
+    padding:16px 17px 13px;
+    background:linear-gradient(135deg,#0f6656,#075044);
+    color:#fff;
+    border-bottom:3px solid #b89b47;
+}
+
+.lot-info-eyebrow{
+    display:block;
+    margin-bottom:2px;
+    color:#e9d58d;
+    font-size:9px;
+    font-weight:700;
+    letter-spacing:1.2px;
+    text-transform:uppercase;
+}
+
+.lot-info-panel-header h3{
+    margin:0;
+    color:#fff;
+    font-family:'Poppins',sans-serif;
+    font-size:17px;
+    font-weight:700;
+}
+
+.lot-info-close{
+    width:32px;
+    height:32px;
+    flex:0 0 32px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:0;
+    border:1px solid rgba(255,255,255,.28);
+    border-radius:50%;
+    background:rgba(255,255,255,.10);
+    color:#fff;
+    cursor:pointer;
+    transition:.2s ease;
+}
+
+.lot-info-close:hover{
+    background:#fff;
+    color:#0f6656;
+}
+
+.lot-info-panel-body{
+    padding:15px 16px 16px;
+}
+
+.lot-info-primary-grid,
+.lot-info-location-grid{
+    display:grid;
+    gap:10px;
+}
+
+.lot-info-primary-grid{
+    grid-template-columns:1fr 1fr;
+    margin-bottom:10px;
+}
+
+.lot-info-location-grid{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    margin-bottom:10px;
+}
+
+.lot-info-item{
+    min-width:0;
+    padding:10px 11px;
+    background:#f7f4eb;
+    border:1px solid #e2d7bd;
+    border-left:3px solid #126a58;
+    border-radius:7px;
+}
+
+.lot-info-item.owner{
+    margin-top:2px;
+}
+
+.lot-info-label{
+    display:block;
+    margin-bottom:3px;
+    color:#68766f;
+    font-size:9px;
+    font-weight:700;
+    letter-spacing:.25px;
+    text-transform:uppercase;
+}
+
+.lot-info-value{
+    display:block;
+    overflow-wrap:anywhere;
+    color:#173f37;
+    font-size:13px;
+    font-weight:700;
+    line-height:1.35;
+}
+
+.lot-info-location-grid .lot-info-value{
+    font-size:11px;
+}
+
+.lot-info-hint{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    margin-top:11px;
+    color:#7c806f;
+    font-size:10px;
+    line-height:1.4;
+}
+
+.lot-info-hint i{
+    color:#b89b47;
+}
+
+@media (max-width:800px){
+    #wrapper{
+        height:calc(100vh - 60px) !important;
+        height:calc(100dvh - 60px) !important;
+    }
+
+    #lotInfoPanel{
+        left:12px;
+        right:12px;
+        bottom:12px;
+        width:auto;
+        max-height:52vh;
+        overflow-y:auto;
+    }
+
+    .lot-info-panel-header{
+        padding:13px 14px 11px;
+    }
+
+    .lot-info-panel-body{
+        padding:12px;
+    }
+
+    .lot-info-location-grid{
+        grid-template-columns:1fr 1fr 1fr;
+    }
+
+    /* Zoom Leaflet kembali ke posisi biasa kerana tiada sidebar. */
+    .leaflet-top.leaflet-left{
+        margin-top:0 !important;
+    }
+}
+
+@media (max-width:480px){
+    .lot-info-location-grid{
+        grid-template-columns:1fr;
+    }
+}
+
+    </style>
 
 </head>
 
@@ -4221,254 +4443,83 @@ header::after {
 
     <div id="wrapper" style="display:none;">
 
-
         <!-- =====================================================
-             SIDEBAR
+             PETA LOT - GOOGLE SATELLITE FULL SCREEN
+             Tiada sidebar Carian Lot / Maklumat Lot pada paparan awal.
+             Maklumat lot muncul sebagai panel terapung selepas lot diklik.
         ====================================================== -->
-
-        <nav id="sidebar">
-
-
-            <!-- =================================================
-                 CARIAN LOT
-            ================================================== -->
-
-            <div class="card-menu">
-
-                <h6>
-
-                    <span>
-
-                        <i class="fas fa-search me-2"></i>
-
-                        Carian Lot Tanah
-
-                    </span>
-
-                    <small class="text-muted"
-                        style="font-size:10px;">
-
-                        ۞
-
-                    </small>
-
-                </h6>
-
-
-                <select id="lotSearchSelector"
-                    class="form-select form-select-sm">
-
-                    <option value="">
-                        -- Pilih Nombor Lot --
-                    </option>
-
-                </select>
-
-            </div>
-
-
-
-            <!-- =================================================
-                 BUTIRAN LOT
-            ================================================== -->
-
-            <div class="card-menu">
-
-                <h6>
-
-                    <span>
-
-                        <i class="fas fa-map-marker-alt me-2"></i>
-
-                        Maklumat Lot Dipilih
-
-                    </span>
-
-                    <small class="text-muted"
-                        style="font-size:10px;">
-
-                        ۞
-
-                    </small>
-
-                </h6>
-
-
-                <div id="lotDataDisplay">
-
-
-                    <div class="row g-2">
-
-                        <div class="col-6">
-
-                            <div class="info-box">
-
-                                <span class="info-label">
-                                    No. Lot
-                                </span>
-
-                                <span id="res-no-lot"
-                                    class="info-value">
-
-                                    -
-
-                                </span>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="col-6">
-
-                            <div class="info-box">
-
-                                <span class="info-label">
-                                    Luas Lot
-                                </span>
-
-                                <span id="res-luas"
-                                    class="info-value">
-
-                                    -
-
-                                </span>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-
-                    <div class="row g-2 mt-0">
-
-
-                        <div class="col-4">
-
-                            <div class="info-box">
-
-                                <span class="info-label">
-                                    Negeri
-                                </span>
-
-                                <span id="res-negeri"
-                                    class="info-value"
-                                    style="font-size:12px;">
-
-                                    -
-
-                                </span>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="col-4">
-
-                            <div class="info-box">
-
-                                <span class="info-label">
-                                    Daerah
-                                </span>
-
-                                <span id="res-daerah"
-                                    class="info-value"
-                                    style="font-size:12px;">
-
-                                    -
-
-                                </span>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="col-4">
-
-                            <div class="info-box">
-
-                                <span class="info-label">
-                                    Mukim
-                                </span>
-
-                                <span id="res-mukim"
-                                    class="info-value"
-                                    style="font-size:12px;">
-
-                                    -
-
-                                </span>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-
-                    <div class="info-box mt-1">
-
-                        <span class="info-label">
-                            Pemilik Berdaftar
-                        </span>
-
-                        <span id="res-owner"
-                            class="info-value">
-
-                            -
-
-                        </span>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- =================================================
-                 KALKULATOR FARAID
-                 Ruang ini dikekalkan kosong di dalam Peta Lot.
-                 Kiraan Faraid kini mempunyai halaman sendiri.
-            ================================================== -->
-
-            <div class="card-menu">
-                <!-- Nilai luas lot dikekalkan untuk digunakan oleh halaman Kiraan Faraid. -->
-                <input type="hidden" id="luasTanah" value="">
-            </div>
-
-        </nav>
-
-
-
-        <!-- =====================================================
-             MAP
-        ====================================================== -->
-
         <div id="map-container">
-
-
-            <button id="sidebarCollapse"
-                title="Sembunyi/Papar Menu">
-
-                <i class="fas fa-bars"></i>
-
-            </button>
-
 
             <div id="map"></div>
 
+            <aside id="lotInfoPanel"
+                aria-hidden="true"
+                aria-live="polite"
+                aria-label="Maklumat lot tanah dipilih">
+
+                <div class="lot-info-panel-header">
+                    <div>
+                        <span class="lot-info-eyebrow">Lot Dipilih</span>
+                        <h3><i class="fas fa-map-marker-alt me-2"></i>Maklumat Lot Tanah</h3>
+                    </div>
+
+                    <button type="button"
+                        class="lot-info-close"
+                        onclick="closeLotInfoPanel(event)"
+                        title="Tutup maklumat lot"
+                        aria-label="Tutup maklumat lot">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <div class="lot-info-panel-body" id="lotDataDisplay">
+                    <div class="lot-info-primary-grid">
+                        <div class="lot-info-item">
+                            <span class="lot-info-label">No. Lot</span>
+                            <span id="res-no-lot" class="lot-info-value">-</span>
+                        </div>
+
+                        <div class="lot-info-item">
+                            <span class="lot-info-label">Luas Lot</span>
+                            <span id="res-luas" class="lot-info-value">-</span>
+                        </div>
+                    </div>
+
+                    <div class="lot-info-location-grid">
+                        <div class="lot-info-item">
+                            <span class="lot-info-label">Negeri</span>
+                            <span id="res-negeri" class="lot-info-value">-</span>
+                        </div>
+
+                        <div class="lot-info-item">
+                            <span class="lot-info-label">Daerah</span>
+                            <span id="res-daerah" class="lot-info-value">-</span>
+                        </div>
+
+                        <div class="lot-info-item">
+                            <span class="lot-info-label">Mukim</span>
+                            <span id="res-mukim" class="lot-info-value">-</span>
+                        </div>
+                    </div>
+
+                    <div class="lot-info-item owner">
+                        <span class="lot-info-label">Pemilik Berdaftar</span>
+                        <span id="res-owner" class="lot-info-value">-</span>
+                    </div>
+
+                    <div class="lot-info-hint">
+                        <i class="fas fa-mouse-pointer"></i>
+                        Klik lot lain pada peta untuk memaparkan maklumat lot tersebut.
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Nilai luas lot dikekalkan untuk digunakan oleh halaman Kiraan Faraid. -->
+            <input type="hidden" id="luasTanah" value="">
 
         </div>
 
     </div>
-
 
 
     <!-- =========================================================
@@ -4559,89 +4610,91 @@ header::after {
            UPDATE DISPLAY
         ========================================================== */
 
+        function closeLotInfoPanel(event) {
+
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+
+            const panel =
+                document.getElementById('lotInfoPanel');
+
+            if (panel) {
+                panel.classList.remove('is-visible');
+                panel.setAttribute('aria-hidden', 'true');
+            }
+
+        }
+
+
         function updateDisplay(props) {
 
             const lot =
                 props['NO LOT'] || "-";
-
 
             const owner =
                 props['tsp — pe'] ||
                 props['Pemilik'] ||
                 "Jabatan Geomatik (PUO)";
 
-
             const rawArea =
                 props['AREA']
                     ? parseFloat(props['AREA'])
                     : null;
 
-
             const areaFormatted =
-                rawArea
+                Number.isFinite(rawArea)
                     ? rawArea.toFixed(3) + " m²"
                     : "-";
-
 
             const negeri =
                 props['NEGERI'] ||
                 props['Negeri'] ||
                 "-";
 
-
             const daerah =
                 props['DAERAH'] ||
                 props['Daerah'] ||
                 "-";
-
 
             const mukim =
                 props['MUKIM'] ||
                 props['Mukim'] ||
                 "-";
 
+            const setText = (id, value) => {
+                const el = document.getElementById(id);
+                if (el) el.innerText = value;
+            };
 
-            document.getElementById(
-                'res-no-lot'
-            ).innerText = lot;
+            setText('res-no-lot', lot);
+            setText('res-owner', owner);
+            setText('res-luas', areaFormatted);
+            setText('res-negeri', negeri);
+            setText('res-daerah', daerah);
+            setText('res-mukim', mukim);
 
+            if (Number.isFinite(rawArea)) {
+                const luasInput =
+                    document.getElementById('luasTanah');
 
-            document.getElementById(
-                'res-owner'
-            ).innerText = owner;
+                if (luasInput) {
+                    luasInput.value =
+                        rawArea.toFixed(2);
+                }
+            }
 
+            /* Paparkan panel hanya selepas pengguna memilih/klik satu lot. */
+            const panel =
+                document.getElementById('lotInfoPanel');
 
-            document.getElementById(
-                'res-luas'
-            ).innerText = areaFormatted;
-
-
-            document.getElementById(
-                'res-negeri'
-            ).innerText = negeri;
-
-
-            document.getElementById(
-                'res-daerah'
-            ).innerText = daerah;
-
-
-            document.getElementById(
-                'res-mukim'
-            ).innerText = mukim;
-
-
-            if (rawArea) {
-
-                document.getElementById(
-                    'luasTanah'
-                ).value =
-                    rawArea.toFixed(2);
-
+            if (panel) {
+                panel.classList.add('is-visible');
+                panel.setAttribute('aria-hidden', 'false');
             }
 
         }
-
 
 
         /* =========================================================
@@ -6829,3 +6882,4 @@ function focusDashboardSearch(e){
 </body>
 
 </html>
+```
