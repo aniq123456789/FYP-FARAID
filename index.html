@@ -3141,6 +3141,323 @@ header::after {
     .faraid-calculator-card .faraid-field-grid{grid-template-columns:1fr;}
 }
 
+
+
+/* =========================================================
+   HALAMAN KIRAAN FARAID - SUSUNAN SEPERTI GAMBAR RUJUKAN
+========================================================= */
+.fcalc-page{
+    background:#f5f6f7;
+    overflow-y:auto;
+}
+.fcalc-shell{
+    width:100%;
+    min-height:100%;
+    padding:0 0 55px;
+}
+.fcalc-scenario{
+    width:100%;
+    background:#fff;
+    border:1px solid #d7d7d7;
+    border-radius:4px;
+    overflow:hidden;
+}
+.fcalc-scenario > summary{
+    list-style:none;
+    min-height:64px;
+    padding:0 20px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    cursor:pointer;
+    color:#111;
+    font-size:23px;
+    line-height:1;
+    font-weight:700;
+    border-bottom:1px solid #eeeeee;
+    background:#fff;
+    user-select:none;
+}
+.fcalc-scenario > summary::-webkit-details-marker{display:none;}
+.fcalc-scenario > summary::before{
+    content:'\f107';
+    font-family:'Font Awesome 5 Free';
+    font-weight:900;
+    font-size:13px;
+    transition:transform .18s ease;
+}
+.fcalc-scenario:not([open]) > summary::before{transform:rotate(-90deg);}
+.fcalc-scenario-body{
+    padding:42px 22px 31px;
+    background:#fff;
+}
+.fcalc-main-grid{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    gap:16px;
+    align-items:start;
+}
+.fcalc-left-column,
+.fcalc-right-column{
+    min-width:0;
+}
+.fcalc-group{
+    position:relative;
+    margin:0 0 32px;
+    padding:34px 18px 18px;
+    border:1px solid #d8d8d8;
+    border-radius:4px;
+    background:#fff;
+}
+.fcalc-deceased-group{
+    min-height:79px;
+    padding-top:36px;
+}
+.fcalc-left-column .fcalc-group:last-child,
+.fcalc-right-column .fcalc-group:last-child{margin-bottom:0;}
+.fcalc-group-title{
+    position:absolute;
+    top:-24px;
+    left:12px;
+    display:flex;
+    align-items:center;
+    min-height:46px;
+    padding:0 13px;
+    border-radius:4px;
+    background:#8ab8e7;
+    color:#0a0a0a;
+    font-size:18px;
+    font-weight:700;
+    box-shadow:none;
+}
+.fcalc-gender-line{
+    display:grid;
+    grid-template-columns:auto 12px 24px 1fr;
+    align-items:center;
+    column-gap:5px;
+    color:#0560c9;
+    font-size:12px;
+}
+.fcalc-gender-line input[type="checkbox"]{
+    width:18px;
+    height:18px;
+    accent-color:#3c8ed8;
+    cursor:pointer;
+}
+.fcalc-visually-hidden{
+    position:absolute !important;
+    width:1px !important;
+    height:1px !important;
+    padding:0 !important;
+    margin:-1px !important;
+    overflow:hidden !important;
+    clip:rect(0,0,0,0) !important;
+    white-space:nowrap !important;
+    border:0 !important;
+}
+.fcalc-fields-grid{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    column-gap:13px;
+    row-gap:8px;
+}
+.fcalc-field{
+    min-width:0;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 10px 138px;
+    align-items:end;
+    gap:4px;
+    min-height:31px;
+}
+.fcalc-field label{
+    margin:0;
+    color:#005fc7;
+    font-size:12px;
+    line-height:1.16;
+    font-weight:400;
+}
+.fcalc-field > span{
+    color:#005fc7;
+    font-size:12px;
+    line-height:1;
+    align-self:center;
+    text-align:center;
+}
+.fcalc-field input[type="number"]{
+    width:100%;
+    height:27px;
+    padding:2px 2px 3px;
+    border:0;
+    border-bottom:1px solid #9d9d9d;
+    border-radius:0;
+    outline:none;
+    background:transparent;
+    color:#111;
+    font-size:12px;
+    font-family:Arial,sans-serif;
+    text-align:left;
+    box-shadow:none;
+    appearance:textfield;
+    -moz-appearance:textfield;
+}
+.fcalc-field input[type="number"]::-webkit-inner-spin-button,
+.fcalc-field input[type="number"]::-webkit-outer-spin-button{
+    -webkit-appearance:none;
+    margin:0;
+}
+.fcalc-field input[type="number"]:focus{
+    border-bottom:2px solid #3c8ed8;
+}
+.fcalc-field input[type="number"]:disabled{
+    color:#a8a8a8;
+    border-bottom-color:#d3d3d3;
+    cursor:not-allowed;
+}
+.fcalc-field-placeholder{
+    visibility:hidden;
+}
+.fcalc-substitute-group{
+    padding-bottom:17px;
+}
+.fcalc-secondary-group{
+    min-height:352px;
+}
+.fcalc-secondary-grid .fcalc-field{
+    grid-template-columns:minmax(0,1fr) 10px 87px;
+}
+.fcalc-secondary-grid .fcalc-field label{
+    font-size:12px;
+}
+.fcalc-actions{
+    width:min(1290px,calc(100% - 44px));
+    margin:18px auto 0;
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+}
+.fcalc-actions button{
+    min-height:39px;
+    border-radius:4px;
+    padding:9px 17px;
+    font-size:12px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.2s ease;
+}
+.fcalc-map-btn,
+.fcalc-reset-btn{
+    background:#fff;
+    border:1px solid #cfd5da;
+    color:#39536a;
+}
+.fcalc-map-btn:hover,
+.fcalc-reset-btn:hover{
+    background:#f3f6f8;
+}
+.fcalc-calculate-btn{
+    background:#20c997;
+    border:1px solid #18ae83;
+    color:#fff;
+}
+.fcalc-calculate-btn:hover{
+    background:#159d76;
+}
+.fcalc-actions i{margin-right:6px;}
+.fcalc-result-card{
+    display:none;
+    width:min(1290px,calc(100% - 44px));
+    margin:18px auto 0;
+    padding:22px;
+    background:#fff;
+    border:1px solid #d7dce0;
+    border-radius:4px;
+}
+.fcalc-result-head{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:20px;
+    padding-bottom:15px;
+    margin-bottom:14px;
+    border-bottom:1px solid #e5e7eb;
+}
+.fcalc-result-head h3{
+    margin:0 0 4px;
+    color:#263746;
+    font-size:18px;
+}
+.fcalc-result-head p{
+    margin:0;
+    color:#71808d;
+    font-size:11px;
+}
+.fcalc-result-summary{
+    display:flex;
+    gap:8px;
+}
+.fcalc-result-summary > div{
+    min-width:130px;
+    padding:8px 10px;
+    border:1px solid #e2e6ea;
+    background:#f8fafc;
+    color:#697886;
+    font-size:10px;
+}
+.fcalc-result-summary strong{
+    display:block;
+    color:#263746;
+    font-size:13px;
+    margin-top:2px;
+}
+.fcalc-visual-title{
+    margin:17px 0 7px;
+    color:#334155;
+    font-size:12px;
+    font-weight:700;
+}
+.fcalc-result-card #lotCanvas{
+    width:100%;
+    max-width:100%;
+    height:auto;
+    min-height:280px;
+    border:1px solid #d8dde2;
+    border-radius:3px;
+    background:#fff;
+}
+.fcalc-result-card .faraid-table-wrap{
+    width:100%;
+    overflow-x:auto;
+}
+.fcalc-result-card .faraid-new-table{
+    min-width:760px;
+}
+
+@media (max-width:1150px){
+    .fcalc-field{grid-template-columns:minmax(0,1fr) 9px 92px;}
+    .fcalc-secondary-grid .fcalc-field{grid-template-columns:minmax(0,1fr) 9px 70px;}
+    .fcalc-field label{font-size:11px;}
+}
+@media (max-width:900px){
+    .fcalc-main-grid{grid-template-columns:1fr;gap:32px;}
+    .fcalc-secondary-group{min-height:0;}
+    .fcalc-scenario-body{padding:42px 15px 28px;}
+    .fcalc-actions,.fcalc-result-card{width:calc(100% - 30px);}
+}
+@media (max-width:620px){
+    .fcalc-scenario > summary{font-size:19px;min-height:57px;padding:0 14px;}
+    .fcalc-fields-grid{grid-template-columns:1fr;row-gap:7px;}
+    .fcalc-field,
+    .fcalc-secondary-grid .fcalc-field{grid-template-columns:minmax(0,1fr) 9px 90px;}
+    .fcalc-field-placeholder{display:none;}
+    .fcalc-group{padding:33px 13px 14px;margin-bottom:31px;}
+    .fcalc-group-title{font-size:16px;min-height:42px;top:-22px;}
+    .fcalc-actions{flex-wrap:wrap;}
+    .fcalc-actions button{flex:1 1 140px;}
+    .fcalc-result-head{flex-direction:column;}
+    .fcalc-result-summary{width:100%;}
+    .fcalc-result-summary > div{flex:1;min-width:0;}
+}
+
 </style>
 
 </head>
@@ -3202,7 +3519,7 @@ header::after {
             <nav class="top-nav" aria-label="Navigasi utama">
                 <div class="nav-item"><a href="#" class="active page-link" data-page="home"><i class="fas fa-home"></i> Utama</a></div>
                 <div class="nav-item"><a href="#" class="page-link" data-page="tentang"><i class="far fa-question-circle"></i> Tentang</a></div>
-                <div class="nav-item"><a href="#" onclick="openFaraidCalculator(event)"><i class="fas fa-calculator"></i> Kiraan Faraid</a></div>
+                <div class="nav-item"><a href="#" class="page-link" data-page="kiraan-faraid"><i class="fas fa-calculator"></i> Kiraan Faraid</a></div>
                 <div class="nav-item"><a href="#" onclick="openMapView(event)"><i class="fas fa-map-marker-alt"></i> Peta Lot</a></div>
                 <div class="nav-item"><a href="#" class="page-link" data-page="informasi"><i class="far fa-list-alt"></i> Panduan</a></div>
                 <div class="nav-item"><a href="#" class="page-link" data-page="hubungi"><i class="fas fa-phone-alt"></i> Hubungi</a></div>
@@ -3539,6 +3856,231 @@ header::after {
                         kuasa agensi yang mengendalikan pusaka.
                     </p>
                 </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- =========================================================
+         KIRAAN FARAID - HALAMAN BERASINGAN
+         Susunan medan mengikut reka bentuk rujukan pengguna.
+         Peta Lot tidak diubah dan kekal di #wrapper.
+    ========================================================== -->
+    <section id="page-kiraan-faraid" class="dashboard-page fcalc-page">
+        <div class="fcalc-shell">
+            <details class="fcalc-scenario" open>
+                <summary>Senarai Waris</summary>
+
+                <div class="fcalc-scenario-body">
+                    <div class="fcalc-main-grid">
+                        <!-- ================= LEFT COLUMN ================= -->
+                        <div class="fcalc-left-column">
+
+                            <!-- SI MATI -->
+                            <section class="fcalc-group fcalc-deceased-group">
+                                <div class="fcalc-group-title">Si Mati</div>
+                                <div class="fcalc-gender-line">
+                                    <span>Adalah Lelaki?</span>
+                                    <span class="fcalc-colon">:</span>
+                                    <input type="checkbox"
+                                        id="jantinaSiMatiLelaki"
+                                        checked
+                                        onchange="kemasKiniJantinaFaraid()"
+                                        aria-label="Si mati adalah lelaki">
+                                    <span id="jantinaSiMatiStatus" class="fcalc-visually-hidden">Lelaki</span>
+                                </div>
+                            </section>
+
+                            <!-- WARIS UTAMA -->
+                            <section class="fcalc-group">
+                                <div class="fcalc-group-title">Waris Utama</div>
+                                <div class="fcalc-fields-grid">
+                                    <div class="fcalc-field">
+                                        <label for="warisIbu">Ibu</label><span>:</span>
+                                        <input data-faraid-count type="number" id="warisIbu" min="0" max="1" step="1" value="0">
+                                    </div>
+                                    <div class="fcalc-field">
+                                        <label for="warisBapa">Bapa</label><span>:</span>
+                                        <input data-faraid-count type="number" id="warisBapa" min="0" max="1" step="1" value="0">
+                                    </div>
+
+                                    <div class="fcalc-field">
+                                        <label for="warisIsteri">Isteri</label><span>:</span>
+                                        <input data-faraid-count type="number" id="warisIsteri" min="0" max="4" step="1" value="0">
+                                    </div>
+                                    <div class="fcalc-field">
+                                        <label for="warisSuami">Suami</label><span>:</span>
+                                        <input data-faraid-count type="number" id="warisSuami" min="0" max="1" step="1" value="0" disabled>
+                                    </div>
+
+                                    <div class="fcalc-field">
+                                        <label for="warisAnakLelaki">Anak Lelaki</label><span>:</span>
+                                        <input data-faraid-count type="number" id="warisAnakLelaki" min="0" step="1" value="0">
+                                    </div>
+                                    <div class="fcalc-field">
+                                        <label for="warisAnakPerempuan">Anak Perempuan</label><span>:</span>
+                                        <input data-faraid-count type="number" id="warisAnakPerempuan" min="0" step="1" value="0">
+                                    </div>
+                                </div>
+                            </section>
+
+                            <!-- WARIS GANTI -->
+                            <section class="fcalc-group fcalc-substitute-group">
+                                <div class="fcalc-group-title">Waris Ganti</div>
+                                <div class="fcalc-fields-grid fcalc-ganti-grid">
+                                    <div class="fcalc-field">
+                                        <label for="warisDatukBapa">Bapa Kepada Bapa (Datuk)</label><span>:</span>
+                                        <input data-faraid-count type="number" id="warisDatukBapa" min="0" max="1" step="1" value="0">
+                                    </div>
+                                    <div class="fcalc-field">
+                                        <label for="warisNenekBapa">Ibu Kepada Bapa (Nenek)</label><span>:</span>
+                                        <input data-faraid-count type="number" id="warisNenekBapa" min="0" max="1" step="1" value="0">
+                                    </div>
+
+                                    <div class="fcalc-field">
+                                        <label for="warisNenekIbu">Ibu Kepada Ibu (Nenek)</label><span>:</span>
+                                        <input data-faraid-count type="number" id="warisNenekIbu" min="0" max="1" step="1" value="0">
+                                    </div>
+                                    <div class="fcalc-field">
+                                        <label for="warisCucuLelaki">Anak Lelaki kepada Anak Lelaki (Cucu Lelaki)</label><span>:</span>
+                                        <input data-faraid-count type="number" id="warisCucuLelaki" min="0" step="1" value="0">
+                                    </div>
+
+                                    <div class="fcalc-field">
+                                        <label for="warisCucuPerempuan">Anak Perempuan kepada Anak Lelaki (Cucu Perempuan)</label><span>:</span>
+                                        <input data-faraid-count type="number" id="warisCucuPerempuan" min="0" step="1" value="0">
+                                    </div>
+                                    <div class="fcalc-field">
+                                        <label for="warisCicitLelaki">AL kepada AL kepada AL (Cicit Lelaki)</label><span>:</span>
+                                        <input data-faraid-count type="number" id="warisCicitLelaki" min="0" step="1" value="0">
+                                    </div>
+
+                                    <div class="fcalc-field">
+                                        <label for="warisCicitPerempuan">AP kepada AL kepada AL (Cicit Perempuan)</label><span>:</span>
+                                        <input data-faraid-count type="number" id="warisCicitPerempuan" min="0" step="1" value="0">
+                                    </div>
+                                    <div class="fcalc-field fcalc-field-placeholder" aria-hidden="true"></div>
+                                </div>
+                            </section>
+                        </div>
+
+                        <!-- ================= RIGHT COLUMN ================= -->
+                        <div class="fcalc-right-column">
+                            <section class="fcalc-group fcalc-secondary-group">
+                                <div class="fcalc-group-title">Waris Kedua</div>
+                                <div class="fcalc-fields-grid fcalc-secondary-grid">
+                                    <div class="fcalc-field">
+                                        <label for="warisSIBL">Saudara Seibu Sebapa Lelaki (SIBL)</label><span>:</span>
+                                        <input data-faraid-count type="number" id="warisSIBL" min="0" step="1" value="0">
+                                    </div>
+                                    <div class="fcalc-field">
+                                        <label for="warisSBL">Saudara Sebapa Lelaki (SBL)</label><span>:</span>
+                                        <input data-faraid-count type="number" id="warisSBL" min="0" step="1" value="0">
+                                    </div>
+
+                                    <div class="fcalc-field">
+                                        <label for="warisSIL">Saudara Seibu Lelaki (SIL)</label><span>:</span>
+                                        <input data-faraid-count type="number" id="warisSIL" min="0" step="1" value="0">
+                                    </div>
+                                    <div class="fcalc-field">
+                                        <label for="warisSIBP">Saudara Seibu Sebapa Perempuan (SIBP)</label><span>:</span>
+                                        <input data-faraid-count type="number" id="warisSIBP" min="0" step="1" value="0">
+                                    </div>
+
+                                    <div class="fcalc-field">
+                                        <label for="warisSBP">Saudara Sebapa Perempuan (SBP)</label><span>:</span>
+                                        <input data-faraid-count type="number" id="warisSBP" min="0" step="1" value="0">
+                                    </div>
+                                    <div class="fcalc-field">
+                                        <label for="warisSIP">Saudara Seibu Perempuan (SIP)</label><span>:</span>
+                                        <input data-faraid-count type="number" id="warisSIP" min="0" step="1" value="0">
+                                    </div>
+
+                                    <div class="fcalc-field">
+                                        <label for="warisAnakSIBL">Anak Lelaki kepada SIBL (Anak Saudara)</label><span>:</span>
+                                        <input data-faraid-count type="number" id="warisAnakSIBL" min="0" step="1" value="0">
+                                    </div>
+                                    <div class="fcalc-field">
+                                        <label for="warisAnakSBL">Anak Lelaki kepada SBL (Anak Saudara)</label><span>:</span>
+                                        <input data-faraid-count type="number" id="warisAnakSBL" min="0" step="1" value="0">
+                                    </div>
+
+                                    <div class="fcalc-field">
+                                        <label for="warisBapaSaudaraSIBL">SIBL kepada Bapa (Bapa Saudara)</label><span>:</span>
+                                        <input data-faraid-count type="number" id="warisBapaSaudaraSIBL" min="0" step="1" value="0">
+                                    </div>
+                                    <div class="fcalc-field">
+                                        <label for="warisBapaSaudaraSBL">SBL kepada Bapa (Bapa Saudara)</label><span>:</span>
+                                        <input data-faraid-count type="number" id="warisBapaSaudaraSBL" min="0" step="1" value="0">
+                                    </div>
+
+                                    <div class="fcalc-field">
+                                        <label for="warisSepupuSIBL">Anak Lelaki kepada SIBL kepada Bapa (Sepupu)</label><span>:</span>
+                                        <input data-faraid-count type="number" id="warisSepupuSIBL" min="0" step="1" value="0">
+                                    </div>
+                                    <div class="fcalc-field">
+                                        <label for="warisSepupuSBL">Anak Lelaki kepada SBL kepada Bapa (Sepupu)</label><span>:</span>
+                                        <input data-faraid-count type="number" id="warisSepupuSBL" min="0" step="1" value="0">
+                                    </div>
+
+                                    <div class="fcalc-field">
+                                        <label for="warisSIBLDatuk">SIBL Datuk</label><span>:</span>
+                                        <input data-faraid-count type="number" id="warisSIBLDatuk" min="0" step="1" value="0">
+                                    </div>
+                                    <div class="fcalc-field">
+                                        <label for="warisSBLDatuk">SBL Datuk</label><span>:</span>
+                                        <input data-faraid-count type="number" id="warisSBLDatuk" min="0" step="1" value="0">
+                                    </div>
+
+                                    <div class="fcalc-field">
+                                        <label for="warisAnakSIBLDatuk">Anak Lelaki SIBL Datuk</label><span>:</span>
+                                        <input data-faraid-count type="number" id="warisAnakSIBLDatuk" min="0" step="1" value="0">
+                                    </div>
+                                    <div class="fcalc-field">
+                                        <label for="warisAnakSBLDatuk">Anak Lelaki SBL Datuk</label><span>:</span>
+                                        <input data-faraid-count type="number" id="warisAnakSBLDatuk" min="0" step="1" value="0">
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <div class="fcalc-actions">
+                <button type="button" class="fcalc-map-btn" onclick="openMapView(event)">
+                    <i class="fas fa-map-marker-alt"></i>
+                    Pilih / Semak Lot
+                </button>
+                <button type="button" class="fcalc-reset-btn" onclick="resetSenarioFaraid()">
+                    <i class="fas fa-undo"></i>
+                    Reset
+                </button>
+                <button type="button" class="fcalc-calculate-btn" onclick="kiraFaraid()">
+                    <i class="fas fa-calculator"></i>
+                    Kira Faraid
+                </button>
+            </div>
+
+            <!-- KEPUTUSAN PENGIRAAN -->
+            <div id="resultFaraid" class="fcalc-result-card">
+                <div class="fcalc-result-head">
+                    <div>
+                        <h3>Keputusan Pembahagian</h3>
+                        <p>Bahagian waris berdasarkan senario yang dimasukkan.</p>
+                    </div>
+                    <div class="fcalc-result-summary">
+                        <div>Jumlah Waris Layak <strong id="resultWaris">0</strong></div>
+                        <div>Status <strong id="status">-</strong></div>
+                    </div>
+                </div>
+
+                <div id="faraidWarningContainer"></div>
+                <div id="faraidTableContainer"></div>
+                <div id="faraidBlockedContainer"></div>
+
+                <div class="fcalc-visual-title">Pelan Pembahagian Lot (Visual)</div>
+                <canvas id="lotCanvas" width="900" height="420"></canvas>
             </div>
         </div>
     </section>
@@ -3892,127 +4434,15 @@ header::after {
 
             <!-- =================================================
                  KALKULATOR FARAID
+                 Ruang ini dikekalkan kosong di dalam Peta Lot.
+                 Kiraan Faraid kini mempunyai halaman sendiri.
             ================================================== -->
 
-            <div class="card-menu faraid-calculator-card" id="faraidCalculatorCard">
-
-                <h6>
-                    <span>
-                        <i class="fas fa-balance-scale me-2"></i>
-                        Kiraan Faraid
-                    </span>
-                    <small class="text-muted" style="font-size:10px;">۞</small>
-                </h6>
-
-                <!-- Luas lot masih diisi secara automatik apabila lot dipilih pada peta. -->
-                <div class="faraid-lot-box">
-                    <label for="luasTanah">Luas Lot Tanah Dipilih (m²)</label>
-                    <input type="number" id="luasTanah" placeholder="Sila pilih lot di peta" min="0" readonly>
-                </div>
-
-                <details class="faraid-scenario" open>
-                    <summary>Senarai Waris</summary>
-
-                    <div class="faraid-scenario-body">
-
-                        <!-- SI MATI -->
-                        <section class="faraid-heir-group">
-                            <div class="faraid-heir-title">Si Mati</div>
-                            <div class="faraid-gender-row">
-                                <span>Adalah Lelaki?</span>
-                                <span>:</span>
-                                <input type="checkbox" id="jantinaSiMatiLelaki" checked onchange="kemasKiniJantinaFaraid()">
-                                <span class="faraid-gender-status" id="jantinaSiMatiStatus">Lelaki</span>
-                            </div>
-                        </section>
-
-                        <!-- WARIS UTAMA -->
-                        <section class="faraid-heir-group">
-                            <div class="faraid-heir-title">Waris Utama</div>
-                            <div class="faraid-field-grid">
-                                <div class="faraid-field"><label for="warisIbu">Ibu</label><input data-faraid-count type="number" id="warisIbu" min="0" max="1" step="1" value="0"></div>
-                                <div class="faraid-field"><label for="warisBapa">Bapa</label><input data-faraid-count type="number" id="warisBapa" min="0" max="1" step="1" value="0"></div>
-                                <div class="faraid-field"><label for="warisIsteri">Isteri</label><input data-faraid-count type="number" id="warisIsteri" min="0" max="4" step="1" value="0"></div>
-                                <div class="faraid-field"><label for="warisSuami">Suami</label><input data-faraid-count type="number" id="warisSuami" min="0" max="1" step="1" value="0" disabled></div>
-                                <div class="faraid-field"><label for="warisAnakLelaki">Anak Lelaki</label><input data-faraid-count type="number" id="warisAnakLelaki" min="0" step="1" value="0"></div>
-                                <div class="faraid-field"><label for="warisAnakPerempuan">Anak Perempuan</label><input data-faraid-count type="number" id="warisAnakPerempuan" min="0" step="1" value="0"></div>
-                            </div>
-                        </section>
-
-                        <!-- WARIS GANTI -->
-                        <section class="faraid-heir-group">
-                            <div class="faraid-heir-title">Waris Ganti</div>
-                            <div class="faraid-field-grid">
-                                <div class="faraid-field"><label for="warisDatukBapa">Bapa kepada Bapa (Datuk)</label><input data-faraid-count type="number" id="warisDatukBapa" min="0" max="1" step="1" value="0"></div>
-                                <div class="faraid-field"><label for="warisNenekBapa">Ibu kepada Bapa (Nenek)</label><input data-faraid-count type="number" id="warisNenekBapa" min="0" max="1" step="1" value="0"></div>
-                                <div class="faraid-field"><label for="warisNenekIbu">Ibu kepada Ibu (Nenek)</label><input data-faraid-count type="number" id="warisNenekIbu" min="0" max="1" step="1" value="0"></div>
-                                <div class="faraid-field"><label for="warisCucuLelaki">Anak Lelaki kepada Anak Lelaki (Cucu Lelaki)</label><input data-faraid-count type="number" id="warisCucuLelaki" min="0" step="1" value="0"></div>
-                                <div class="faraid-field"><label for="warisCucuPerempuan">Anak Perempuan kepada Anak Lelaki (Cucu Perempuan)</label><input data-faraid-count type="number" id="warisCucuPerempuan" min="0" step="1" value="0"></div>
-                                <div class="faraid-field"><label for="warisCicitLelaki">AL kepada AL kepada AL (Cicit Lelaki)</label><input data-faraid-count type="number" id="warisCicitLelaki" min="0" step="1" value="0"></div>
-                                <div class="faraid-field"><label for="warisCicitPerempuan">AP kepada AL kepada AL (Cicit Perempuan)</label><input data-faraid-count type="number" id="warisCicitPerempuan" min="0" step="1" value="0"></div>
-                            </div>
-                        </section>
-
-                        <!-- WARIS KEDUA -->
-                        <section class="faraid-heir-group">
-                            <div class="faraid-heir-title">Waris Kedua</div>
-                            <div class="faraid-field-grid">
-                                <div class="faraid-field"><label for="warisSIBL">Saudara Seibu Sebapa Lelaki (SIBL)</label><input data-faraid-count type="number" id="warisSIBL" min="0" step="1" value="0"></div>
-                                <div class="faraid-field"><label for="warisSBL">Saudara Sebapa Lelaki (SBL)</label><input data-faraid-count type="number" id="warisSBL" min="0" step="1" value="0"></div>
-                                <div class="faraid-field"><label for="warisSIL">Saudara Seibu Lelaki (SIL)</label><input data-faraid-count type="number" id="warisSIL" min="0" step="1" value="0"></div>
-                                <div class="faraid-field"><label for="warisSIBP">Saudara Seibu Sebapa Perempuan (SIBP)</label><input data-faraid-count type="number" id="warisSIBP" min="0" step="1" value="0"></div>
-                                <div class="faraid-field"><label for="warisSBP">Saudara Sebapa Perempuan (SBP)</label><input data-faraid-count type="number" id="warisSBP" min="0" step="1" value="0"></div>
-                                <div class="faraid-field"><label for="warisSIP">Saudara Seibu Perempuan (SIP)</label><input data-faraid-count type="number" id="warisSIP" min="0" step="1" value="0"></div>
-                                <div class="faraid-field"><label for="warisAnakSIBL">Anak Lelaki kepada SIBL (Anak Saudara)</label><input data-faraid-count type="number" id="warisAnakSIBL" min="0" step="1" value="0"></div>
-                                <div class="faraid-field"><label for="warisAnakSBL">Anak Lelaki kepada SBL (Anak Saudara)</label><input data-faraid-count type="number" id="warisAnakSBL" min="0" step="1" value="0"></div>
-                                <div class="faraid-field"><label for="warisBapaSaudaraSIBL">SIBL kepada Bapa (Bapa Saudara)</label><input data-faraid-count type="number" id="warisBapaSaudaraSIBL" min="0" step="1" value="0"></div>
-                                <div class="faraid-field"><label for="warisBapaSaudaraSBL">SBL kepada Bapa (Bapa Saudara)</label><input data-faraid-count type="number" id="warisBapaSaudaraSBL" min="0" step="1" value="0"></div>
-                                <div class="faraid-field"><label for="warisSepupuSIBL">Anak Lelaki kepada SIBL kepada Bapa (Sepupu)</label><input data-faraid-count type="number" id="warisSepupuSIBL" min="0" step="1" value="0"></div>
-                                <div class="faraid-field"><label for="warisSepupuSBL">Anak Lelaki kepada SBL kepada Bapa (Sepupu)</label><input data-faraid-count type="number" id="warisSepupuSBL" min="0" step="1" value="0"></div>
-                                <div class="faraid-field"><label for="warisSIBLDatuk">SIBL Datuk</label><input data-faraid-count type="number" id="warisSIBLDatuk" min="0" step="1" value="0"></div>
-                                <div class="faraid-field"><label for="warisSBLDatuk">SBL Datuk</label><input data-faraid-count type="number" id="warisSBLDatuk" min="0" step="1" value="0"></div>
-                                <div class="faraid-field"><label for="warisAnakSIBLDatuk">Anak Lelaki SIBL Datuk</label><input data-faraid-count type="number" id="warisAnakSIBLDatuk" min="0" step="1" value="0"></div>
-                                <div class="faraid-field"><label for="warisAnakSBLDatuk">Anak Lelaki SBL Datuk</label><input data-faraid-count type="number" id="warisAnakSBLDatuk" min="0" step="1" value="0"></div>
-                            </div>
-                        </section>
-
-                    </div>
-                </details>
-
-                <div class="faraid-section-note">
-                    Masukkan bilangan waris yang masih hidup. Sistem akan menilai waris yang layak, waris yang terhijab, bahagian asas, peratus dan keluasan lot. Kiraan ini ialah panduan sistem dan perlu disahkan bagi kes pusaka sebenar.
-                </div>
-
-                <div class="faraid-actions">
-                    <button class="btn-faraid" type="button" onclick="kiraFaraid()">
-                        <i class="fas fa-calculator me-1"></i>
-                        KIRA FARAID
-                    </button>
-                    <button class="faraid-reset-btn" type="button" onclick="resetSenarioFaraid()" title="Kosongkan senario waris">
-                        <i class="fas fa-undo"></i>
-                    </button>
-                </div>
-
-                <!-- KEPUTUSAN -->
-                <div id="resultFaraid">
-                    <h6 class="m-0 mb-2 fw-bold text-dark fs-6" style="border-bottom:1px dashed #9d7228;padding-bottom:4px;">
-                        Keputusan Pembahagian
-                    </h6>
-
-                    <div class="faraid-result-summary">
-                        <div class="faraid-result-chip">Jumlah Waris Layak<strong id="resultWaris">0</strong></div>
-                        <div class="faraid-result-chip">Status<strong id="status">-</strong></div>
-                    </div>
-
-                    <div id="faraidWarningContainer"></div>
-                    <div id="faraidTableContainer"></div>
-                    <div id="faraidBlockedContainer"></div>
-
-                    <h6 class="mt-3 mb-1 fw-bold text-dark" style="font-size:11px;">Pelan Pembahagian Lot (Visual)</h6>
-                    <canvas id="lotCanvas" width="300" height="180"></canvas>
-                </div>
-
+            <div class="card-menu">
+                <!-- Nilai luas lot dikekalkan untuk digunakan oleh halaman Kiraan Faraid. -->
+                <input type="hidden" id="luasTanah" value="">
             </div>
+
         </nav>
 
 
@@ -6182,19 +6612,13 @@ function openMapView(e){
 
 function openFaraidCalculator(e){
     if(e) e.preventDefault();
-    showPage('utama');
+    showPage('kiraan-faraid');
     setTimeout(function(){
-        var sidebar = document.getElementById('sidebar');
-        if(sidebar && sidebar.classList.contains('active')){
-            sidebar.classList.remove('active');
-        }
-        var input = document.getElementById('luasTanah');
-        var card = input ? input.closest('.card-menu') : null;
-        if(card && sidebar){
-            sidebar.scrollTo({top:Math.max(card.offsetTop - 10,0), behavior:'smooth'});
-        }
-        if(typeof map !== 'undefined' && map) map.invalidateSize();
-    }, 400);
+        var firstInput = document.getElementById('warisIbu');
+        if(firstInput) firstInput.focus({preventScroll:true});
+        var page = document.getElementById('page-kiraan-faraid');
+        if(page) page.scrollTop = 0;
+    }, 120);
 }
 
 function openMapLayer(e, layerName){
@@ -6405,4 +6829,3 @@ function focusDashboardSearch(e){
 </body>
 
 </html>
-```
