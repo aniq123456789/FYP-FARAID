@@ -1,3 +1,4 @@
+```
 <!doctype html>
 <html lang="ms">
 
@@ -2876,6 +2877,270 @@ header::after {
     .mfl-primary-btn,.mfl-secondary-btn { justify-content:center; width:100%; }
 }
 
+
+/* =========================================================
+   SENARAI WARIS / KALKULATOR FARAID BAHARU
+   - Reka bentuk dirujuk daripada paparan Senarai Waris.
+   - Diletakkan dalam feature Kiraan Faraid sedia ada.
+========================================================= */
+.faraid-calculator-card{
+    padding:12px !important;
+}
+.faraid-calculator-card > h6{
+    margin-bottom:12px !important;
+}
+.faraid-lot-box{
+    margin-bottom:12px;
+    padding:10px;
+    background:#f7fbff;
+    border:1px solid #d7e5f2;
+    border-left:4px solid #86b6e6;
+    border-radius:6px;
+}
+.faraid-lot-box label{
+    display:block;
+    margin:0 0 5px;
+    color:#31526e;
+    font-size:10px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.25px;
+}
+.faraid-lot-box input{
+    width:100%;
+    height:34px;
+    border:1px solid #cbd8e3;
+    border-radius:4px;
+    background:#fff;
+    color:#1f3a4d;
+    font-weight:700;
+    font-size:13px;
+    padding:6px 9px;
+}
+.faraid-scenario{
+    border:1px solid #d9dee3;
+    border-radius:6px;
+    overflow:hidden;
+    background:#fff;
+}
+.faraid-scenario > summary{
+    list-style:none;
+    cursor:pointer;
+    padding:10px 11px;
+    background:#fbfcfd;
+    border-bottom:1px solid #e8ebee;
+    color:#17212b;
+    font-size:14px;
+    font-weight:800;
+    display:flex;
+    align-items:center;
+    gap:7px;
+}
+.faraid-scenario > summary::-webkit-details-marker{display:none;}
+.faraid-scenario > summary::before{
+    content:'\\f107';
+    font-family:'Font Awesome 5 Free';
+    font-weight:900;
+    font-size:11px;
+    transition:transform .2s ease;
+}
+.faraid-scenario:not([open]) > summary::before{transform:rotate(-90deg);}
+.faraid-scenario-body{
+    padding:12px 9px 3px;
+}
+.faraid-heir-group{
+    position:relative;
+    margin:10px 0 22px;
+    padding:25px 9px 9px;
+    border:1px solid #d8dde2;
+    border-radius:4px;
+    background:#fff;
+}
+.faraid-heir-group:first-child{margin-top:7px;}
+.faraid-heir-title{
+    position:absolute;
+    top:-12px;
+    left:10px;
+    display:inline-flex;
+    align-items:center;
+    min-height:30px;
+    padding:5px 11px;
+    border-radius:4px;
+    background:#89b8e7;
+    color:#071522;
+    font-size:13px;
+    font-weight:700;
+    box-shadow:0 1px 2px rgba(0,0,0,.05);
+}
+.faraid-gender-row{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    min-height:28px;
+    color:#075db7;
+    font-size:11px;
+}
+.faraid-gender-row input[type="checkbox"]{
+    width:17px;
+    height:17px;
+    accent-color:#2f88d8;
+    cursor:pointer;
+}
+.faraid-gender-status{
+    margin-left:auto;
+    padding:2px 7px;
+    border-radius:10px;
+    background:#eef6fd;
+    color:#2c6fa8;
+    font-size:9px;
+    font-weight:700;
+}
+.faraid-field-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:3px;
+}
+.faraid-field{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 54px;
+    align-items:center;
+    gap:8px;
+    min-height:34px;
+    border-bottom:1px dashed #edf0f2;
+}
+.faraid-field:last-child{border-bottom:0;}
+.faraid-field label{
+    margin:0;
+    color:#075db7;
+    font-size:10px;
+    line-height:1.2;
+    font-weight:500;
+}
+.faraid-field input[type="number"]{
+    width:54px;
+    min-width:54px;
+    height:27px;
+    padding:2px 4px;
+    border:0;
+    border-bottom:1px solid #9ca3aa;
+    border-radius:0;
+    outline:none;
+    background:transparent;
+    color:#111827;
+    font-size:11px;
+    text-align:center;
+}
+.faraid-field input[type="number"]:focus{
+    border-bottom:2px solid #2f88d8;
+}
+.faraid-field input[type="number"]:disabled{
+    color:#9ca3af;
+    background:#f8fafc;
+    cursor:not-allowed;
+}
+.faraid-section-note{
+    margin:-10px 1px 12px;
+    padding:8px 9px;
+    border-radius:5px;
+    background:#fff8e8;
+    border:1px solid #f1dfae;
+    color:#76591f;
+    font-size:9px;
+    line-height:1.45;
+}
+.faraid-actions{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:7px;
+    margin-top:10px;
+}
+.faraid-reset-btn{
+    border:1px solid #ccd4da;
+    background:#fff;
+    color:#64748b;
+    border-radius:20px;
+    padding:9px 11px;
+    font-size:10px;
+    font-weight:700;
+    cursor:pointer;
+}
+.faraid-reset-btn:hover{background:#f5f7f9;}
+.faraid-result-summary{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:6px;
+    margin:9px 0;
+}
+.faraid-result-chip{
+    padding:7px;
+    border-radius:5px;
+    background:#f6f8fa;
+    border:1px solid #e3e8ec;
+    font-size:9px;
+    color:#64748b;
+}
+.faraid-result-chip strong{
+    display:block;
+    margin-top:2px;
+    color:#203647;
+    font-size:11px;
+}
+.faraid-table-wrap{
+    width:100%;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+}
+.faraid-table.faraid-new-table{
+    min-width:620px;
+    font-size:10px;
+}
+.faraid-table.faraid-new-table th,
+.faraid-table.faraid-new-table td{
+    padding:6px;
+    vertical-align:top;
+}
+.faraid-basis{
+    display:block;
+    margin-top:2px;
+    color:#788692;
+    font-size:8px;
+    line-height:1.25;
+    font-weight:400;
+}
+.faraid-blocked-box,
+.faraid-warning-box{
+    margin-top:10px;
+    padding:9px;
+    border-radius:5px;
+    font-size:9px;
+    line-height:1.45;
+}
+.faraid-blocked-box{
+    background:#fff5f5;
+    border:1px solid #f0caca;
+    color:#7c2d2d;
+}
+.faraid-warning-box{
+    background:#fff9e9;
+    border:1px solid #ead9a5;
+    color:#70551e;
+}
+.faraid-blocked-box ul,
+.faraid-warning-box ul{
+    margin:5px 0 0;
+    padding-left:16px;
+}
+.faraid-result-empty{
+    padding:9px;
+    color:#64748b;
+    font-size:10px;
+    text-align:center;
+}
+@media (min-width:1200px){
+    /* Jika sidebar diperbesarkan kemudian, medan akan tersusun dua lajur secara automatik. */
+    .faraid-calculator-card .faraid-field-grid{grid-template-columns:1fr;}
+}
+
 </style>
 
 </head>
@@ -3629,221 +3894,125 @@ header::after {
                  KALKULATOR FARAID
             ================================================== -->
 
-            <div class="card-menu">
+            <div class="card-menu faraid-calculator-card" id="faraidCalculatorCard">
 
                 <h6>
-
                     <span>
-
                         <i class="fas fa-balance-scale me-2"></i>
-
-                        Kalkulator Faraid Lot Tanah
-
+                        Kiraan Faraid
                     </span>
-
-                    <small class="text-muted"
-                        style="font-size:10px;">
-
-                        ۞
-
-                    </small>
-
+                    <small class="text-muted" style="font-size:10px;">۞</small>
                 </h6>
 
-
-
-                <!-- LUAS LOT -->
-
-                <div class="mb-2">
-
-                    <label class="form-label text-dark fw-bold mb-1"
-                        style="font-size:11px;">
-
-                        1. Luas Lot Tanah (m²)
-
-                    </label>
-
-                    <input type="number"
-                        id="luasTanah"
-                        class="form-control form-control-sm bg-light"
-                        placeholder="Sila pilih lot di peta"
-                        min="0"
-                        readonly>
-
+                <!-- Luas lot masih diisi secara automatik apabila lot dipilih pada peta. -->
+                <div class="faraid-lot-box">
+                    <label for="luasTanah">Luas Lot Tanah Dipilih (m²)</label>
+                    <input type="number" id="luasTanah" placeholder="Sila pilih lot di peta" min="0" readonly>
                 </div>
 
+                <details class="faraid-scenario" open>
+                    <summary>Senarai Waris</summary>
 
+                    <div class="faraid-scenario-body">
 
-                <!-- ISTERI -->
+                        <!-- SI MATI -->
+                        <section class="faraid-heir-group">
+                            <div class="faraid-heir-title">Si Mati</div>
+                            <div class="faraid-gender-row">
+                                <span>Adalah Lelaki?</span>
+                                <span>:</span>
+                                <input type="checkbox" id="jantinaSiMatiLelaki" checked onchange="kemasKiniJantinaFaraid()">
+                                <span class="faraid-gender-status" id="jantinaSiMatiStatus">Lelaki</span>
+                            </div>
+                        </section>
 
-                <div class="mb-2">
+                        <!-- WARIS UTAMA -->
+                        <section class="faraid-heir-group">
+                            <div class="faraid-heir-title">Waris Utama</div>
+                            <div class="faraid-field-grid">
+                                <div class="faraid-field"><label for="warisIbu">Ibu</label><input data-faraid-count type="number" id="warisIbu" min="0" max="1" step="1" value="0"></div>
+                                <div class="faraid-field"><label for="warisBapa">Bapa</label><input data-faraid-count type="number" id="warisBapa" min="0" max="1" step="1" value="0"></div>
+                                <div class="faraid-field"><label for="warisIsteri">Isteri</label><input data-faraid-count type="number" id="warisIsteri" min="0" max="4" step="1" value="0"></div>
+                                <div class="faraid-field"><label for="warisSuami">Suami</label><input data-faraid-count type="number" id="warisSuami" min="0" max="1" step="1" value="0" disabled></div>
+                                <div class="faraid-field"><label for="warisAnakLelaki">Anak Lelaki</label><input data-faraid-count type="number" id="warisAnakLelaki" min="0" step="1" value="0"></div>
+                                <div class="faraid-field"><label for="warisAnakPerempuan">Anak Perempuan</label><input data-faraid-count type="number" id="warisAnakPerempuan" min="0" step="1" value="0"></div>
+                            </div>
+                        </section>
 
-                    <label class="form-label text-dark fw-bold mb-1"
-                        style="font-size:11px;">
+                        <!-- WARIS GANTI -->
+                        <section class="faraid-heir-group">
+                            <div class="faraid-heir-title">Waris Ganti</div>
+                            <div class="faraid-field-grid">
+                                <div class="faraid-field"><label for="warisDatukBapa">Bapa kepada Bapa (Datuk)</label><input data-faraid-count type="number" id="warisDatukBapa" min="0" max="1" step="1" value="0"></div>
+                                <div class="faraid-field"><label for="warisNenekBapa">Ibu kepada Bapa (Nenek)</label><input data-faraid-count type="number" id="warisNenekBapa" min="0" max="1" step="1" value="0"></div>
+                                <div class="faraid-field"><label for="warisNenekIbu">Ibu kepada Ibu (Nenek)</label><input data-faraid-count type="number" id="warisNenekIbu" min="0" max="1" step="1" value="0"></div>
+                                <div class="faraid-field"><label for="warisCucuLelaki">Anak Lelaki kepada Anak Lelaki (Cucu Lelaki)</label><input data-faraid-count type="number" id="warisCucuLelaki" min="0" step="1" value="0"></div>
+                                <div class="faraid-field"><label for="warisCucuPerempuan">Anak Perempuan kepada Anak Lelaki (Cucu Perempuan)</label><input data-faraid-count type="number" id="warisCucuPerempuan" min="0" step="1" value="0"></div>
+                                <div class="faraid-field"><label for="warisCicitLelaki">AL kepada AL kepada AL (Cicit Lelaki)</label><input data-faraid-count type="number" id="warisCicitLelaki" min="0" step="1" value="0"></div>
+                                <div class="faraid-field"><label for="warisCicitPerempuan">AP kepada AL kepada AL (Cicit Perempuan)</label><input data-faraid-count type="number" id="warisCicitPerempuan" min="0" step="1" value="0"></div>
+                            </div>
+                        </section>
 
-                        2. Status Isteri Gemulah (Si Mati)
-
-                    </label>
-
-
-                    <div class="radio-group p-1 bg-light rounded border">
-
-                        <label>
-
-                            <input type="radio"
-                                name="isteri"
-                                value="ya">
-
-                            Ada (1 Isteri)
-
-                        </label>
-
-
-                        <label>
-
-                            <input type="radio"
-                                name="isteri"
-                                value="tidak"
-                                checked>
-
-                            Tiada / Meninggal
-
-                        </label>
+                        <!-- WARIS KEDUA -->
+                        <section class="faraid-heir-group">
+                            <div class="faraid-heir-title">Waris Kedua</div>
+                            <div class="faraid-field-grid">
+                                <div class="faraid-field"><label for="warisSIBL">Saudara Seibu Sebapa Lelaki (SIBL)</label><input data-faraid-count type="number" id="warisSIBL" min="0" step="1" value="0"></div>
+                                <div class="faraid-field"><label for="warisSBL">Saudara Sebapa Lelaki (SBL)</label><input data-faraid-count type="number" id="warisSBL" min="0" step="1" value="0"></div>
+                                <div class="faraid-field"><label for="warisSIL">Saudara Seibu Lelaki (SIL)</label><input data-faraid-count type="number" id="warisSIL" min="0" step="1" value="0"></div>
+                                <div class="faraid-field"><label for="warisSIBP">Saudara Seibu Sebapa Perempuan (SIBP)</label><input data-faraid-count type="number" id="warisSIBP" min="0" step="1" value="0"></div>
+                                <div class="faraid-field"><label for="warisSBP">Saudara Sebapa Perempuan (SBP)</label><input data-faraid-count type="number" id="warisSBP" min="0" step="1" value="0"></div>
+                                <div class="faraid-field"><label for="warisSIP">Saudara Seibu Perempuan (SIP)</label><input data-faraid-count type="number" id="warisSIP" min="0" step="1" value="0"></div>
+                                <div class="faraid-field"><label for="warisAnakSIBL">Anak Lelaki kepada SIBL (Anak Saudara)</label><input data-faraid-count type="number" id="warisAnakSIBL" min="0" step="1" value="0"></div>
+                                <div class="faraid-field"><label for="warisAnakSBL">Anak Lelaki kepada SBL (Anak Saudara)</label><input data-faraid-count type="number" id="warisAnakSBL" min="0" step="1" value="0"></div>
+                                <div class="faraid-field"><label for="warisBapaSaudaraSIBL">SIBL kepada Bapa (Bapa Saudara)</label><input data-faraid-count type="number" id="warisBapaSaudaraSIBL" min="0" step="1" value="0"></div>
+                                <div class="faraid-field"><label for="warisBapaSaudaraSBL">SBL kepada Bapa (Bapa Saudara)</label><input data-faraid-count type="number" id="warisBapaSaudaraSBL" min="0" step="1" value="0"></div>
+                                <div class="faraid-field"><label for="warisSepupuSIBL">Anak Lelaki kepada SIBL kepada Bapa (Sepupu)</label><input data-faraid-count type="number" id="warisSepupuSIBL" min="0" step="1" value="0"></div>
+                                <div class="faraid-field"><label for="warisSepupuSBL">Anak Lelaki kepada SBL kepada Bapa (Sepupu)</label><input data-faraid-count type="number" id="warisSepupuSBL" min="0" step="1" value="0"></div>
+                                <div class="faraid-field"><label for="warisSIBLDatuk">SIBL Datuk</label><input data-faraid-count type="number" id="warisSIBLDatuk" min="0" step="1" value="0"></div>
+                                <div class="faraid-field"><label for="warisSBLDatuk">SBL Datuk</label><input data-faraid-count type="number" id="warisSBLDatuk" min="0" step="1" value="0"></div>
+                                <div class="faraid-field"><label for="warisAnakSIBLDatuk">Anak Lelaki SIBL Datuk</label><input data-faraid-count type="number" id="warisAnakSIBLDatuk" min="0" step="1" value="0"></div>
+                                <div class="faraid-field"><label for="warisAnakSBLDatuk">Anak Lelaki SBL Datuk</label><input data-faraid-count type="number" id="warisAnakSBLDatuk" min="0" step="1" value="0"></div>
+                            </div>
+                        </section>
 
                     </div>
+                </details>
 
+                <div class="faraid-section-note">
+                    Masukkan bilangan waris yang masih hidup. Sistem akan menilai waris yang layak, waris yang terhijab, bahagian asas, peratus dan keluasan lot. Kiraan ini ialah panduan sistem dan perlu disahkan bagi kes pusaka sebenar.
                 </div>
 
-
-
-                <!-- ANAK -->
-
-                <div class="row g-2 mb-2">
-
-
-                    <div class="col-6">
-
-                        <label class="form-label text-dark fw-bold mb-1"
-                            style="font-size:11px;">
-
-                            3. Anak Lelaki
-
-                        </label>
-
-                        <input type="number"
-                            id="anakLelaki"
-                            class="form-control form-control-sm"
-                            min="0"
-                            value="1">
-
-                    </div>
-
-
-                    <div class="col-6">
-
-                        <label class="form-label text-dark fw-bold mb-1"
-                            style="font-size:11px;">
-
-                            4. Anak Perempuan
-
-                        </label>
-
-                        <input type="number"
-                            id="anakPerempuan"
-                            class="form-control form-control-sm"
-                            min="0"
-                            value="1">
-
-                    </div>
-
+                <div class="faraid-actions">
+                    <button class="btn-faraid" type="button" onclick="kiraFaraid()">
+                        <i class="fas fa-calculator me-1"></i>
+                        KIRA FARAID
+                    </button>
+                    <button class="faraid-reset-btn" type="button" onclick="resetSenarioFaraid()" title="Kosongkan senario waris">
+                        <i class="fas fa-undo"></i>
+                    </button>
                 </div>
 
-
-
-                <!-- BUTTON -->
-
-                <button class="btn-faraid mt-2"
-                    onclick="kiraFaraid()">
-
-                    <i class="fas fa-calculator me-1"></i>
-
-                    KIRA PEMBAHAGIAN FARAID
-
-                </button>
-
-
-
-                <!-- =================================================
-                     KEPUTUSAN
-                ================================================== -->
-
+                <!-- KEPUTUSAN -->
                 <div id="resultFaraid">
-
-
-                    <h6 class="m-0 mb-2 fw-bold text-dark fs-6"
-                        style="
-                            border-bottom:1px dashed #9d7228;
-                            padding-bottom:4px;
-                        ">
-
-                        Keputusan Pembahagian:
-
+                    <h6 class="m-0 mb-2 fw-bold text-dark fs-6" style="border-bottom:1px dashed #9d7228;padding-bottom:4px;">
+                        Keputusan Pembahagian
                     </h6>
 
-
-                    <div class="d-flex justify-content-between mb-2"
-                        style="font-size:11px;">
-
-                        <span>
-
-                            Jumlah Waris:
-
-                            <strong id="resultWaris">
-                                0
-                            </strong>
-
-                        </span>
-
-
-                        <span>
-
-                            Status:
-
-                            <strong id="status"
-                                class="text-success">
-
-                                Selesai
-
-                            </strong>
-
-                        </span>
-
+                    <div class="faraid-result-summary">
+                        <div class="faraid-result-chip">Jumlah Waris Layak<strong id="resultWaris">0</strong></div>
+                        <div class="faraid-result-chip">Status<strong id="status">-</strong></div>
                     </div>
 
-
-
+                    <div id="faraidWarningContainer"></div>
                     <div id="faraidTableContainer"></div>
+                    <div id="faraidBlockedContainer"></div>
 
-
-
-                    <h6 class="mt-3 mb-1 fw-bold text-dark"
-                        style="font-size:11px;">
-
-                        Pelan Pembahagian Lot (Visual):
-
-                    </h6>
-
-
-                    <canvas id="lotCanvas"
-                        width="300"
-                        height="180">
-
-                    </canvas>
-
+                    <h6 class="mt-3 mb-1 fw-bold text-dark" style="font-size:11px;">Pelan Pembahagian Lot (Visual)</h6>
+                    <canvas id="lotCanvas" width="300" height="180"></canvas>
                 </div>
 
             </div>
-
         </nav>
 
 
@@ -4374,337 +4543,632 @@ header::after {
            PENGIRAAN FARAID
         ========================================================== */
 
-        function kiraFaraid() {
+        function faraidInputNumber(id) {
+            const el = document.getElementById(id);
+            if (!el || el.disabled) return 0;
+            let n = parseInt(el.value, 10);
+            if (!Number.isFinite(n) || n < 0) n = 0;
+            const max = el.getAttribute('max');
+            if (max !== null && max !== '') n = Math.min(n, parseInt(max, 10));
+            el.value = n;
+            return n;
+        }
 
+        function kemasKiniJantinaFaraid() {
+            const lelaki = !!document.getElementById('jantinaSiMatiLelaki')?.checked;
+            const isteri = document.getElementById('warisIsteri');
+            const suami = document.getElementById('warisSuami');
+            const status = document.getElementById('jantinaSiMatiStatus');
 
-            let luas =
-                parseFloat(
-                    document.getElementById(
-                        "luasTanah"
-                    ).value
-                );
+            if (status) status.textContent = lelaki ? 'Lelaki' : 'Perempuan';
 
+            if (isteri && suami) {
+                isteri.disabled = !lelaki;
+                suami.disabled = lelaki;
+                if (!lelaki) isteri.value = 0;
+                if (lelaki) suami.value = 0;
+            }
+        }
 
-            let adaIsteri =
-                document.querySelector(
-                    'input[name="isteri"]:checked'
-                ).value === "ya";
+        function resetSenarioFaraid() {
+            document.querySelectorAll('[data-faraid-count]').forEach(function (el) {
+                el.value = 0;
+            });
+            const lelaki = document.getElementById('jantinaSiMatiLelaki');
+            if (lelaki) lelaki.checked = true;
+            kemasKiniJantinaFaraid();
+            const result = document.getElementById('resultFaraid');
+            if (result) result.style.display = 'none';
+        }
 
+        function faraidPecahan(value) {
+            if (!Number.isFinite(value) || value <= 0) return '0';
+            if (Math.abs(value - 1) < 1e-9) return '1/1';
 
-            let anakLelaki =
-                parseInt(
-                    document.getElementById(
-                        "anakLelaki"
-                    ).value
-                ) || 0;
+            let bestN = 0;
+            let bestD = 1;
+            let bestErr = Infinity;
 
-
-            let anakPerempuan =
-                parseInt(
-                    document.getElementById(
-                        "anakPerempuan"
-                    ).value
-                ) || 0;
-
-
-
-            if (
-                isNaN(luas)
-                ||
-                luas <= 0
-            ) {
-
-                alert(
-                    "Sila pilih satu lot tanah daripada peta terlebih dahulu."
-                );
-
-                return;
-
+            for (let d = 1; d <= 120; d++) {
+                const n = Math.round(value * d);
+                const err = Math.abs(value - (n / d));
+                if (err < bestErr) {
+                    bestErr = err;
+                    bestN = n;
+                    bestD = d;
+                }
+                if (err < 1e-10) break;
             }
 
-
-
-            if (
-                !adaIsteri
-                &&
-                anakLelaki === 0
-                &&
-                anakPerempuan === 0
-            ) {
-
-                alert(
-                    "Sila masukkan sekurang-kurangnya seorang waris."
-                );
-
-                return;
-
+            function gcd(a, b) {
+                a = Math.abs(a); b = Math.abs(b);
+                while (b) { const t = b; b = a % b; a = t; }
+                return a || 1;
             }
 
+            const g = gcd(bestN, bestD);
+            return (bestN / g) + '/' + (bestD / g);
+        }
 
+        function faraidKumpulData() {
+            return {
+                lelaki: !!document.getElementById('jantinaSiMatiLelaki')?.checked,
+                ibu: faraidInputNumber('warisIbu'),
+                bapa: faraidInputNumber('warisBapa'),
+                isteri: faraidInputNumber('warisIsteri'),
+                suami: faraidInputNumber('warisSuami'),
+                anakLelaki: faraidInputNumber('warisAnakLelaki'),
+                anakPerempuan: faraidInputNumber('warisAnakPerempuan'),
+                datukBapa: faraidInputNumber('warisDatukBapa'),
+                nenekBapa: faraidInputNumber('warisNenekBapa'),
+                nenekIbu: faraidInputNumber('warisNenekIbu'),
+                cucuLelaki: faraidInputNumber('warisCucuLelaki'),
+                cucuPerempuan: faraidInputNumber('warisCucuPerempuan'),
+                cicitLelaki: faraidInputNumber('warisCicitLelaki'),
+                cicitPerempuan: faraidInputNumber('warisCicitPerempuan'),
+                sibl: faraidInputNumber('warisSIBL'),
+                sbl: faraidInputNumber('warisSBL'),
+                sil: faraidInputNumber('warisSIL'),
+                sibp: faraidInputNumber('warisSIBP'),
+                sbp: faraidInputNumber('warisSBP'),
+                sip: faraidInputNumber('warisSIP'),
+                anakSibl: faraidInputNumber('warisAnakSIBL'),
+                anakSbl: faraidInputNumber('warisAnakSBL'),
+                bapaSaudaraSibl: faraidInputNumber('warisBapaSaudaraSIBL'),
+                bapaSaudaraSbl: faraidInputNumber('warisBapaSaudaraSBL'),
+                sepupuSibl: faraidInputNumber('warisSepupuSIBL'),
+                sepupuSbl: faraidInputNumber('warisSepupuSBL'),
+                siblDatuk: faraidInputNumber('warisSIBLDatuk'),
+                sblDatuk: faraidInputNumber('warisSBLDatuk'),
+                anakSiblDatuk: faraidInputNumber('warisAnakSIBLDatuk'),
+                anakSblDatuk: faraidInputNumber('warisAnakSBLDatuk')
+            };
+        }
 
-            let senaraiWaris = [];
+        function faraidKiraEnjin(d, luas) {
+            const EPS = 1e-9;
+            const shares = [];
+            const blocked = [];
+            const warnings = [];
+            const unresolvedKeys = new Set();
+            const blockedKeys = new Set();
 
-            let bahagianIsteri = 0;
+            const labels = {
+                ibu:'Ibu', bapa:'Bapa', isteri:'Isteri', suami:'Suami',
+                anakLelaki:'Anak Lelaki', anakPerempuan:'Anak Perempuan',
+                datukBapa:'Bapa kepada Bapa (Datuk)', nenekBapa:'Ibu kepada Bapa (Nenek)', nenekIbu:'Ibu kepada Ibu (Nenek)',
+                cucuLelaki:'Cucu Lelaki', cucuPerempuan:'Cucu Perempuan', cicitLelaki:'Cicit Lelaki', cicitPerempuan:'Cicit Perempuan',
+                sibl:'Saudara Seibu Sebapa Lelaki (SIBL)', sbl:'Saudara Sebapa Lelaki (SBL)', sil:'Saudara Seibu Lelaki (SIL)',
+                sibp:'Saudara Seibu Sebapa Perempuan (SIBP)', sbp:'Saudara Sebapa Perempuan (SBP)', sip:'Saudara Seibu Perempuan (SIP)',
+                anakSibl:'Anak Lelaki kepada SIBL (Anak Saudara)', anakSbl:'Anak Lelaki kepada SBL (Anak Saudara)',
+                bapaSaudaraSibl:'SIBL kepada Bapa (Bapa Saudara)', bapaSaudaraSbl:'SBL kepada Bapa (Bapa Saudara)',
+                sepupuSibl:'Anak Lelaki kepada SIBL kepada Bapa (Sepupu)', sepupuSbl:'Anak Lelaki kepada SBL kepada Bapa (Sepupu)',
+                siblDatuk:'SIBL Datuk', sblDatuk:'SBL Datuk', anakSiblDatuk:'Anak Lelaki SIBL Datuk', anakSblDatuk:'Anak Lelaki SBL Datuk'
+            };
 
-            let baki = 1.0;
+            const allKeys = Object.keys(labels);
 
+            function count(key){ return Number(d[key] || 0); }
 
+            function addBlocked(key, reason) {
+                if (count(key) <= 0 || blockedKeys.has(key) || unresolvedKeys.has(key)) return;
+                blockedKeys.add(key);
+                blocked.push({key:key, nama:labels[key], count:count(key), reason:reason});
+            }
 
-            /* =====================================================
-               ISTERI
-            ====================================================== */
+            function addShare(key, name, qty, totalShare, basis, type) {
+                if (!qty || qty <= 0 || !Number.isFinite(totalShare) || totalShare <= EPS) return;
+                const existing = shares.find(function(s){ return s.key === key; });
+                if (existing) {
+                    existing.totalShare += totalShare;
+                    if (basis && !existing.basis.includes(basis)) existing.basis += ' + ' + basis;
+                    if (type === 'residue') existing.type = 'mixed';
+                    return;
+                }
+                shares.push({
+                    key:key,
+                    nama:name || labels[key] || key,
+                    count:qty,
+                    totalShare:totalShare,
+                    basis:basis || '',
+                    type:type || 'fixed'
+                });
+            }
 
-            if (adaIsteri) {
+            /* -----------------------------------------------------
+               1) Kelayakan keturunan mengikut darjat terdekat
+            ----------------------------------------------------- */
+            let cucuL = count('cucuLelaki');
+            let cucuP = count('cucuPerempuan');
+            let cicitL = count('cicitLelaki');
+            let cicitP = count('cicitPerempuan');
 
+            if (count('anakLelaki') > 0) {
+                if (cucuL) addBlocked('cucuLelaki', 'Terhijab oleh Anak Lelaki yang lebih hampir.');
+                if (cucuP) addBlocked('cucuPerempuan', 'Terhijab oleh Anak Lelaki yang lebih hampir.');
+                if (cicitL) addBlocked('cicitLelaki', 'Terhijab oleh Anak Lelaki yang lebih hampir.');
+                if (cicitP) addBlocked('cicitPerempuan', 'Terhijab oleh Anak Lelaki yang lebih hampir.');
+                cucuL = cucuP = cicitL = cicitP = 0;
+            } else if (cucuL > 0) {
+                if (cicitL) addBlocked('cicitLelaki', 'Terhijab oleh Cucu Lelaki yang lebih hampir.');
+                if (cicitP) addBlocked('cicitPerempuan', 'Terhijab oleh Cucu Lelaki yang lebih hampir.');
+                cicitL = cicitP = 0;
+            }
 
-                let adaAnak =
-                    (
-                        anakLelaki
-                        +
-                        anakPerempuan
-                    ) > 0;
+            const adaKeturunan = (count('anakLelaki') + count('anakPerempuan') + cucuL + cucuP + cicitL + cicitP) > 0;
+            const adaKeturunanLelaki = (count('anakLelaki') + cucuL + cicitL) > 0;
+            const adaKeturunanPerempuan = (count('anakPerempuan') + cucuP + cicitP) > 0;
+            const jumlahSaudaraMentah = count('sibl') + count('sbl') + count('sil') + count('sibp') + count('sbp') + count('sip');
 
+            /* -----------------------------------------------------
+               2) Hijab asas ibu/bapa/datuk/nenek
+            ----------------------------------------------------- */
+            let datukEligible = count('datukBapa');
+            if (count('bapa') > 0 && datukEligible > 0) {
+                addBlocked('datukBapa', 'Terhijab oleh Bapa.');
+                datukEligible = 0;
+            }
 
-                bahagianIsteri =
-                    adaAnak
-                        ? (1 / 8)
-                        : (1 / 4);
+            let nenekIbuEligible = count('nenekIbu');
+            let nenekBapaEligible = count('nenekBapa');
+            if (count('ibu') > 0) {
+                if (nenekIbuEligible) addBlocked('nenekIbu', 'Terhijab oleh Ibu.');
+                if (nenekBapaEligible) addBlocked('nenekBapa', 'Terhijab oleh Ibu.');
+                nenekIbuEligible = 0;
+                nenekBapaEligible = 0;
+            } else if (count('bapa') > 0 && nenekBapaEligible > 0) {
+                addBlocked('nenekBapa', 'Terhijab oleh Bapa.');
+                nenekBapaEligible = 0;
+            }
 
+            /* -----------------------------------------------------
+               3) Suami / isteri
+            ----------------------------------------------------- */
+            if (d.lelaki && count('isteri') > 0) {
+                addShare('isteri', labels.isteri, count('isteri'), adaKeturunan ? 1/8 : 1/4, adaKeturunan ? '1/8 kerana ada keturunan' : '1/4 kerana tiada keturunan', 'fixed');
+            }
+            if (!d.lelaki && count('suami') > 0) {
+                addShare('suami', labels.suami, count('suami'), adaKeturunan ? 1/4 : 1/2, adaKeturunan ? '1/4 kerana ada keturunan' : '1/2 kerana tiada keturunan', 'fixed');
+            }
 
-                baki -=
-                    bahagianIsteri;
+            const spouseShare = shares.filter(function(s){ return s.key === 'isteri' || s.key === 'suami'; }).reduce(function(a,s){ return a+s.totalShare; },0);
 
+            /* -----------------------------------------------------
+               4) Ibu
+            ----------------------------------------------------- */
+            const umariyyatain = count('ibu') > 0 && count('bapa') > 0 && !adaKeturunan && jumlahSaudaraMentah < 2 && spouseShare > 0;
+            if (count('ibu') > 0) {
+                if (umariyyatain) {
+                    addShare('ibu', labels.ibu, 1, (1 - spouseShare) / 3, '1/3 daripada baki selepas bahagian pasangan (Umariyyatain)', 'fixed');
+                } else if (adaKeturunan || jumlahSaudaraMentah >= 2) {
+                    addShare('ibu', labels.ibu, 1, 1/6, '1/6 kerana ada keturunan atau dua/lebih saudara', 'fixed');
+                } else {
+                    addShare('ibu', labels.ibu, 1, 1/3, '1/3 kerana tiada keturunan dan tiada dua/lebih saudara', 'fixed');
+                }
+            }
 
+            /* -----------------------------------------------------
+               5) Nenek - berkongsi 1/6 jika layak
+            ----------------------------------------------------- */
+            const jumlahNenekLayak = nenekIbuEligible + nenekBapaEligible;
+            if (jumlahNenekLayak > 0) {
+                if (nenekIbuEligible > 0) addShare('nenekIbu', labels.nenekIbu, nenekIbuEligible, (1/6) * (nenekIbuEligible / jumlahNenekLayak), 'Berkongsi kadar 1/6 antara nenek yang layak', 'fixed');
+                if (nenekBapaEligible > 0) addShare('nenekBapa', labels.nenekBapa, nenekBapaEligible, (1/6) * (nenekBapaEligible / jumlahNenekLayak), 'Berkongsi kadar 1/6 antara nenek yang layak', 'fixed');
+            }
 
-                senaraiWaris.push({
+            /* -----------------------------------------------------
+               6) Anak perempuan / cucu perempuan / cicit perempuan
+            ----------------------------------------------------- */
+            if (count('anakLelaki') === 0 && count('anakPerempuan') > 0) {
+                addShare('anakPerempuan', labels.anakPerempuan, count('anakPerempuan'), count('anakPerempuan') === 1 ? 1/2 : 2/3, count('anakPerempuan') === 1 ? '1/2 sebagai seorang anak perempuan' : '2/3 dikongsi anak-anak perempuan', 'fixed');
+            }
 
-                    nama:
-                        "Isteri",
+            if (count('anakLelaki') === 0 && cucuL === 0 && cucuP > 0) {
+                if (count('anakPerempuan') === 0) {
+                    addShare('cucuPerempuan', labels.cucuPerempuan, cucuP, cucuP === 1 ? 1/2 : 2/3, cucuP === 1 ? '1/2 sebagai seorang cucu perempuan melalui anak lelaki' : '2/3 dikongsi cucu perempuan', 'fixed');
+                } else if (count('anakPerempuan') === 1) {
+                    addShare('cucuPerempuan', labels.cucuPerempuan, cucuP, 1/6, '1/6 untuk menyempurnakan 2/3 bersama seorang anak perempuan', 'fixed');
+                } else {
+                    addBlocked('cucuPerempuan', 'Terhijab apabila dua atau lebih Anak Perempuan telah mengambil 2/3 dan tiada Cucu Lelaki yang mengasabahkan.');
+                    cucuP = 0;
+                }
+            }
 
-                    nisbahText:
-                        adaAnak
-                            ? "1/8"
-                            : "1/4",
+            if (count('anakLelaki') === 0 && cucuL === 0 && cicitL === 0 && cicitP > 0) {
+                const shareFemaleCloser = shares.filter(function(s){ return s.key === 'anakPerempuan' || s.key === 'cucuPerempuan'; }).reduce(function(a,s){ return a+s.totalShare; },0);
+                if (shareFemaleCloser < EPS) {
+                    addShare('cicitPerempuan', labels.cicitPerempuan, cicitP, cicitP === 1 ? 1/2 : 2/3, cicitP === 1 ? '1/2 sebagai seorang cicit perempuan melalui jalur anak lelaki' : '2/3 dikongsi cicit perempuan', 'fixed');
+                } else if (Math.abs(shareFemaleCloser - 1/2) < 1e-6) {
+                    addShare('cicitPerempuan', labels.cicitPerempuan, cicitP, 1/6, '1/6 untuk menyempurnakan 2/3 bersama waris perempuan keturunan yang lebih hampir', 'fixed');
+                } else if (shareFemaleCloser >= (2/3 - 1e-6)) {
+                    addBlocked('cicitPerempuan', 'Terhijab kerana waris perempuan keturunan yang lebih hampir telah mengambil 2/3 dan tiada Cicit Lelaki yang mengasabahkan.');
+                    cicitP = 0;
+                }
+            }
 
-                    peratus:
-                        bahagianIsteri,
+            /* -----------------------------------------------------
+               7) Bapa / datuk
+            ----------------------------------------------------- */
+            if (count('bapa') > 0 && adaKeturunan) {
+                addShare('bapa', labels.bapa, 1, 1/6, adaKeturunanLelaki ? '1/6 kerana ada keturunan lelaki' : '1/6 dan berpotensi menerima baki kerana hanya ada keturunan perempuan', 'fixed');
+            }
+            if (datukEligible > 0 && adaKeturunan) {
+                addShare('datukBapa', labels.datukBapa, datukEligible, 1/6, adaKeturunanLelaki ? '1/6 kerana ada keturunan lelaki dan Bapa tiada' : '1/6 dan berpotensi menerima baki kerana Bapa tiada', 'fixed');
+            }
 
-                    luas:
-                        luas *
-                        bahagianIsteri
+            /* -----------------------------------------------------
+               8) Saudara seibu
+            ----------------------------------------------------- */
+            const uterineTotal = count('sil') + count('sip');
+            if (uterineTotal > 0) {
+                if (adaKeturunan || count('bapa') > 0 || datukEligible > 0) {
+                    if (count('sil')) addBlocked('sil', 'Terhijab oleh keturunan atau usul lelaki (Bapa/Datuk).');
+                    if (count('sip')) addBlocked('sip', 'Terhijab oleh keturunan atau usul lelaki (Bapa/Datuk).');
+                } else {
+                    const totalUterineShare = uterineTotal === 1 ? 1/6 : 1/3;
+                    if (count('sil')) addShare('sil', labels.sil, count('sil'), totalUterineShare * (count('sil') / uterineTotal), uterineTotal === 1 ? '1/6 sebagai seorang saudara seibu' : 'Berkongsi 1/3 sama rata antara saudara seibu', 'fixed');
+                    if (count('sip')) addShare('sip', labels.sip, count('sip'), totalUterineShare * (count('sip') / uterineTotal), uterineTotal === 1 ? '1/6 sebagai seorang saudara seibu' : 'Berkongsi 1/3 sama rata antara saudara seibu', 'fixed');
+                }
+            }
 
+            /* -----------------------------------------------------
+               9) Saudara kandung / sebapa - bahagian tetap atau asabah
+            ----------------------------------------------------- */
+            let kesDatukSaudara = false;
+            const fullOrPaternalSiblings = count('sibl') + count('sibp') + count('sbl') + count('sbp');
+            if (datukEligible > 0 && fullOrPaternalSiblings > 0 && count('bapa') === 0 && !adaKeturunanLelaki) {
+                kesDatukSaudara = true;
+                warnings.push('Kes Datuk bersama saudara kandung/sebapa mempunyai kaedah perbandingan khas (muqasamah / kadar tertentu). Baki kes ini tidak diagihkan automatik dan perlu pengesahan ahli faraid.');
+                ['sibl','sibp','sbl','sbp'].forEach(function(k){ if (count(k) > 0) unresolvedKeys.add(k); });
+                unresolvedKeys.add('datukBapa');
+            }
+
+            const siblingsBlockedByFatherOrMaleDesc = count('bapa') > 0 || adaKeturunanLelaki;
+            let fullSisterAsabah = false;
+            let paternalSisterAsabah = false;
+
+            if (siblingsBlockedByFatherOrMaleDesc) {
+                ['sibl','sibp','sbl','sbp'].forEach(function(k){
+                    if (count(k) > 0) addBlocked(k, count('bapa') > 0 ? 'Terhijab oleh Bapa.' : 'Terhijab oleh keturunan lelaki yang lebih hampir.');
+                });
+            } else if (!kesDatukSaudara) {
+                if (count('sibl') === 0 && count('sibp') > 0) {
+                    if (adaKeturunanPerempuan) {
+                        fullSisterAsabah = true;
+                    } else {
+                        addShare('sibp', labels.sibp, count('sibp'), count('sibp') === 1 ? 1/2 : 2/3, count('sibp') === 1 ? '1/2 sebagai seorang saudara kandung perempuan' : '2/3 dikongsi saudara kandung perempuan', 'fixed');
+                    }
+                }
+
+                if (count('sibl') > 0) {
+                    if (count('sbl')) addBlocked('sbl', 'Terhijab oleh Saudara Seibu Sebapa Lelaki (SIBL).');
+                    if (count('sbp')) addBlocked('sbp', 'Terhijab oleh Saudara Seibu Sebapa Lelaki (SIBL).');
+                } else if (fullSisterAsabah) {
+                    if (count('sbl')) addBlocked('sbl', 'Terhijab oleh Saudara Seibu Sebapa Perempuan yang menjadi asabah bersama keturunan perempuan.');
+                    if (count('sbp')) addBlocked('sbp', 'Terhijab oleh Saudara Seibu Sebapa Perempuan yang menjadi asabah bersama keturunan perempuan.');
+                } else if (count('sbl') === 0 && count('sbp') > 0) {
+                    if (adaKeturunanPerempuan && count('sibp') === 0) {
+                        paternalSisterAsabah = true;
+                    } else if (!adaKeturunanPerempuan) {
+                        if (count('sibp') === 0) {
+                            addShare('sbp', labels.sbp, count('sbp'), count('sbp') === 1 ? 1/2 : 2/3, count('sbp') === 1 ? '1/2 sebagai seorang saudara sebapa perempuan' : '2/3 dikongsi saudara sebapa perempuan', 'fixed');
+                        } else if (count('sibp') === 1) {
+                            addShare('sbp', labels.sbp, count('sbp'), 1/6, '1/6 untuk menyempurnakan 2/3 bersama seorang saudara kandung perempuan', 'fixed');
+                        } else {
+                            addBlocked('sbp', 'Terhijab oleh dua atau lebih Saudara Seibu Sebapa Perempuan yang telah mengambil 2/3.');
+                        }
+                    }
+                }
+            }
+
+            /* -----------------------------------------------------
+               10) Jumlah bahagian fardu dan AWL
+            ----------------------------------------------------- */
+            let fixedTotal = shares.reduce(function(a,s){ return a + s.totalShare; },0);
+            let statusText = 'Selesai';
+            let awl = false;
+            let radd = false;
+
+            if (fixedTotal > 1 + EPS) {
+                awl = true;
+                const factor = 1 / fixedTotal;
+                shares.forEach(function(s){
+                    s.totalShare *= factor;
+                    s.basis += ' (diselaraskan melalui Awl)';
+                });
+                fixedTotal = 1;
+                statusText = 'Awl';
+            }
+
+            let baki = Math.max(0, 1 - fixedTotal);
+            let residuaryUsed = false;
+
+            function allocateWeightedResidue(members, basis) {
+                const valid = members.filter(function(m){ return m.count > 0; });
+                if (!valid.length || baki <= EPS) return false;
+                const units = valid.reduce(function(a,m){ return a + (m.count * m.weight); },0);
+                if (units <= 0) return false;
+                valid.forEach(function(m){
+                    const total = baki * ((m.count * m.weight) / units);
+                    addShare(m.key, labels[m.key], m.count, total, basis, 'residue');
+                });
+                baki = 0;
+                residuaryUsed = true;
+                return true;
+            }
+
+            function allocateEqualResidue(key, qty, basis) {
+                if (!qty || baki <= EPS) return false;
+                addShare(key, labels[key], qty, baki, basis, 'residue');
+                baki = 0;
+                residuaryUsed = true;
+                return true;
+            }
+
+            /* -----------------------------------------------------
+               11) Asabah mengikut tertib
+            ----------------------------------------------------- */
+            if (!awl && baki > EPS) {
+                if (count('anakLelaki') > 0) {
+                    allocateWeightedResidue([
+                        {key:'anakLelaki',count:count('anakLelaki'),weight:2},
+                        {key:'anakPerempuan',count:count('anakPerempuan'),weight:1}
+                    ], 'Asabah: lelaki menerima dua bahagian berbanding perempuan');
+                } else if (cucuL > 0) {
+                    allocateWeightedResidue([
+                        {key:'cucuLelaki',count:cucuL,weight:2},
+                        {key:'cucuPerempuan',count:cucuP,weight:1}
+                    ], 'Asabah melalui keturunan anak lelaki: nisbah lelaki 2, perempuan 1');
+                } else if (cicitL > 0) {
+                    if (cucuP > 0) warnings.push('Terdapat kombinasi cucu perempuan yang lebih hampir bersama cicit lelaki. Sila semak kaedah ta\'sib bagi kes sebenar.');
+                    allocateWeightedResidue([
+                        {key:'cicitLelaki',count:cicitL,weight:2},
+                        {key:'cicitPerempuan',count:cicitP,weight:1}
+                    ], 'Asabah pada darjat cicit: nisbah lelaki 2, perempuan 1');
+                } else if (count('bapa') > 0) {
+                    allocateEqualResidue('bapa', 1, adaKeturunanPerempuan ? 'Asabah baki selepas 1/6 kerana hanya ada keturunan perempuan' : 'Asabah sebagai Bapa');
+                } else if (datukEligible > 0 && !kesDatukSaudara) {
+                    allocateEqualResidue('datukBapa', datukEligible, adaKeturunanPerempuan ? 'Asabah baki selepas 1/6 sebagai Datuk kerana Bapa tiada' : 'Asabah sebagai Datuk kerana Bapa tiada');
+                } else if (!kesDatukSaudara && count('sibl') > 0) {
+                    allocateWeightedResidue([
+                        {key:'sibl',count:count('sibl'),weight:2},
+                        {key:'sibp',count:count('sibp'),weight:1}
+                    ], 'Asabah saudara kandung: nisbah lelaki 2, perempuan 1');
+                } else if (!kesDatukSaudara && fullSisterAsabah) {
+                    allocateEqualResidue('sibp', count('sibp'), 'Asabah ma\'al ghair bersama keturunan perempuan');
+                } else if (!kesDatukSaudara && count('sbl') > 0) {
+                    allocateWeightedResidue([
+                        {key:'sbl',count:count('sbl'),weight:2},
+                        {key:'sbp',count:count('sbp'),weight:1}
+                    ], 'Asabah saudara sebapa: nisbah lelaki 2, perempuan 1');
+                } else if (!kesDatukSaudara && paternalSisterAsabah) {
+                    allocateEqualResidue('sbp', count('sbp'), 'Asabah ma\'al ghair bersama keturunan perempuan');
+                }
+            }
+
+            /* -----------------------------------------------------
+               12) Asabah lelaki yang lebih jauh
+            ----------------------------------------------------- */
+            if (!awl && baki > EPS && !kesDatukSaudara && !residuaryUsed) {
+                const collateralOrder = [
+                    ['anakSibl','Anak saudara lelaki daripada SIBL'],
+                    ['anakSbl','Anak saudara lelaki daripada SBL'],
+                    ['bapaSaudaraSibl','Bapa saudara kandung sebelah bapa'],
+                    ['bapaSaudaraSbl','Bapa saudara sebapa sebelah bapa'],
+                    ['sepupuSibl','Sepupu lelaki daripada bapa saudara kandung'],
+                    ['sepupuSbl','Sepupu lelaki daripada bapa saudara sebapa'],
+                    ['siblDatuk','Saudara kandung lelaki Datuk'],
+                    ['sblDatuk','Saudara sebapa lelaki Datuk'],
+                    ['anakSiblDatuk','Anak lelaki saudara kandung Datuk'],
+                    ['anakSblDatuk','Anak lelaki saudara sebapa Datuk']
+                ];
+
+                const collateralBlockedByClose = count('bapa') > 0 || datukEligible > 0 || adaKeturunanLelaki || count('sibl') > 0 || count('sbl') > 0 || fullSisterAsabah || paternalSisterAsabah;
+
+                if (!collateralBlockedByClose) {
+                    let chosenIndex = -1;
+                    for (let i=0;i<collateralOrder.length;i++) {
+                        if (count(collateralOrder[i][0]) > 0) { chosenIndex = i; break; }
+                    }
+                    if (chosenIndex >= 0) {
+                        const chosenKey = collateralOrder[chosenIndex][0];
+                        allocateEqualResidue(chosenKey, count(chosenKey), 'Asabah lelaki mengikut tertib kerabat sebelah bapa');
+                        for (let i=chosenIndex+1;i<collateralOrder.length;i++) {
+                            const k = collateralOrder[i][0];
+                            if (count(k) > 0) addBlocked(k, 'Terhijab oleh waris asabah lelaki yang lebih hampir: ' + labels[chosenKey] + '.');
+                        }
+                    }
+                }
+            }
+
+            /* Hijab kerabat kedua yang jelas oleh waris lebih hampir */
+            const collateralKeys = ['anakSibl','anakSbl','bapaSaudaraSibl','bapaSaudaraSbl','sepupuSibl','sepupuSbl','siblDatuk','sblDatuk','anakSiblDatuk','anakSblDatuk'];
+            if (count('bapa') > 0 || adaKeturunanLelaki) {
+                collateralKeys.forEach(function(k){ if (count(k) > 0) addBlocked(k, count('bapa') > 0 ? 'Terhijab oleh Bapa.' : 'Terhijab oleh keturunan lelaki yang lebih hampir.'); });
+            } else if (datukEligible > 0) {
+                collateralKeys.forEach(function(k){ if (count(k) > 0) addBlocked(k, 'Terhijab oleh Datuk yang lebih hampir.'); });
+            } else if (count('sibl') > 0 || count('sbl') > 0 || fullSisterAsabah || paternalSisterAsabah) {
+                collateralKeys.forEach(function(k){ if (count(k) > 0) addBlocked(k, 'Terhijab oleh saudara yang lebih hampir dalam tertib asabah.'); });
+            }
+
+            /* -----------------------------------------------------
+               13) Radd / baki
+            ----------------------------------------------------- */
+            if (!awl && baki > EPS && !kesDatukSaudara && !residuaryUsed) {
+                const raddEligible = shares.filter(function(s){ return s.key !== 'isteri' && s.key !== 'suami'; });
+                const base = raddEligible.reduce(function(a,s){ return a+s.totalShare; },0);
+
+                if (base > EPS) {
+                    const bakiAsal = baki;
+                    raddEligible.forEach(function(s){
+                        s.totalShare += bakiAsal * (s.totalShare / base);
+                        if (!s.basis.includes('Radd')) s.basis += ' + Radd baki';
+                    });
+                    baki = 0;
+                    radd = true;
+                    statusText = 'Radd';
+                } else {
+                    shares.push({key:'baitulmal',nama:'Baki / Baitulmal',count:1,totalShare:baki,basis:'Tiada waris asabah / penerima radd lain dalam senario ini',type:'baitulmal'});
+                    baki = 0;
+                    statusText = 'Baki Baitulmal';
+                }
+            }
+
+            if (kesDatukSaudara && baki > EPS) {
+                shares.push({key:'unresolved',nama:'Baki Perlu Pengesahan',count:1,totalShare:baki,basis:'Kes Datuk bersama saudara memerlukan kaedah khas dan semakan ahli faraid',type:'unresolved'});
+                baki = 0;
+                statusText = 'Semakan diperlukan';
+            }
+
+            /* -----------------------------------------------------
+               14) Tandakan input yang tidak menerima bahagian
+            ----------------------------------------------------- */
+            const usedKeys = new Set(shares.map(function(s){ return s.key; }));
+            allKeys.forEach(function(k){
+                if (count(k) > 0 && !usedKeys.has(k) && !blockedKeys.has(k) && !unresolvedKeys.has(k)) {
+                    addBlocked(k, 'Tidak menerima bahagian dalam kombinasi waris ini kerana keutamaan/hijab waris yang lebih hampir.');
+                }
+            });
+
+            shares.forEach(function(s){
+                s.perPerson = s.count > 0 ? s.totalShare / s.count : s.totalShare;
+                s.totalArea = luas * s.totalShare;
+                s.areaPerPerson = s.count > 0 ? s.totalArea / s.count : s.totalArea;
+            });
+
+            if (warnings.length && statusText === 'Selesai') statusText = 'Semakan diperlukan';
+            if (awl) statusText = 'Awl';
+            else if (radd) statusText = 'Radd';
+
+            return {shares:shares, blocked:blocked, warnings:warnings, status:statusText};
+        }
+
+        function faraidRenderKeputusan(result, luas) {
+            const tableContainer = document.getElementById('faraidTableContainer');
+            const blockedContainer = document.getElementById('faraidBlockedContainer');
+            const warningContainer = document.getElementById('faraidWarningContainer');
+            const statusEl = document.getElementById('status');
+            const resultWaris = document.getElementById('resultWaris');
+
+            const actualShares = result.shares.filter(function(s){ return s.key !== 'baitulmal' && s.key !== 'unresolved'; });
+            const heirCount = actualShares.reduce(function(a,s){ return a + (s.count || 0); },0);
+            if (resultWaris) resultWaris.textContent = heirCount;
+            if (statusEl) {
+                statusEl.textContent = result.status;
+                statusEl.className = result.status === 'Selesai' || result.status === 'Radd' ? 'text-success' : 'text-warning';
+            }
+
+            if (result.warnings.length) {
+                warningContainer.innerHTML = '<div class="faraid-warning-box"><strong><i class="fas fa-exclamation-triangle me-1"></i>Perhatian</strong><ul>' +
+                    result.warnings.map(function(w){ return '<li>' + w + '</li>'; }).join('') + '</ul></div>';
+            } else {
+                warningContainer.innerHTML = '';
+            }
+
+            if (!result.shares.length) {
+                tableContainer.innerHTML = '<div class="faraid-result-empty">Tiada bahagian dapat ditentukan.</div>';
+            } else {
+                let html = '<div class="faraid-table-wrap"><table class="faraid-table faraid-new-table"><thead><tr>' +
+                    '<th>Waris</th><th>Bil.</th><th>Bahagian Seorang</th><th>Jumlah</th><th>Luas Keseluruhan</th></tr></thead><tbody>';
+
+                result.shares.forEach(function(s){
+                    const per = s.perPerson || s.totalShare;
+                    html += '<tr>' +
+                        '<td><strong>' + s.nama + '</strong><span class="faraid-basis">' + s.basis + '</span></td>' +
+                        '<td>' + (s.count || '-') + '</td>' +
+                        '<td>' + faraidPecahan(per) + '<br>' + (per*100).toFixed(2) + '%<span class="faraid-basis">' + ((s.areaPerPerson || s.totalArea).toFixed(2)) + ' m² / orang</span></td>' +
+                        '<td>' + faraidPecahan(s.totalShare) + '<br><strong>' + (s.totalShare*100).toFixed(2) + '%</strong></td>' +
+                        '<td><strong>' + s.totalArea.toFixed(2) + ' m²</strong></td>' +
+                        '</tr>';
                 });
 
+                html += '</tbody></table></div>';
+                tableContainer.innerHTML = html;
             }
 
-
-
-            /* =====================================================
-               ANAK-ANAK
-               LELAKI : PEREMPUAN = 2 : 1
-            ====================================================== */
-
-            let jumlahAnak =
-                anakLelaki
-                +
-                anakPerempuan;
-
-
-
-            if (
-                jumlahAnak > 0
-            ) {
-
-
-                let jumlahUnit =
-                    (
-                        anakLelaki * 2
-                    )
-                    +
-                    (
-                        anakPerempuan * 1
-                    );
-
-
-                let nilaiSatuUnit =
-                    baki /
-                    jumlahUnit;
-
-
-
-                /* ANAK LELAKI */
-
-                for (
-                    let i = 1;
-                    i <= anakLelaki;
-                    i++
-                ) {
-
-
-                    let p =
-                        nilaiSatuUnit * 2;
-
-
-
-                    senaraiWaris.push({
-
-                        nama:
-                            "Anak Lelaki " + i,
-
-                        nisbahText:
-                            "2 Bahagian",
-
-                        peratus:
-                            p,
-
-                        luas:
-                            luas * p
-
-                    });
-
-                }
-
-
-
-                /* ANAK PEREMPUAN */
-
-                for (
-                    let j = 1;
-                    j <= anakPerempuan;
-                    j++
-                ) {
-
-
-                    let p =
-                        nilaiSatuUnit;
-
-
-
-                    senaraiWaris.push({
-
-                        nama:
-                            "Anak Perempuan " + j,
-
-                        nisbahText:
-                            "1 Bahagian",
-
-                        peratus:
-                            p,
-
-                        luas:
-                            luas * p
-
-                    });
-
-                }
-
+            if (result.blocked.length) {
+                blockedContainer.innerHTML = '<div class="faraid-blocked-box"><strong><i class="fas fa-ban me-1"></i>Waris Terhijab / Tidak Menerima Bahagian</strong><ul>' +
+                    result.blocked.map(function(b){ return '<li><strong>' + b.nama + (b.count > 1 ? ' (' + b.count + ')' : '') + ':</strong> ' + b.reason + '</li>'; }).join('') +
+                    '</ul></div>';
+            } else {
+                blockedContainer.innerHTML = '';
             }
-
-
-
-            /* =====================================================
-               JUMLAH WARIS
-            ====================================================== */
-
-            document.getElementById(
-                "resultWaris"
-            ).innerText =
-                senaraiWaris.length;
-
-
-
-            /* =====================================================
-               JADUAL
-            ====================================================== */
-
-            let htmlJadual =
-                `<table class="faraid-table">
-
-                    <thead>
-
-                        <tr>
-
-                            <th>
-                                Waris
-                            </th>
-
-                            <th>
-                                Kadar / Peratus
-                            </th>
-
-                            <th>
-                                Luas Diperolehi (m²)
-                            </th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody>`;
-
-
-
-            senaraiWaris.forEach(
-                w => {
-
-                    htmlJadual +=
-                        `<tr>
-
-                            <td>
-                                <strong>
-                                    ${w.nama}
-                                </strong>
-                            </td>
-
-                            <td>
-                                ${(w.peratus * 100).toFixed(2)}%
-                            </td>
-
-                            <td>
-                                <strong>
-                                    ${w.luas.toFixed(2)} m²
-                                </strong>
-                            </td>
-
-                        </tr>`;
-
-                }
-            );
-
-
-
-            htmlJadual +=
-                `</tbody>
-                </table>`;
-
-
-            document.getElementById(
-                "faraidTableContainer"
-            ).innerHTML =
-                htmlJadual;
-
-
-
-            /* =====================================================
-               VISUAL LOT
-            ====================================================== */
-
-            /* Gunakan lot yang sedang dipilih pada peta.
-             * Jika parameter tidak dihantar, fungsi visual akan cuba
-             * menggunakan highlightLayer sebagai fallback.
-             */
-            lukisPelanLot(
-                senaraiWaris,
-                highlightLayer
-            );
-
-
-            document.getElementById(
-                "resultFaraid"
-            ).style.display =
-                "block";
-
         }
+
+        function kiraFaraid() {
+            const luas = parseFloat(document.getElementById('luasTanah')?.value);
+
+            if (!Number.isFinite(luas) || luas <= 0) {
+                alert('Sila pilih satu lot tanah daripada peta terlebih dahulu.');
+                return;
+            }
+
+            kemasKiniJantinaFaraid();
+            const d = faraidKumpulData();
+            const jumlahInputWaris = Object.keys(d).filter(function(k){ return k !== 'lelaki'; }).reduce(function(a,k){ return a + Number(d[k] || 0); },0);
+
+            if (jumlahInputWaris <= 0) {
+                alert('Sila masukkan sekurang-kurangnya seorang waris.');
+                return;
+            }
+
+            const result = faraidKiraEnjin(d, luas);
+            faraidRenderKeputusan(result, luas);
+
+            const visual = [];
+            result.shares.forEach(function(s){
+                if (s.key === 'unresolved') return;
+                if (s.count > 0 && s.count <= 12 && s.key !== 'baitulmal') {
+                    for (let i=1;i<=s.count;i++) {
+                        visual.push({
+                            nama: s.count > 1 ? (s.nama + ' ' + i) : s.nama,
+                            peratus: s.perPerson,
+                            luas: luas * s.perPerson,
+                            nisbahText: faraidPecahan(s.perPerson)
+                        });
+                    }
+                } else {
+                    visual.push({
+                        nama:s.nama,
+                        peratus:s.totalShare,
+                        luas:s.totalArea,
+                        nisbahText:faraidPecahan(s.totalShare)
+                    });
+                }
+            });
+
+            if (typeof lukisPelanLot === 'function') {
+                lukisPelanLot(visual, typeof highlightLayer !== 'undefined' ? highlightLayer : null);
+            }
+
+            const resultBox = document.getElementById('resultFaraid');
+            if (resultBox) resultBox.style.display = 'block';
+        }
+
+        document.addEventListener('DOMContentLoaded', function(){
+            kemasKiniJantinaFaraid();
+        });
+
 
 
 
@@ -5941,3 +6405,4 @@ function focusDashboardSearch(e){
 </body>
 
 </html>
+```
