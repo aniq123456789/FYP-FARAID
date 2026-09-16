@@ -2558,7 +2558,8 @@ header::after {
     justify-content:center;
 }
 .mfl-hero-left::after {
-    content:"678";
+    content:"
+678";
     font-family:"Font Awesome 5 Free";
     font-weight:900;
     position:absolute;
@@ -2719,7 +2720,8 @@ header::after {
     overflow:hidden;
 }
 .mfl-tech-card::before {
-    content:"279";
+    content:"
+279";
     font-family:"Font Awesome 5 Free";
     font-weight:900;
     position:absolute;
@@ -2730,7 +2732,8 @@ header::after {
     opacity:.82;
 }
 .mfl-tech-card::after {
-    content:"3c5";
+    content:"
+3c5";
     font-family:"Font Awesome 5 Free";
     font-weight:900;
     position:absolute;
@@ -3601,6 +3604,48 @@ header::after {
 
 .lot-info-item.owner{
     margin-top:2px;
+}
+
+/* =========================================================
+   BUTTON PENGIRAAN FARAID DALAM PANEL LOT
+   - Ditambah di bawah maklumat Pemilik Berdaftar.
+   - Menggunakan kalkulator Faraid sedia ada tanpa mengubah
+     fungsi peta, pemilihan lot atau enjin pengiraan.
+========================================================= */
+.lot-info-faraid-btn{
+    width:100%;
+    min-height:44px;
+    margin-top:12px;
+    padding:11px 14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:9px;
+    border:1px solid #0d8c70;
+    border-radius:7px;
+    background:linear-gradient(135deg,#149b7d,#0f6656);
+    color:#ffffff;
+    font-family:'Poppins',sans-serif;
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:.15px;
+    cursor:pointer;
+    box-shadow:0 5px 12px rgba(15,102,86,.18);
+    transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+
+.lot-info-faraid-btn:hover{
+    background:linear-gradient(135deg,#20b992,#0b7b65);
+    box-shadow:0 7px 16px rgba(15,102,86,.25);
+    transform:translateY(-1px);
+}
+
+.lot-info-faraid-btn:active{
+    transform:translateY(0);
+}
+
+.lot-info-faraid-btn i{
+    font-size:13px;
 }
 
 .lot-info-label{
@@ -4842,6 +4887,15 @@ body.cover-active{
                         <span class="lot-info-label">Pemilik Berdaftar</span>
                         <span id="res-owner" class="lot-info-value">-</span>
                     </div>
+
+                    <!-- Button baharu: terus buka kalkulator Faraid menggunakan lot yang sedang dipilih. -->
+                    <button type="button"
+                        class="lot-info-faraid-btn"
+                        onclick="openFaraidCalculator(event)"
+                        aria-label="Buka pengiraan Faraid untuk lot ini">
+                        <i class="fas fa-calculator"></i>
+                        PENGIRAAN FARAID
+                    </button>
 
                     <div class="lot-info-hint">
                         <i class="fas fa-mouse-pointer"></i>
