@@ -1,3 +1,4 @@
+```
 <!doctype html>
 <html lang="ms">
 
@@ -4040,6 +4041,87 @@ body.cover-active{
     }
 }
 
+    
+
+/* =========================================================
+   FIX HOME HERO - SAMBUNGAN VISUAL LICIN / TANPA PIXEL BERTANGGA
+   - Menggantikan potongan clip-path bertingkat pada imej peta.
+   - Semua fungsi asal dikekalkan.
+========================================================= */
+.mfl-hero {
+    isolation:isolate;
+}
+
+.mfl-hero-map {
+    clip-path:none !important;
+    -webkit-clip-path:none !important;
+    border-left:0 !important;
+    box-shadow:none !important;
+    overflow:hidden;
+    background-position:center center !important;
+}
+
+/* Bingkai imej kekal kemas, tetapi bahagian kiri ditutup oleh divider SVG. */
+.mfl-hero-map::before {
+    border-left:0 !important;
+    box-shadow:inset 0 0 0 5px rgba(250,246,233,.22) !important;
+    z-index:1;
+}
+
+/* Pemisah organik seperti rujukan kedua: satu bentuk berterusan, bukan blok bertangga. */
+.mfl-hero-divider {
+    position:absolute;
+    left:-1px;
+    top:-1px;
+    bottom:-1px;
+    width:clamp(88px,8vw,126px);
+    height:calc(100% + 2px);
+    z-index:3;
+    pointer-events:none;
+    overflow:visible;
+    filter:drop-shadow(2px 0 2px rgba(73,58,24,.12));
+}
+
+.mfl-hero-divider .divider-fill {
+    fill:#f7f2e5;
+}
+
+.mfl-hero-divider .divider-band {
+    fill:none;
+    stroke:#f3e2aa;
+    stroke-width:12;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    vector-effect:non-scaling-stroke;
+}
+
+.mfl-hero-divider .divider-line {
+    fill:none;
+    stroke:#b89a45;
+    stroke-width:2.6;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    vector-effect:non-scaling-stroke;
+}
+
+/* Pastikan butang klik peta sentiasa di atas elemen hiasan. */
+.mfl-map-open { z-index:4; }
+.mfl-map-hotspot { z-index:5; }
+
+/* Tablet / telefon: peta berada di bawah teks, jadi divider sisi tidak diperlukan. */
+@media (max-width:800px) {
+    .mfl-hero-divider { display:none; }
+    .mfl-hero-map {
+        clip-path:none !important;
+        -webkit-clip-path:none !important;
+        border-left:0 !important;
+        box-shadow:none !important;
+    }
+    .mfl-hero-map::before {
+        border-left:2px solid rgba(183,154,69,.75) !important;
+    }
+}
+
     </style>
 
 </head>
@@ -4176,6 +4258,40 @@ body.cover-active{
                 </div>
 
                 <div class="mfl-hero-map" aria-label="Pratonton peta pembahagian lot">
+                    <!-- Divider SVG licin untuk menggantikan potongan bertangga/pixel pada sambungan hero. -->
+                    <svg class="mfl-hero-divider" viewBox="0 0 126 355" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+                        <path class="divider-fill"
+                            d="M0 0 H83
+                               C83 18 91 25 106 32
+                               C120 39 121 52 109 64
+                               C94 79 73 79 73 101
+                               L73 174
+                               C73 194 61 204 49 214
+                               C38 223 36 240 36 258
+                               L36 313
+                               C36 333 24 347 12 355
+                               H0 Z" />
+                        <path class="divider-band"
+                            d="M83 0
+                               C83 18 91 25 106 32
+                               C120 39 121 52 109 64
+                               C94 79 73 79 73 101
+                               L73 174
+                               C73 194 61 204 49 214
+                               C38 223 36 240 36 258
+                               L36 313
+                               C36 333 24 347 12 355" />
+                        <path class="divider-line"
+                            d="M83 0
+                               C83 18 91 25 106 32
+                               C120 39 121 52 109 64
+                               C94 79 73 79 73 101
+                               L73 174
+                               C73 194 61 204 49 214
+                               C38 223 36 240 36 258
+                               L36 313
+                               C36 333 24 347 12 355" />
+                    </svg>
                     <button class="mfl-map-open" onclick="openMapView(event)" aria-label="Buka Peta Lot"></button>
                     <button class="mfl-map-hotspot sat" onclick="openMapLayer(event,'satellite')" aria-label="Buka Peta Satelit"></button>
                     <button class="mfl-map-hotspot topo" onclick="openMapLayer(event,'street')" aria-label="Buka Peta Topografi"></button>
