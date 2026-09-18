@@ -5059,6 +5059,627 @@ body.cover-active{
     .fcalc-guide-count{align-self:flex-end;}
 }
 
+
+/* =========================================================
+   FEATURE PANDUAN - MYFARAIDLOT
+   Panduan pengguna lengkap dengan seni Islamik
+========================================================= */
+#page-informasi.guide-page{
+    --guide-green:#0d604f;
+    --guide-green-dark:#073f35;
+    --guide-green-mid:#13806a;
+    --guide-gold:#b79b45;
+    --guide-gold-soft:#e5d49b;
+    --guide-cream:#fbf7ea;
+    --guide-ink:#27483f;
+    --guide-muted:#65746f;
+    background:
+        radial-gradient(circle at 15px 15px,rgba(183,155,69,.052) 1.8px,transparent 2.2px) 0 0/30px 30px,
+        linear-gradient(180deg,#f7f2e4 0%,#fbf8ef 50%,#f1ead7 100%);
+}
+
+/* ---------- HERO ---------- */
+#page-informasi .guide-hero{
+    position:relative;
+    overflow:hidden;
+    min-height:300px;
+    padding:38px 5.5% 42px;
+    color:#fff;
+    border-bottom:4px solid var(--guide-gold);
+    background:
+        linear-gradient(112deg,rgba(5,55,46,.985),rgba(10,91,75,.955) 59%,rgba(21,115,92,.90)),
+        url("corak-islamik.png") center/cover no-repeat;
+    box-shadow:0 10px 28px rgba(23,66,55,.12);
+}
+#page-informasi .guide-hero::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    opacity:.20;
+    background:
+        repeating-conic-gradient(from 22.5deg at 50% 50%,
+            rgba(244,217,125,.56) 0 5deg,
+            transparent 5deg 40deg,
+            rgba(244,217,125,.24) 40deg 45deg,
+            transparent 45deg 90deg);
+    background-size:105px 105px;
+    mask-image:linear-gradient(90deg,black,rgba(0,0,0,.55) 52%,transparent 88%);
+    -webkit-mask-image:linear-gradient(90deg,black,rgba(0,0,0,.55) 52%,transparent 88%);
+}
+#page-informasi .guide-hero::after{
+    content:"";
+    position:absolute;
+    width:360px;height:360px;
+    right:-90px;top:-110px;
+    border:1px solid rgba(235,213,142,.42);
+    border-radius:50%;
+    box-shadow:
+        0 0 0 32px rgba(235,213,142,.045),
+        0 0 0 65px rgba(235,213,142,.033),
+        0 0 0 100px rgba(235,213,142,.022);
+}
+#page-informasi .guide-hero-inner{
+    position:relative;
+    z-index:2;
+    width:min(1180px,100%);
+    margin:0 auto;
+}
+#page-informasi .guide-breadcrumb{
+    color:rgba(255,255,255,.73);
+    font-size:10px;
+    margin-bottom:17px;
+}
+#page-informasi .guide-bismillah{
+    margin:0 0 6px;
+    font-family:'Amiri',serif;
+    color:#f0d77e;
+    font-size:25px;
+    line-height:1.35;
+}
+#page-informasi .guide-eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:9px;
+    color:#f2d980;
+    font-size:9px;
+    font-weight:800;
+    letter-spacing:2.1px;
+    text-transform:uppercase;
+}
+#page-informasi .guide-eyebrow::before,
+#page-informasi .guide-eyebrow::after{
+    content:"";
+    width:25px;height:1px;
+    background:#d9be68;
+}
+#page-informasi .guide-hero h1{
+    margin:10px 0 0;
+    max-width:850px;
+    color:#fffef8;
+    font-family:'Libre Baskerville',Georgia,serif;
+    font-size:clamp(31px,4vw,52px);
+    line-height:1.12;
+    font-weight:700;
+}
+#page-informasi .guide-hero h1 span{color:#f0d478;}
+#page-informasi .guide-hero-copy{
+    max-width:820px;
+    margin:14px 0 0;
+    color:rgba(255,255,255,.88);
+    font-size:12.5px;
+    line-height:1.8;
+}
+#page-informasi .guide-hero-actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:22px;
+}
+#page-informasi .guide-action-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    min-height:39px;
+    padding:9px 15px;
+    border-radius:7px;
+    font-size:10px;
+    font-weight:700;
+    cursor:pointer;
+    transition:.2s;
+}
+#page-informasi .guide-action-btn.primary{
+    border:1px solid #e3ca74;
+    background:linear-gradient(180deg,#d1ad4d,#9c7924);
+    color:#fff;
+    box-shadow:0 5px 15px rgba(0,0,0,.16);
+}
+#page-informasi .guide-action-btn.secondary{
+    border:1px solid rgba(255,229,145,.52);
+    background:rgba(4,46,39,.34);
+    color:#f8e8b2;
+}
+#page-informasi .guide-action-btn:hover{
+    transform:translateY(-2px);
+    filter:brightness(1.05);
+}
+
+/* ---------- CONTAINER / SEARCH ---------- */
+#page-informasi .guide-container{
+    width:min(1180px,89%);
+    margin:0 auto;
+    padding:32px 0 65px;
+}
+#page-informasi .guide-search-panel{
+    position:relative;
+    margin-top:-55px;
+    z-index:5;
+    padding:16px;
+    border:1px solid rgba(183,155,69,.42);
+    border-radius:12px;
+    background:rgba(255,253,247,.98);
+    box-shadow:0 12px 35px rgba(24,68,57,.13);
+}
+#page-informasi .guide-search-label{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    margin-bottom:9px;
+    color:#174c40;
+    font-size:11px;
+    font-weight:800;
+}
+#page-informasi .guide-search-label i{color:#ad8d31;}
+#page-informasi #dashboardSearch{
+    width:100%;
+    height:42px;
+    padding:9px 13px 9px 39px;
+    border:1px solid #d9ddd9;
+    border-radius:7px;
+    background:#fff;
+    color:#334b44;
+    outline:none;
+    font-size:11px;
+}
+#page-informasi .guide-search-input{
+    position:relative;
+}
+#page-informasi .guide-search-input > i{
+    position:absolute;
+    left:14px;top:50%;
+    transform:translateY(-50%);
+    color:#9b8750;
+    font-size:11px;
+    z-index:2;
+}
+#page-informasi #dashboardSearch:focus{
+    border-color:#17806a;
+    box-shadow:0 0 0 3px rgba(23,128,106,.08);
+}
+
+/* ---------- SECTION TITLES ---------- */
+#page-informasi .guide-section{
+    margin-top:31px;
+}
+#page-informasi .guide-section-heading{
+    text-align:center;
+    margin-bottom:19px;
+}
+#page-informasi .guide-section-kicker{
+    display:block;
+    color:#9b8034;
+    font-size:8.5px;
+    font-weight:800;
+    letter-spacing:1.8px;
+    text-transform:uppercase;
+}
+#page-informasi .guide-section-heading h2{
+    margin:5px 0 7px;
+    color:#123f35;
+    font-family:'Libre Baskerville',Georgia,serif;
+    font-size:22px;
+}
+#page-informasi .guide-section-heading p{
+    max-width:760px;
+    margin:0 auto;
+    color:#69766f;
+    font-size:10.5px;
+    line-height:1.7;
+}
+#page-informasi .guide-islamic-divider{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    margin:11px auto 0;
+    color:#b09337;
+}
+#page-informasi .guide-islamic-divider::before,
+#page-informasi .guide-islamic-divider::after{
+    content:"";
+    width:62px;height:1px;
+    background:linear-gradient(90deg,transparent,#c5aa55);
+}
+#page-informasi .guide-islamic-divider::after{
+    background:linear-gradient(90deg,#c5aa55,transparent);
+}
+#page-informasi .guide-islamic-divider i{font-size:10px;}
+
+/* ---------- USER JOURNEY ---------- */
+#page-informasi .guide-flow{
+    display:grid;
+    grid-template-columns:repeat(7,minmax(0,1fr));
+    gap:10px;
+    margin-bottom:22px;
+}
+#page-informasi .guide-flow-item{
+    position:relative;
+    min-height:102px;
+    padding:14px 8px 11px;
+    border:1px solid #dfd4b3;
+    border-radius:9px;
+    background:#fffef9;
+    text-align:center;
+    box-shadow:0 4px 12px rgba(26,68,57,.035);
+}
+#page-informasi .guide-flow-item:not(:last-child)::after{
+    content:"›";
+    position:absolute;
+    right:-10px;top:35px;
+    z-index:4;
+    width:18px;height:28px;
+    line-height:26px;
+    color:#b09032;
+    background:#f7f1e2;
+    font-family:Georgia,serif;
+    font-size:23px;
+}
+#page-informasi .guide-flow-icon{
+    width:36px;height:36px;
+    margin:0 auto 8px;
+    display:grid;
+    place-items:center;
+    border-radius:50%;
+    color:#f1d984;
+    background:#0b6553;
+    border:2px solid #d4bc6c;
+    box-shadow:0 0 0 4px #edf5f1;
+}
+#page-informasi .guide-flow-item strong{
+    display:block;
+    color:#274c42;
+    font-size:9px;
+    line-height:1.4;
+}
+
+/* ---------- STEP CARDS ---------- */
+#page-informasi .guide-steps{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+#page-informasi .guide-step-card.dashboard-card{
+    position:relative;
+    overflow:hidden;
+    padding:21px 21px 19px;
+    border:1px solid #dfd5b8;
+    border-radius:11px;
+    background:rgba(255,254,249,.98);
+    box-shadow:0 7px 20px rgba(30,75,63,.055);
+}
+#page-informasi .guide-step-card::after{
+    content:"";
+    position:absolute;
+    width:68px;height:68px;
+    right:-37px;top:-37px;
+    border:1px solid rgba(183,155,69,.24);
+    transform:rotate(45deg);
+}
+#page-informasi .guide-step-head{
+    display:flex;
+    align-items:flex-start;
+    gap:13px;
+    margin-bottom:11px;
+}
+#page-informasi .guide-step-number{
+    width:42px;height:42px;flex:0 0 42px;
+    display:grid;
+    place-items:center;
+    border-radius:50%;
+    color:#fff;
+    font-size:12px;
+    font-weight:800;
+    background:linear-gradient(145deg,#147864,#0b5548);
+    border:2px solid #d6bd6a;
+    box-shadow:0 0 0 4px #eef6f2;
+}
+#page-informasi .guide-step-title small{
+    display:block;
+    margin-bottom:2px;
+    color:#a08331;
+    font-size:7.5px;
+    font-weight:800;
+    letter-spacing:1px;
+    text-transform:uppercase;
+}
+#page-informasi .guide-step-title h3{
+    margin:0;
+    color:#163f36;
+    font-family:Georgia,serif;
+    font-size:15px;
+}
+#page-informasi .guide-step-card p{
+    margin:0;
+    color:#5e7069;
+    font-size:10px;
+    line-height:1.7;
+}
+#page-informasi .guide-step-list{
+    margin:10px 0 0;
+    padding:0;
+    list-style:none;
+}
+#page-informasi .guide-step-list li{
+    position:relative;
+    padding:5px 0 5px 20px;
+    color:#566a63;
+    font-size:9.5px;
+    line-height:1.55;
+}
+#page-informasi .guide-step-list li::before{
+    content:"✓";
+    position:absolute;
+    left:0;top:5px;
+    width:14px;height:14px;
+    line-height:14px;
+    text-align:center;
+    border-radius:50%;
+    color:#fff;
+    background:#15816a;
+    font-size:7px;
+    font-weight:800;
+}
+#page-informasi .guide-step-tip{
+    display:flex;
+    gap:8px;
+    margin-top:10px;
+    padding:9px 10px;
+    border-left:3px solid #b5963d;
+    background:#faf5e6;
+    color:#765f26;
+    font-size:8.5px;
+    line-height:1.55;
+}
+#page-informasi .guide-step-tip i{margin-top:2px;color:#b38e2e;}
+#page-informasi .guide-card-action{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    margin-top:11px;
+    padding:7px 10px;
+    border:1px solid #afd2c7;
+    border-radius:6px;
+    background:#edf8f4;
+    color:#0b715d;
+    font-size:8.5px;
+    font-weight:800;
+    cursor:pointer;
+}
+#page-informasi .guide-card-action:hover{background:#daf1e9;}
+
+/* ---------- FEATURES ---------- */
+#page-informasi .guide-feature-grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:14px;
+}
+#page-informasi .guide-feature-card.dashboard-card{
+    min-height:190px;
+    padding:20px;
+    border:1px solid #e0d6ba;
+    border-radius:10px;
+    background:linear-gradient(180deg,#fffef9,#faf5e8);
+    box-shadow:0 5px 16px rgba(30,72,61,.045);
+}
+#page-informasi .guide-feature-icon{
+    width:46px;height:46px;
+    display:grid;
+    place-items:center;
+    margin-bottom:12px;
+    border-radius:11px;
+    color:#f1d77f;
+    background:#0b6151;
+    border:1px solid #c7ab55;
+}
+#page-informasi .guide-feature-card h3{
+    margin:0 0 7px;
+    color:#1d493e;
+    font-size:13px;
+}
+#page-informasi .guide-feature-card p{
+    margin:0;
+    color:#68756f;
+    font-size:9.5px;
+    line-height:1.65;
+}
+
+/* ---------- RESULT GUIDE ---------- */
+#page-informasi .guide-result-card.dashboard-card{
+    padding:22px;
+    border:1px solid #dbcda4;
+    border-radius:12px;
+    background:
+        linear-gradient(rgba(255,254,248,.97),rgba(255,254,248,.97)),
+        url("corak-islamik.png") center/cover;
+}
+#page-informasi .guide-result-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:11px;
+    margin-top:14px;
+}
+#page-informasi .guide-result-item{
+    padding:13px;
+    border:1px solid #dfd6bb;
+    border-radius:8px;
+    background:#fff;
+}
+#page-informasi .guide-result-item span{
+    display:block;
+    color:#9a8037;
+    font-size:7.5px;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+}
+#page-informasi .guide-result-item strong{
+    display:block;
+    margin-top:4px;
+    color:#234c41;
+    font-size:10px;
+    line-height:1.45;
+}
+#page-informasi .guide-formula{
+    margin-top:14px;
+    padding:12px 15px;
+    border-left:4px solid #b5983f;
+    border-radius:4px;
+    background:#f8f3e4;
+    color:#31564b;
+    font-size:10px;
+    line-height:1.6;
+}
+#page-informasi .guide-formula strong{color:#0d5f4e;}
+
+/* ---------- FAQ / TERMS ---------- */
+#page-informasi .guide-bottom-grid{
+    display:grid;
+    grid-template-columns:1.15fr .85fr;
+    gap:15px;
+}
+#page-informasi .guide-faq-card.dashboard-card,
+#page-informasi .guide-terms-card.dashboard-card{
+    padding:21px;
+    border:1px solid #ded4b8;
+    border-radius:11px;
+    background:#fffef9;
+}
+#page-informasi .guide-mini-title{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:12px;
+}
+#page-informasi .guide-mini-title i{
+    width:34px;height:34px;
+    display:grid;
+    place-items:center;
+    border-radius:50%;
+    color:#eed27a;
+    background:#0c6453;
+}
+#page-informasi .guide-mini-title h3{
+    margin:0;
+    color:#19483d;
+    font-family:Georgia,serif;
+    font-size:15px;
+}
+#page-informasi .guide-faq-card details{
+    border-bottom:1px solid #ece5d3;
+}
+#page-informasi .guide-faq-card details:last-child{border-bottom:0;}
+#page-informasi .guide-faq-card summary{
+    padding:10px 0;
+    cursor:pointer;
+    color:#355a50;
+    font-size:9.5px;
+    font-weight:700;
+}
+#page-informasi .guide-faq-card details p{
+    margin:0 0 10px;
+    padding-left:15px;
+    color:#69766f;
+    font-size:9px;
+    line-height:1.65;
+}
+#page-informasi .guide-term{
+    padding:9px 0;
+    border-bottom:1px solid #eee7d6;
+}
+#page-informasi .guide-term:last-child{border-bottom:0;}
+#page-informasi .guide-term strong{
+    display:block;
+    color:#1c594a;
+    font-size:9.5px;
+}
+#page-informasi .guide-term span{
+    display:block;
+    margin-top:2px;
+    color:#6c7872;
+    font-size:8.7px;
+    line-height:1.55;
+}
+
+/* ---------- IMPORTANT NOTICE ---------- */
+#page-informasi .guide-notice.dashboard-card{
+    position:relative;
+    overflow:hidden;
+    margin-top:18px;
+    padding:20px 22px;
+    border:1px solid #c7aa53;
+    border-left:5px solid #d3b553;
+    border-radius:11px;
+    background:linear-gradient(110deg,#123f36,#0c6654);
+    color:#fff;
+}
+#page-informasi .guide-notice::after{
+    content:"";
+    position:absolute;
+    width:150px;height:150px;
+    right:-65px;bottom:-90px;
+    border:1px solid rgba(240,214,128,.42);
+    transform:rotate(45deg);
+}
+#page-informasi .guide-notice h3{
+    position:relative;z-index:2;
+    margin:0 0 7px;
+    color:#f2da89;
+    font-family:Georgia,serif;
+    font-size:14px;
+}
+#page-informasi .guide-notice p{
+    position:relative;z-index:2;
+    margin:0;
+    color:rgba(255,255,255,.86);
+    font-size:9.5px;
+    line-height:1.7;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media(max-width:1100px){
+    #page-informasi .guide-flow{grid-template-columns:repeat(4,1fr);}
+    #page-informasi .guide-flow-item:nth-child(4)::after{display:none;}
+    #page-informasi .guide-feature-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:800px){
+    #page-informasi .guide-hero{padding:32px 6% 75px;}
+    #page-informasi .guide-container{width:92%;}
+    #page-informasi .guide-steps{grid-template-columns:1fr;}
+    #page-informasi .guide-flow{grid-template-columns:repeat(2,1fr);}
+    #page-informasi .guide-flow-item:nth-child(even)::after{display:none;}
+    #page-informasi .guide-flow-item:nth-child(3)::after{display:block;}
+    #page-informasi .guide-feature-grid{grid-template-columns:1fr;}
+    #page-informasi .guide-result-grid{grid-template-columns:1fr 1fr;}
+    #page-informasi .guide-bottom-grid{grid-template-columns:1fr;}
+}
+@media(max-width:450px){
+    #page-informasi .guide-flow{grid-template-columns:1fr;}
+    #page-informasi .guide-flow-item::after{display:none !important;}
+    #page-informasi .guide-result-grid{grid-template-columns:1fr;}
+    #page-informasi .guide-search-panel{padding:13px;}
+}
+
 </style>
 
 </head>
@@ -6071,42 +6692,470 @@ body.cover-active{
         </div>
     </section>
 
-    <section id="page-informasi" class="dashboard-page">
-        <div class="dashboard-hero">
-            <div class="dashboard-breadcrumb"><i class="fas fa-home"></i> &nbsp;>&nbsp; Informasi</div>
-            <h1>Informasi &amp; Panduan</h1>
-            <p>Maklumat tambahan untuk membantu pengguna menggunakan sistem.</p>
-        </div>
-        <div class="dashboard-container">
-            <input id="dashboardSearch" class="dashboard-search" type="search" placeholder="Cari informasi, istilah atau panduan...">
-            <div class="dashboard-grid" style="margin-top:18px;">
-                <div class="dashboard-card">
-                    <h3>Soalan Lazim</h3>
-                    <h4>Bagaimana memilih lot?</h4>
-                    <p>Pilih nombor lot daripada kotak carian atau klik terus pada lot di peta.</p>
-                    <h4>Bagaimana membuat pengiraan?</h4>
-                    <p>Pilih lot, masukkan maklumat waris dan tekan butang pengiraan Faraid.</p>
+    <section id="page-informasi" class="dashboard-page guide-page">
+        <div class="guide-hero">
+            <div class="guide-hero-inner">
+                <div class="guide-breadcrumb">
+                    <i class="fas fa-home"></i>&nbsp; &gt; &nbsp;Panduan Pengguna
                 </div>
-                <div class="dashboard-card">
-                    <h3>Panduan Sistem</h3>
-                    <ol>
-                        <li>Pilih lot tanah.</li>
-                        <li>Semak maklumat lot.</li>
-                        <li>Masukkan maklumat waris.</li>
-                        <li>Tekan Kira Pembahagian Faraid.</li>
-                        <li>Semak jadual dan visual pembahagian.</li>
-                    </ol>
+
+                <div class="guide-bismillah" lang="ar" dir="rtl">
+                    بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
                 </div>
-                <div class="dashboard-card">
-                    <h3>Istilah Faraid</h3>
-                    <p><strong>Fardu</strong> – kadar bahagian yang telah ditetapkan.</p>
-                    <p><strong>Asobah</strong> – waris yang menerima keseluruhan atau baki mengikut keadaan.</p>
-                    <p><strong>Pendindingan</strong> – kesan kewujudan waris lain terhadap hak waris.</p>
-                    <p><strong>'Aul</strong> – kaedah apabila jumlah saham fardu memerlukan pelarasan asal masalah.</p>
+
+                <div class="guide-eyebrow">Panduan MyFaraidLot</div>
+
+                <h1>Cara Menggunakan <span>MyFaraidLot</span></h1>
+
+                <p class="guide-hero-copy">
+                    Ikuti langkah mudah di bawah untuk memilih lot tanah, memasukkan maklumat waris,
+                    menjalankan pengiraan Faraid dan melihat pembahagian tanah dalam bentuk jadual,
+                    peratusan, keluasan serta visual GIS.
+                </p>
+
+                <div class="guide-hero-actions">
+                    <button type="button" class="guide-action-btn primary" onclick="openMapView(event)">
+                        <i class="fas fa-map-marked-alt"></i> Buka Peta Lot
+                    </button>
+                    <button type="button" class="guide-action-btn secondary" onclick="openFaraidCalculator(event)">
+                        <i class="fas fa-calculator"></i> Buka Kiraan Faraid
+                    </button>
                 </div>
             </div>
         </div>
+
+        <div class="guide-container">
+            <div class="guide-search-panel">
+                <div class="guide-search-label">
+                    <i class="fas fa-search"></i>
+                    Cari bantuan dengan cepat
+                </div>
+                <div class="guide-search-input">
+                    <i class="fas fa-book-open"></i>
+                    <input id="dashboardSearch" class="dashboard-search" type="search"
+                        placeholder="Contoh: pilih lot, waris, pengiraan, visual, Fardu, Asabah...">
+                </div>
+            </div>
+
+            <!-- ================= ALIRAN RINGKAS ================= -->
+            <section class="guide-section">
+                <div class="guide-section-heading">
+                    <span class="guide-section-kicker">Ringkasan Proses</span>
+                    <h2>Bagaimana Web Ini Berfungsi?</h2>
+                    <p>
+                        Secara ringkas, pengguna memilih tanah dahulu, kemudian memasukkan waris.
+                        Sistem akan mengira bahagian Faraid dan menukarkannya kepada keluasan serta
+                        visual pembahagian lot.
+                    </p>
+                    <div class="guide-islamic-divider"><i class="fas fa-star-and-crescent"></i></div>
+                </div>
+
+                <div class="guide-flow">
+                    <div class="guide-flow-item">
+                        <div class="guide-flow-icon"><i class="fas fa-home"></i></div>
+                        <strong>1. Buka<br>MyFaraidLot</strong>
+                    </div>
+                    <div class="guide-flow-item">
+                        <div class="guide-flow-icon"><i class="fas fa-map"></i></div>
+                        <strong>2. Buka<br>Peta Lot</strong>
+                    </div>
+                    <div class="guide-flow-item">
+                        <div class="guide-flow-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <strong>3. Pilih<br>Lot Tanah</strong>
+                    </div>
+                    <div class="guide-flow-item">
+                        <div class="guide-flow-icon"><i class="fas fa-clipboard-check"></i></div>
+                        <strong>4. Semak<br>Maklumat Lot</strong>
+                    </div>
+                    <div class="guide-flow-item">
+                        <div class="guide-flow-icon"><i class="fas fa-users"></i></div>
+                        <strong>5. Masukkan<br>Waris</strong>
+                    </div>
+                    <div class="guide-flow-item">
+                        <div class="guide-flow-icon"><i class="fas fa-calculator"></i></div>
+                        <strong>6. Kira<br>Faraid</strong>
+                    </div>
+                    <div class="guide-flow-item">
+                        <div class="guide-flow-icon"><i class="fas fa-draw-polygon"></i></div>
+                        <strong>7. Lihat<br>Visual GIS</strong>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= LANGKAH TERPERINCI ================= -->
+            <section class="guide-section">
+                <div class="guide-section-heading">
+                    <span class="guide-section-kicker">Langkah Demi Langkah</span>
+                    <h2>Panduan Penggunaan Sistem</h2>
+                    <p>
+                        Ikuti tujuh langkah berikut. Setiap langkah menerangkan apa yang perlu ditekan,
+                        maklumat yang perlu diperiksa dan hasil yang akan dipaparkan.
+                    </p>
+                    <div class="guide-islamic-divider"><i class="fas fa-star-and-crescent"></i></div>
+                </div>
+
+                <div class="guide-steps">
+                    <article class="dashboard-card guide-step-card">
+                        <div class="guide-step-head">
+                            <div class="guide-step-number">01</div>
+                            <div class="guide-step-title">
+                                <small>Permulaan</small>
+                                <h3>Masuk ke Halaman Utama</h3>
+                            </div>
+                        </div>
+                        <p>
+                            Apabila web dibuka, pengguna akan melihat halaman utama MyFaraidLot.
+                            Dari sini anda boleh terus ke Peta Lot atau Kiraan Faraid.
+                        </p>
+                        <ul class="guide-step-list">
+                            <li>Pilih <strong>Peta Lot</strong> jika mahu bermula dengan tanah.</li>
+                            <li>Pilih <strong>Kiraan Faraid</strong> jika mahu melihat kalkulator.</li>
+                            <li>Feature Tentang menerangkan tujuan dan gabungan Faraid + GIS.</li>
+                        </ul>
+                        <div class="guide-step-tip">
+                            <i class="fas fa-lightbulb"></i>
+                            <span>Disarankan bermula dari <strong>Peta Lot</strong> supaya keluasan lot dapat digunakan dalam pengiraan.</span>
+                        </div>
+                    </article>
+
+                    <article class="dashboard-card guide-step-card">
+                        <div class="guide-step-head">
+                            <div class="guide-step-number">02</div>
+                            <div class="guide-step-title">
+                                <small>WebGIS</small>
+                                <h3>Buka Peta Lot</h3>
+                            </div>
+                        </div>
+                        <p>
+                            Tekan menu <strong>Peta Lot</strong>. Peta satelit akan dipaparkan bersama
+                            sempadan lot yang tersedia dalam WebGIS.
+                        </p>
+                        <ul class="guide-step-list">
+                            <li>Zum masuk atau keluar untuk melihat kawasan dengan lebih jelas.</li>
+                            <li>Gerakkan peta untuk mencari kawasan yang dikehendaki.</li>
+                            <li>Gunakan lot yang dipaparkan sebagai asas kepada pembahagian tanah.</li>
+                        </ul>
+                        <button type="button" class="guide-card-action" onclick="openMapView(event)">
+                            <i class="fas fa-map"></i> Buka Peta Sekarang
+                        </button>
+                    </article>
+
+                    <article class="dashboard-card guide-step-card">
+                        <div class="guide-step-head">
+                            <div class="guide-step-number">03</div>
+                            <div class="guide-step-title">
+                                <small>Pemilihan Tanah</small>
+                                <h3>Pilih Lot Tanah</h3>
+                            </div>
+                        </div>
+                        <p>
+                            Klik terus pada polygon lot di atas peta. Sistem akan mengenal pasti lot
+                            yang dipilih dan membuka panel maklumat lot.
+                        </p>
+                        <ul class="guide-step-list">
+                            <li>Klik satu lot yang hendak digunakan.</li>
+                            <li>Lot yang dipilih akan digunakan sebagai rujukan pengiraan.</li>
+                            <li>Anda boleh klik lot lain pada bila-bila masa untuk menukar pilihan.</li>
+                        </ul>
+                        <div class="guide-step-tip">
+                            <i class="fas fa-mouse-pointer"></i>
+                            <span>Pastikan anda memilih polygon lot yang betul sebelum meneruskan ke kalkulator.</span>
+                        </div>
+                    </article>
+
+                    <article class="dashboard-card guide-step-card">
+                        <div class="guide-step-head">
+                            <div class="guide-step-number">04</div>
+                            <div class="guide-step-title">
+                                <small>Maklumat Spatial</small>
+                                <h3>Semak Maklumat Lot</h3>
+                            </div>
+                        </div>
+                        <p>
+                            Selepas lot diklik, panel <strong>Maklumat Lot Tanah</strong> akan memaparkan
+                            maklumat asas lot yang sedang dipilih.
+                        </p>
+                        <ul class="guide-step-list">
+                            <li>Semak <strong>No. Lot</strong> dan <strong>Luas Lot</strong>.</li>
+                            <li>Semak Negeri, Daerah dan Mukim.</li>
+                            <li>Semak maklumat Pemilik Berdaftar yang dipaparkan.</li>
+                            <li>Tekan <strong>PENGIRAAN FARAID</strong> untuk meneruskan.</li>
+                        </ul>
+                        <div class="guide-step-tip">
+                            <i class="fas fa-ruler-combined"></i>
+                            <span>Luas lot yang dipilih digunakan bagi mengira anggaran keluasan bahagian setiap waris.</span>
+                        </div>
+                    </article>
+
+                    <article class="dashboard-card guide-step-card">
+                        <div class="guide-step-head">
+                            <div class="guide-step-number">05</div>
+                            <div class="guide-step-title">
+                                <small>Maklumat Waris</small>
+                                <h3>Masukkan Bilangan Waris</h3>
+                            </div>
+                        </div>
+                        <p>
+                            Di halaman Kiraan Faraid, tentukan jantina si mati dan masukkan bilangan
+                            waris yang masih hidup pada ruangan yang disediakan.
+                        </p>
+                        <ul class="guide-step-list">
+                            <li>Tandakan jantina si mati dengan betul.</li>
+                            <li>Masukkan waris utama seperti Ibu, Bapa, Suami/Isteri dan Anak.</li>
+                            <li>Masukkan Waris Ganti atau Waris Kedua jika berkenaan.</li>
+                            <li>Biarkan nilai <strong>0</strong> bagi waris yang tiada.</li>
+                            <li>Tekan ikon <strong>i</strong> di sebelah waris untuk membaca penerangan pengiraan.</li>
+                        </ul>
+                        <button type="button" class="guide-card-action" onclick="openFaraidCalculator(event)">
+                            <i class="fas fa-users"></i> Buka Senarai Waris
+                        </button>
+                    </article>
+
+                    <article class="dashboard-card guide-step-card">
+                        <div class="guide-step-head">
+                            <div class="guide-step-number">06</div>
+                            <div class="guide-step-title">
+                                <small>Enjin Faraid</small>
+                                <h3>Jalankan Pengiraan Faraid</h3>
+                            </div>
+                        </div>
+                        <p>
+                            Selepas maklumat waris lengkap, jalankan pengiraan. Sistem akan menentukan
+                            kadar bahagian mengikut logik Faraid yang diprogramkan.
+                        </p>
+                        <ul class="guide-step-list">
+                            <li>Sistem menilai kelayakan waris dan keadaan hijab.</li>
+                            <li>Bahagian boleh melibatkan Fardu, Asabah, 'Aul atau Radd mengikut keadaan.</li>
+                            <li>Saham akhir diterjemahkan kepada peratusan.</li>
+                            <li>Peratusan kemudian digunakan untuk mengira keluasan bahagian waris.</li>
+                        </ul>
+                        <div class="guide-step-tip">
+                            <i class="fas fa-balance-scale"></i>
+                            <span>Semak semula bilangan waris sebelum menerima keputusan sebagai rujukan akademik.</span>
+                        </div>
+                    </article>
+
+                    <article class="dashboard-card guide-step-card" style="grid-column:1/-1;">
+                        <div class="guide-step-head">
+                            <div class="guide-step-number">07</div>
+                            <div class="guide-step-title">
+                                <small>Hasil &amp; GIS</small>
+                                <h3>Fahami Keputusan dan Visual Pembahagian</h3>
+                            </div>
+                        </div>
+                        <p>
+                            Hasil akhir membantu pengguna memahami bahagian Faraid dalam bentuk yang
+                            lebih mudah dengan menggabungkan angka pengiraan dan gambaran spatial tanah.
+                        </p>
+                        <ul class="guide-step-list">
+                            <li>Semak nama/jenis waris yang layak.</li>
+                            <li>Semak pecahan atau saham akhir setiap waris.</li>
+                            <li>Semak peratus bahagian yang diterima.</li>
+                            <li>Semak anggaran keluasan tanah bagi setiap waris.</li>
+                            <li>Lihat visual pembahagian lot untuk memahami pembahagian secara ruang.</li>
+                        </ul>
+                        <div class="guide-step-tip">
+                            <i class="fas fa-info-circle"></i>
+                            <span>
+                                Visual GIS ialah <strong>visualisasi/simulasi akademik</strong>. Ia bukan
+                                pelan ukur rasmi atau kelulusan pecah bahagian tanah.
+                            </span>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <!-- ================= FUNGSI FEATURE ================= -->
+            <section class="guide-section">
+                <div class="guide-section-heading">
+                    <span class="guide-section-kicker">Kenali Sistem</span>
+                    <h2>Fungsi Setiap Feature</h2>
+                    <p>
+                        Gunakan ringkasan ini untuk mengetahui bahagian mana yang perlu dibuka mengikut
+                        perkara yang anda mahu lakukan.
+                    </p>
+                    <div class="guide-islamic-divider"><i class="fas fa-star-and-crescent"></i></div>
+                </div>
+
+                <div class="guide-feature-grid">
+                    <article class="dashboard-card guide-feature-card">
+                        <div class="guide-feature-icon"><i class="fas fa-home"></i></div>
+                        <h3>Utama</h3>
+                        <p>Halaman permulaan yang memberikan akses pantas kepada Peta Lot dan Kiraan Faraid.</p>
+                    </article>
+
+                    <article class="dashboard-card guide-feature-card">
+                        <div class="guide-feature-icon"><i class="far fa-question-circle"></i></div>
+                        <h3>Tentang</h3>
+                        <p>Menerangkan tujuan MyFaraidLot, konsep integrasi Faraid + GIS, asas rujukan dan penafian sistem.</p>
+                    </article>
+
+                    <article class="dashboard-card guide-feature-card">
+                        <div class="guide-feature-icon"><i class="fas fa-calculator"></i></div>
+                        <h3>Kiraan Faraid</h3>
+                        <p>Tempat pengguna memasukkan waris, membaca penerangan setiap waris dan mendapatkan pengiraan pembahagian.</p>
+                    </article>
+
+                    <article class="dashboard-card guide-feature-card">
+                        <div class="guide-feature-icon"><i class="fas fa-map-marked-alt"></i></div>
+                        <h3>Peta Lot</h3>
+                        <p>WebGIS untuk memilih lot tanah, melihat sempadan dan membaca maklumat spatial lot yang dipilih.</p>
+                    </article>
+
+                    <article class="dashboard-card guide-feature-card">
+                        <div class="guide-feature-icon"><i class="fas fa-book-reader"></i></div>
+                        <h3>Panduan</h3>
+                        <p>Bahagian bantuan ini menerangkan keseluruhan aliran penggunaan sistem dalam bahasa yang mudah.</p>
+                    </article>
+
+                    <article class="dashboard-card guide-feature-card">
+                        <div class="guide-feature-icon"><i class="fas fa-phone-alt"></i></div>
+                        <h3>Hubungi</h3>
+                        <p>Menyediakan maklumat hubungan yang berkaitan dengan projek dan saluran pertanyaan pengguna.</p>
+                    </article>
+                </div>
+            </section>
+
+            <!-- ================= BACA HASIL ================= -->
+            <section class="guide-section">
+                <div class="guide-section-heading">
+                    <span class="guide-section-kicker">Membaca Output</span>
+                    <h2>Bagaimana Memahami Keputusan?</h2>
+                    <p>
+                        Sistem menghubungkan keputusan Faraid dengan keluasan lot supaya pengguna dapat
+                        memahami hak waris dalam bentuk angka dan ruang.
+                    </p>
+                    <div class="guide-islamic-divider"><i class="fas fa-star-and-crescent"></i></div>
+                </div>
+
+                <article class="dashboard-card guide-result-card">
+                    <div class="guide-result-grid">
+                        <div class="guide-result-item">
+                            <span>Pecahan / Saham</span>
+                            <strong>Menunjukkan kadar bahagian Faraid waris.</strong>
+                        </div>
+                        <div class="guide-result-item">
+                            <span>Peratus</span>
+                            <strong>Menukar saham kepada nilai peratus yang mudah dibaca.</strong>
+                        </div>
+                        <div class="guide-result-item">
+                            <span>Keluasan</span>
+                            <strong>Anggaran luas tanah berdasarkan saham akhir waris.</strong>
+                        </div>
+                        <div class="guide-result-item">
+                            <span>Visual GIS</span>
+                            <strong>Gambaran spatial bagi pembahagian lot tanah.</strong>
+                        </div>
+                    </div>
+
+                    <div class="guide-formula">
+                        <strong>Formula mudah:</strong><br>
+                        Keluasan Waris = Keluasan Keseluruhan Lot × Peratus / Saham Akhir Waris<br>
+                        <strong>Contoh:</strong> Jika lot = 4,000 m² dan waris menerima 25%, maka anggaran
+                        keluasan waris = 4,000 × 25% = <strong>1,000 m²</strong>.
+                    </div>
+                </article>
+            </section>
+
+            <!-- ================= FAQ + ISTILAH ================= -->
+            <section class="guide-section">
+                <div class="guide-bottom-grid">
+                    <article class="dashboard-card guide-faq-card">
+                        <div class="guide-mini-title">
+                            <i class="fas fa-question"></i>
+                            <h3>Soalan Lazim</h3>
+                        </div>
+
+                        <details open>
+                            <summary>Perlu pilih lot sebelum membuat pengiraan?</summary>
+                            <p>
+                                Disarankan ya. Dengan memilih lot terlebih dahulu, sistem mempunyai nilai
+                                keluasan tanah untuk digunakan dalam pengiraan keluasan bahagian setiap waris.
+                            </p>
+                        </details>
+
+                        <details>
+                            <summary>Bagaimana saya memilih lot?</summary>
+                            <p>
+                                Buka Peta Lot dan klik polygon lot yang dikehendaki. Panel Maklumat Lot Tanah
+                                akan muncul selepas lot dipilih.
+                            </p>
+                        </details>
+
+                        <details>
+                            <summary>Apa perlu dibuat jika sesuatu waris tiada?</summary>
+                            <p>
+                                Biarkan nilai waris tersebut pada 0. Masukkan hanya bilangan waris yang
+                                benar-benar berkaitan dengan situasi pengiraan.
+                            </p>
+                        </details>
+
+                        <details>
+                            <summary>Di mana saya boleh lihat penerangan setiap waris?</summary>
+                            <p>
+                                Di feature Kiraan Faraid, tekan ikon “i” pada nama waris atau buka bahagian
+                                “Maklumat &amp; Penerangan Pengiraan Setiap Waris”.
+                            </p>
+                        </details>
+
+                        <details>
+                            <summary>Adakah visual lot merupakan pelan pecah bahagian rasmi?</summary>
+                            <p>
+                                Tidak. Visual yang dihasilkan ialah simulasi/visualisasi akademik untuk
+                                membantu kefahaman dan bukan Pelan Akui, pelan ukur rasmi atau kelulusan
+                                pecah bahagian tanah.
+                            </p>
+                        </details>
+                    </article>
+
+                    <article class="dashboard-card guide-terms-card">
+                        <div class="guide-mini-title">
+                            <i class="fas fa-book"></i>
+                            <h3>Istilah Mudah</h3>
+                        </div>
+
+                        <div class="guide-term">
+                            <strong>Fardu</strong>
+                            <span>Bahagian tertentu yang ditetapkan kepada waris apabila syaratnya dipenuhi.</span>
+                        </div>
+                        <div class="guide-term">
+                            <strong>Asabah</strong>
+                            <span>Waris yang boleh menerima baki harta selepas bahagian tertentu diberikan, mengikut keadaan.</span>
+                        </div>
+                        <div class="guide-term">
+                            <strong>Hijab / Pendindingan</strong>
+                            <span>Kewujudan waris tertentu boleh mengurangkan atau menghalang waris lain daripada menerima bahagian.</span>
+                        </div>
+                        <div class="guide-term">
+                            <strong>'Aul</strong>
+                            <span>Pelarasan apabila jumlah bahagian fardu melebihi keseluruhan harta.</span>
+                        </div>
+                        <div class="guide-term">
+                            <strong>Radd</strong>
+                            <span>Pengagihan semula baki kepada waris tertentu apabila masih terdapat baki selepas pembahagian.</span>
+                        </div>
+                        <div class="guide-term">
+                            <strong>GIS</strong>
+                            <span>Sistem Maklumat Geografi yang digunakan untuk memaparkan lokasi, sempadan dan visual ruang sesuatu lot.</span>
+                        </div>
+                    </article>
+                </div>
+
+                <article class="dashboard-card guide-notice">
+                    <h3><i class="fas fa-shield-alt me-2"></i>Nota Penting Kepada Pengguna</h3>
+                    <p>
+                        MyFaraidLot dibangunkan sebagai projek akademik dan alat sokongan maklumat.
+                        Keputusan pengiraan serta visualisasi GIS bertujuan membantu kefahaman pengguna.
+                        Untuk kes pusaka sebenar yang mempunyai implikasi undang-undang, pengesahan waris
+                        dan bahagian Faraid hendaklah dirujuk kepada pihak berautoriti Syariah. Urusan
+                        pecah bahagian, ukur dan hak milik tanah pula hendaklah melalui pihak berkuasa
+                        tanah serta profesional ukur yang berkaitan.
+                    </p>
+                </article>
+            </section>
+        </div>
     </section>
+
 
     <section id="page-hubungi" class="dashboard-page">
         <div class="dashboard-hero">
