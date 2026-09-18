@@ -4638,7 +4638,428 @@ body.cover-active{
     #page-tentang .about-reference-wrap{padding:22px 16px;}
 }
 
-    </style>
+    
+/* =========================================================
+   PANDUAN PENGIRAAN WARIS - KIRAAN FARAID
+========================================================= */
+.fcalc-heir-guide{
+    width:min(1290px,calc(100% - 44px));
+    margin:20px auto 0;
+    border:1px solid #dccb91;
+    border-radius:10px;
+    overflow:hidden;
+    background:#fffdf7;
+    box-shadow:0 8px 24px rgba(20,72,60,.055);
+}
+.fcalc-heir-guide > summary{
+    list-style:none;
+    min-height:58px;
+    padding:14px 18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+    cursor:pointer;
+    background:
+        linear-gradient(135deg,rgba(14,94,78,.98),rgba(9,68,58,.98)),
+        url("corak-islamik.png") center/cover;
+    color:#fff;
+    border-bottom:3px solid #b99b43;
+}
+.fcalc-heir-guide > summary::-webkit-details-marker{display:none;}
+.fcalc-heir-guide > summary span{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    font-size:15px;
+    font-weight:700;
+}
+.fcalc-heir-guide > summary span i{color:#f0d67e;}
+.fcalc-heir-guide > summary small{
+    color:rgba(255,255,255,.72);
+    font-size:9px;
+    font-weight:500;
+}
+.fcalc-heir-guide-body{
+    position:relative;
+    padding:20px;
+    background:
+        radial-gradient(circle at 12px 12px,rgba(185,155,67,.045) 1.5px,transparent 2px) 0 0/24px 24px,
+        #fffdf8;
+}
+.fcalc-guide-intro{
+    display:flex;
+    align-items:flex-start;
+    gap:13px;
+    padding:14px 16px;
+    border:1px solid #d9e7e1;
+    border-left:4px solid #0f725f;
+    border-radius:8px;
+    background:#f2faf7;
+    color:#45635b;
+}
+.fcalc-guide-intro-icon{
+    width:35px;height:35px;flex:0 0 35px;
+    display:grid;place-items:center;
+    border-radius:50%;
+    background:#0f725f;color:#f4da86;
+}
+.fcalc-guide-intro strong{color:#164f43;font-size:12px;}
+.fcalc-guide-intro p{margin:3px 0 0;font-size:10.5px;line-height:1.65;}
+.fcalc-formula-strip{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin:14px 0;
+}
+.fcalc-formula-strip > div{
+    padding:12px 13px;
+    border:1px solid #e1d6b5;
+    border-radius:8px;
+    background:#fff;
+}
+.fcalc-formula-strip span{
+    display:block;margin-bottom:4px;
+    color:#8d7740;font-size:8px;font-weight:800;
+    letter-spacing:.5px;text-transform:uppercase;
+}
+.fcalc-formula-strip strong{
+    display:block;color:#25483f;font-size:11px;line-height:1.45;
+}
+.fcalc-guide-toolbar{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin:15px 0;
+}
+.fcalc-guide-search-wrap{
+    position:relative;
+    flex:1;
+}
+.fcalc-guide-search-wrap i{
+    position:absolute;left:13px;top:50%;
+    transform:translateY(-50%);
+    color:#9a895d;font-size:11px;
+}
+.fcalc-guide-search-wrap input{
+    width:100%;
+    height:39px;
+    padding:8px 13px 8px 34px;
+    border:1px solid #d7dce0;
+    border-radius:7px;
+    outline:none;
+    background:#fff;
+    color:#334155;
+    font-size:11px;
+}
+.fcalc-guide-search-wrap input:focus{
+    border-color:#0f8b71;
+    box-shadow:0 0 0 3px rgba(15,139,113,.08);
+}
+.fcalc-guide-count{
+    white-space:nowrap;
+    color:#6c766f;
+    font-size:9px;
+    font-weight:700;
+}
+.fcalc-heir-guide-grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:12px;
+}
+.fcalc-heir-card{
+    position:relative;
+    min-width:0;
+    padding:15px;
+    border:1px solid #e4dcc5;
+    border-radius:9px;
+    background:#fff;
+    overflow:hidden;
+    transition:.18s ease;
+}
+.fcalc-heir-card::after{
+    content:"";
+    position:absolute;
+    width:42px;height:42px;
+    right:-22px;top:-22px;
+    border:1px solid rgba(185,155,67,.28);
+    transform:rotate(45deg);
+}
+.fcalc-heir-card:hover{
+    transform:translateY(-2px);
+    border-color:#cdb86e;
+    box-shadow:0 8px 17px rgba(25,80,66,.075);
+}
+.fcalc-heir-card.hidden{display:none;}
+.fcalc-heir-card-head{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:8px;
+    margin-bottom:8px;
+}
+.fcalc-heir-card h4{
+    margin:0;
+    color:#174b40;
+    font-size:12px;
+    line-height:1.45;
+}
+.fcalc-heir-badge{
+    flex:0 0 auto;
+    padding:4px 7px;
+    border:1px solid #d7c98f;
+    border-radius:20px;
+    background:#faf5e6;
+    color:#826d32;
+    font-size:7.5px;
+    font-weight:800;
+    text-transform:uppercase;
+}
+.fcalc-heir-card p{
+    margin:0;
+    color:#66746f;
+    font-size:9px;
+    line-height:1.55;
+}
+.fcalc-heir-card-formula{
+    margin-top:10px;
+    padding-top:8px;
+    border-top:1px dashed #ddd3b5;
+    color:#315b50;
+    font-size:8.5px;
+    font-weight:700;
+    line-height:1.45;
+}
+.fcalc-heir-card-btn{
+    width:100%;
+    margin-top:10px;
+    padding:7px 9px;
+    border:1px solid #b9d8ce;
+    border-radius:6px;
+    background:#f2faf7;
+    color:#0d745f;
+    font-size:8.5px;
+    font-weight:700;
+    cursor:pointer;
+}
+.fcalc-heir-card-btn:hover{background:#e5f6f0;}
+.fcalc-guide-notice{
+    display:flex;
+    gap:11px;
+    margin-top:16px;
+    padding:13px 15px;
+    border:1px solid #ead8a5;
+    border-radius:8px;
+    background:#fff9e9;
+    color:#735d24;
+}
+.fcalc-guide-notice > i{margin-top:2px;color:#b18b28;}
+.fcalc-guide-notice strong{font-size:10px;}
+.fcalc-guide-notice p{margin:2px 0 0;font-size:9px;line-height:1.55;}
+
+/* Ikon info yang dijana di sebelah nama setiap waris */
+.fcalc-field label{
+    position:relative;
+}
+.fcalc-inline-info{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:15px;height:15px;
+    margin-left:4px;
+    vertical-align:1px;
+    border:1px solid #7ca9d0;
+    border-radius:50%;
+    background:#f4f9fd;
+    color:#2e77b3;
+    font-size:8px;
+    font-weight:800;
+    line-height:1;
+    cursor:pointer;
+    user-select:none;
+}
+.fcalc-inline-info:hover,
+.fcalc-inline-info:focus{
+    background:#2f80c4;
+    color:#fff;
+    outline:none;
+}
+
+/* Overlay maklumat waris */
+.fcalc-heir-info-overlay{
+    position:fixed;
+    inset:0;
+    z-index:12000;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:rgba(6,28,24,.58);
+    backdrop-filter:blur(3px);
+    -webkit-backdrop-filter:blur(3px);
+}
+.fcalc-heir-info-overlay.show{display:flex;}
+.fcalc-heir-info-dialog{
+    position:relative;
+    width:min(610px,96vw);
+    max-height:min(760px,90vh);
+    overflow-y:auto;
+    padding:24px;
+    border:1px solid #ceb765;
+    border-radius:14px;
+    background:
+        linear-gradient(rgba(255,253,247,.97),rgba(255,253,247,.97)),
+        url("corak-islamik.png") center/cover;
+    box-shadow:0 22px 70px rgba(0,0,0,.3);
+}
+.fcalc-heir-info-dialog::before{
+    content:"";
+    position:absolute;
+    inset:7px;
+    border:1px solid rgba(185,155,67,.16);
+    border-radius:10px;
+    pointer-events:none;
+}
+.fcalc-heir-info-close{
+    position:absolute;
+    right:14px;top:14px;
+    width:31px;height:31px;
+    border:1px solid #d6d8d6;
+    border-radius:50%;
+    background:#fff;
+    color:#60716c;
+    cursor:pointer;
+    z-index:3;
+}
+.fcalc-heir-info-close:hover{background:#0f725f;color:#fff;}
+.fcalc-heir-info-top{
+    position:relative;
+    z-index:2;
+    display:flex;
+    gap:13px;
+    align-items:center;
+    padding-right:35px;
+}
+.fcalc-heir-info-emblem{
+    width:52px;height:52px;flex:0 0 52px;
+    display:grid;place-items:center;
+    border-radius:50%;
+    background:#0e6655;
+    color:#f1d67f;
+    border:2px solid #c4a94d;
+}
+.fcalc-heir-info-group{
+    display:block;
+    color:#9a7f34;
+    font-size:8px;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:1px;
+}
+.fcalc-heir-info-top h3{
+    margin:2px 0 3px;
+    color:#153f36;
+    font-family:'Libre Baskerville',Georgia,serif;
+    font-size:18px;
+    line-height:1.35;
+}
+.fcalc-heir-info-type{
+    display:inline-block;
+    padding:3px 8px;
+    border-radius:20px;
+    background:#eaf6f2;
+    color:#0c765f;
+    font-size:8px;
+    font-weight:800;
+}
+.fcalc-heir-info-summary{
+    position:relative;
+    z-index:2;
+    margin:16px 0 12px;
+    color:#5e6f69;
+    font-size:10.5px;
+    line-height:1.65;
+}
+.fcalc-heir-info-formula{
+    position:relative;
+    z-index:2;
+    padding:11px 13px;
+    border-left:4px solid #b99b43;
+    background:#faf5e7;
+}
+.fcalc-heir-info-formula span{
+    display:block;
+    color:#8c773e;
+    font-size:7.5px;
+    font-weight:800;
+    text-transform:uppercase;
+}
+.fcalc-heir-info-formula strong{
+    display:block;
+    margin-top:3px;
+    color:#264c42;
+    font-size:10.5px;
+}
+.fcalc-heir-info-section{
+    position:relative;
+    z-index:2;
+    margin-top:14px;
+}
+.fcalc-heir-info-section h4{
+    margin:0 0 7px;
+    color:#194b40;
+    font-size:11px;
+}
+.fcalc-heir-info-section h4 i{margin-right:5px;color:#a98a30;}
+.fcalc-heir-info-section ul{
+    margin:0;
+    padding-left:19px;
+    color:#5f6f69;
+    font-size:9.5px;
+    line-height:1.65;
+}
+.fcalc-heir-info-section.hijab{
+    padding:11px 13px;
+    border:1px solid #efd2d2;
+    border-radius:7px;
+    background:#fff7f7;
+}
+.fcalc-heir-info-section.hijab h4{color:#8b3939;}
+.fcalc-heir-info-section.hijab h4 i{color:#b44a4a;}
+.fcalc-heir-info-section.hijab p{
+    margin:0;
+    color:#755959;
+    font-size:9.5px;
+    line-height:1.6;
+}
+.fcalc-jump-guide{
+    position:relative;
+    z-index:2;
+    width:100%;
+    margin-top:15px;
+    padding:9px 12px;
+    border:1px solid #0e8068;
+    border-radius:7px;
+    background:#0f725f;
+    color:#fff;
+    font-size:9.5px;
+    font-weight:700;
+    cursor:pointer;
+}
+.fcalc-jump-guide:hover{background:#0b5e4e;}
+
+@media(max-width:1000px){
+    .fcalc-heir-guide-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+@media(max-width:700px){
+    .fcalc-heir-guide{width:calc(100% - 30px);}
+    .fcalc-formula-strip{grid-template-columns:1fr;}
+    .fcalc-heir-guide-grid{grid-template-columns:1fr;}
+    .fcalc-guide-toolbar{align-items:stretch;flex-direction:column;}
+    .fcalc-guide-count{align-self:flex-end;}
+}
+
+</style>
 
 </head>
 
@@ -5458,7 +5879,113 @@ body.cover-active{
                 </div>
             </details>
 
-            <div class="fcalc-actions">
+            
+            <!-- =====================================================
+                 PANDUAN PENGIRAAN SETIAP WARIS
+                 Penerangan dijana daripada objek faraidHeirInfo di JS.
+            ====================================================== -->
+            <details class="fcalc-heir-guide" open>
+                <summary>
+                    <span><i class="fas fa-book-reader"></i> Maklumat &amp; Penerangan Pengiraan Setiap Waris</span>
+                    <small>Klik untuk buka / tutup</small>
+                </summary>
+
+                <div class="fcalc-heir-guide-body">
+                    <div class="fcalc-guide-intro">
+                        <div class="fcalc-guide-intro-icon"><i class="fas fa-info-circle"></i></div>
+                        <div>
+                            <strong>Cara membaca bahagian ini</strong>
+                            <p>
+                                Penerangan di bawah menerangkan logik yang digunakan oleh kalkulator MyFaraidLot.
+                                Nilai akhir masih boleh berubah kerana <strong>hijab, asabah, 'aul, radd</strong>
+                                dan kombinasi waris yang dimasukkan.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="fcalc-formula-strip">
+                        <div>
+                            <span>Formula bahagian tanah</span>
+                            <strong>Luas waris = Luas lot × Saham akhir waris</strong>
+                        </div>
+                        <div>
+                            <span>Contoh</span>
+                            <strong>1/4 × 4,000 m² = 1,000 m²</strong>
+                        </div>
+                        <div>
+                            <span>Nisbah asabah lelaki : perempuan</span>
+                            <strong>2 : 1</strong>
+                        </div>
+                    </div>
+
+                    <div class="fcalc-guide-toolbar">
+                        <div class="fcalc-guide-search-wrap">
+                            <i class="fas fa-search"></i>
+                            <input id="fcalcHeirSearch" type="search"
+                                placeholder="Cari waris, contoh: ibu, anak perempuan, SIBL...">
+                        </div>
+                        <span id="fcalcGuideCount" class="fcalc-guide-count">0 waris</span>
+                    </div>
+
+                    <div id="fcalcHeirGuideGrid" class="fcalc-heir-guide-grid"></div>
+
+                    <div class="fcalc-guide-notice">
+                        <i class="fas fa-shield-alt"></i>
+                        <div>
+                            <strong>Nota penting</strong>
+                            <p>
+                                Panduan ini ialah penerangan pendidikan berdasarkan aturan yang diprogramkan
+                                dalam kalkulator ini. Kes sebenar, khususnya kombinasi kompleks seperti
+                                <strong>Datuk bersama saudara</strong>, hendaklah disemak dan disahkan oleh
+                                pihak berautoriti Syariah.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- Panel maklumat apabila ikon (i) pada nama waris ditekan -->
+            <div id="fcalcHeirInfoOverlay" class="fcalc-heir-info-overlay" aria-hidden="true">
+                <div class="fcalc-heir-info-dialog" role="dialog" aria-modal="true"
+                    aria-labelledby="fcalcHeirInfoTitle">
+                    <button type="button" class="fcalc-heir-info-close"
+                        onclick="fcalcCloseHeirInfo()" aria-label="Tutup maklumat">
+                        <i class="fas fa-times"></i>
+                    </button>
+
+                    <div class="fcalc-heir-info-top">
+                        <div class="fcalc-heir-info-emblem"><i class="fas fa-balance-scale"></i></div>
+                        <div>
+                            <span id="fcalcHeirInfoGroup" class="fcalc-heir-info-group">Waris</span>
+                            <h3 id="fcalcHeirInfoTitle">Maklumat Waris</h3>
+                            <span id="fcalcHeirInfoType" class="fcalc-heir-info-type">-</span>
+                        </div>
+                    </div>
+
+                    <p id="fcalcHeirInfoSummary" class="fcalc-heir-info-summary"></p>
+
+                    <div class="fcalc-heir-info-formula">
+                        <span>Kaedah / kadar utama</span>
+                        <strong id="fcalcHeirInfoFormula">-</strong>
+                    </div>
+
+                    <div class="fcalc-heir-info-section">
+                        <h4><i class="fas fa-calculator"></i> Cara Pengiraan</h4>
+                        <ul id="fcalcHeirInfoRules"></ul>
+                    </div>
+
+                    <div class="fcalc-heir-info-section hijab">
+                        <h4><i class="fas fa-ban"></i> Hijab / Keutamaan</h4>
+                        <p id="fcalcHeirInfoHijab"></p>
+                    </div>
+
+                    <button type="button" id="fcalcJumpToGuide" class="fcalc-jump-guide">
+                        <i class="fas fa-book-open"></i> Lihat Dalam Panduan
+                    </button>
+                </div>
+            </div>
+
+<div class="fcalc-actions">
                 <button type="button" class="fcalc-map-btn" onclick="openMapView(event)">
                     <i class="fas fa-map-marker-alt"></i>
                     Pilih / Semak Lot
@@ -6851,6 +7378,627 @@ body.cover-active{
         });
 
 
+
+
+
+        /* =========================================================
+           MAKLUMAT PENGIRAAN SETIAP WARIS
+           Data ini menerangkan aturan yang digunakan oleh kalkulator.
+        ========================================================== */
+        const faraidHeirInfo = [
+            {
+                        "key": "ibu",
+                        "inputId": "warisIbu",
+                        "name": "Ibu",
+                        "group": "Waris Utama",
+                        "type": "Fardu / Radd",
+                        "summary": "Bahagian ibu berubah mengikut kewujudan keturunan, bilangan saudara dan kes Umariyyatain.",
+                        "rules": [
+                                    "Menerima 1/3 jika si mati tiada keturunan dan jumlah saudara kurang daripada dua orang.",
+                                    "Menerima 1/6 jika terdapat keturunan atau terdapat dua orang saudara atau lebih.",
+                                    "Dalam kes Umariyyatain, ibu menerima 1/3 daripada baki selepas bahagian suami/isteri apabila bapa turut wujud, tiada keturunan dan saudara kurang daripada dua."
+                        ],
+                        "hijab": "Ibu tidak dihijab oleh waris lain dalam logik asas kalkulator ini, tetapi kadar bahagiannya boleh berkurang daripada 1/3 kepada 1/6.",
+                        "formula": "1/3, 1/6 atau 1/3 daripada baki."
+            },
+            {
+                        "key": "bapa",
+                        "inputId": "warisBapa",
+                        "name": "Bapa",
+                        "group": "Waris Utama",
+                        "type": "Fardu + Asabah",
+                        "summary": "Bapa boleh menerima bahagian tetap dan/atau baki bergantung kepada jenis keturunan yang masih hidup.",
+                        "rules": [
+                                    "Jika ada keturunan lelaki, bapa menerima 1/6.",
+                                    "Jika hanya ada keturunan perempuan, bapa menerima 1/6 dan boleh menerima baki sebagai asabah.",
+                                    "Jika tiada keturunan, bapa menjadi asabah dan menerima baki selepas bahagian fardu lain."
+                        ],
+                        "hijab": "Kewujudan bapa menghijab datuk sebelah bapa serta banyak waris kerabat sebelah bapa yang lebih jauh.",
+                        "formula": "1/6, atau 1/6 + baki, atau baki sebagai asabah."
+            },
+            {
+                        "key": "isteri",
+                        "inputId": "warisIsteri",
+                        "name": "Isteri",
+                        "group": "Waris Utama",
+                        "type": "Fardu",
+                        "summary": "Bahagian isteri bergantung kepada sama ada si mati mempunyai keturunan atau tidak.",
+                        "rules": [
+                                    "Semua isteri secara bersama menerima 1/4 jika si mati tiada keturunan.",
+                                    "Semua isteri secara bersama menerima 1/8 jika si mati mempunyai keturunan.",
+                                    "Jika lebih daripada seorang isteri, kadar 1/4 atau 1/8 itu dibahagi sama rata sesama mereka."
+                        ],
+                        "hijab": "Isteri tidak dihijab sepenuhnya oleh keturunan; kewujudan keturunan hanya mengurangkan kadarnya daripada 1/4 kepada 1/8.",
+                        "formula": "1/4 tanpa keturunan; 1/8 jika ada keturunan."
+            },
+            {
+                        "key": "suami",
+                        "inputId": "warisSuami",
+                        "name": "Suami",
+                        "group": "Waris Utama",
+                        "type": "Fardu",
+                        "summary": "Bahagian suami bergantung kepada kewujudan keturunan si mati.",
+                        "rules": [
+                                    "Menerima 1/2 jika si mati tiada keturunan.",
+                                    "Menerima 1/4 jika si mati mempunyai keturunan."
+                        ],
+                        "hijab": "Suami tidak dihijab sepenuhnya oleh keturunan; kewujudan keturunan mengurangkan kadarnya daripada 1/2 kepada 1/4.",
+                        "formula": "1/2 tanpa keturunan; 1/4 jika ada keturunan."
+            },
+            {
+                        "key": "anakLelaki",
+                        "inputId": "warisAnakLelaki",
+                        "name": "Anak Lelaki",
+                        "group": "Waris Utama",
+                        "type": "Asabah",
+                        "summary": "Anak lelaki ialah waris asabah utama dan menerima baki selepas bahagian fardu.",
+                        "rules": [
+                                    "Jika anak lelaki sahaja pada peringkat anak, baki dibahagi sesama anak lelaki.",
+                                    "Jika bersama anak perempuan, baki dibahagi dengan nisbah 2 bahagian untuk anak lelaki dan 1 bahagian untuk anak perempuan.",
+                                    "Anak lelaki berada pada darjat keturunan yang lebih hampir berbanding cucu melalui anak lelaki."
+                        ],
+                        "hijab": "Menghijab cucu lelaki, cucu perempuan, cicit melalui anak lelaki dan kebanyakan waris asabah yang lebih jauh.",
+                        "formula": "Baki sebagai asabah; bersama anak perempuan = nisbah 2:1."
+            },
+            {
+                        "key": "anakPerempuan",
+                        "inputId": "warisAnakPerempuan",
+                        "name": "Anak Perempuan",
+                        "group": "Waris Utama",
+                        "type": "Fardu / Asabah",
+                        "summary": "Anak perempuan menerima bahagian tetap apabila tiada anak lelaki dan menjadi asabah apabila bersama anak lelaki.",
+                        "rules": [
+                                    "Seorang anak perempuan menerima 1/2 jika tiada anak lelaki.",
+                                    "Dua orang atau lebih anak perempuan berkongsi 2/3 jika tiada anak lelaki.",
+                                    "Jika bersama anak lelaki, mereka menjadi asabah dan baki dibahagi dengan nisbah lelaki 2 : perempuan 1."
+                        ],
+                        "hijab": "Kewujudan anak perempuan boleh mempengaruhi kadar cucu perempuan; dua atau lebih anak perempuan boleh menyebabkan cucu perempuan terhijab dalam keadaan tertentu jika tiada cucu lelaki.",
+                        "formula": "1/2 seorang; 2/3 bersama jika 2+; atau asabah 2:1 bersama anak lelaki."
+            },
+            {
+                        "key": "datukBapa",
+                        "inputId": "warisDatukBapa",
+                        "name": "Bapa kepada Bapa (Datuk)",
+                        "group": "Waris Ganti",
+                        "type": "Fardu + Asabah",
+                        "summary": "Datuk sebelah bapa mengambil kedudukan bapa apabila bapa tiada, tertakluk kepada keadaan tertentu.",
+                        "rules": [
+                                    "Datuk hanya dipertimbangkan apabila bapa tiada.",
+                                    "Jika ada keturunan lelaki, datuk menerima 1/6.",
+                                    "Jika hanya ada keturunan perempuan, datuk menerima 1/6 dan boleh menerima baki.",
+                                    "Jika tiada keturunan dan tiada kes khas bersama saudara, datuk boleh menerima baki sebagai asabah.",
+                                    "Kes datuk bersama saudara kandung/sebapa ditandakan oleh sistem sebagai kes khas yang memerlukan semakan."
+                        ],
+                        "hijab": "Terhijab oleh bapa. Apabila layak, datuk turut menghijab waris asabah yang lebih jauh.",
+                        "formula": "1/6, 1/6 + baki, atau baki; kes bersama saudara memerlukan pengesahan."
+            },
+            {
+                        "key": "nenekBapa",
+                        "inputId": "warisNenekBapa",
+                        "name": "Ibu kepada Bapa (Nenek)",
+                        "group": "Waris Ganti",
+                        "type": "Fardu",
+                        "summary": "Nenek sebelah bapa boleh berkongsi kadar 1/6 dengan nenek lain yang layak.",
+                        "rules": [
+                                    "Jika seorang nenek sahaja yang layak, kadar asasnya ialah 1/6.",
+                                    "Jika nenek sebelah bapa dan nenek sebelah ibu kedua-duanya layak, kadar 1/6 dikongsi antara mereka."
+                        ],
+                        "hijab": "Terhijab oleh ibu. Dalam logik kalkulator ini, nenek sebelah bapa juga terhijab oleh bapa.",
+                        "formula": "Berkongsi 1/6 antara nenek yang layak."
+            },
+            {
+                        "key": "nenekIbu",
+                        "inputId": "warisNenekIbu",
+                        "name": "Ibu kepada Ibu (Nenek)",
+                        "group": "Waris Ganti",
+                        "type": "Fardu",
+                        "summary": "Nenek sebelah ibu menerima bahagian apabila ibu tiada.",
+                        "rules": [
+                                    "Jika layak bersendirian, kadar asasnya ialah 1/6.",
+                                    "Jika terdapat lebih daripada seorang nenek yang layak, kadar 1/6 dikongsi antara mereka."
+                        ],
+                        "hijab": "Terhijab oleh ibu.",
+                        "formula": "Berkongsi 1/6 antara nenek yang layak."
+            },
+            {
+                        "key": "cucuLelaki",
+                        "inputId": "warisCucuLelaki",
+                        "name": "Cucu Lelaki melalui Anak Lelaki",
+                        "group": "Waris Ganti",
+                        "type": "Asabah",
+                        "summary": "Cucu lelaki melalui anak lelaki menjadi asabah apabila anak lelaki si mati tiada.",
+                        "rules": [
+                                    "Hanya dipertimbangkan apabila tiada anak lelaki.",
+                                    "Menerima baki sebagai asabah.",
+                                    "Jika bersama cucu perempuan pada darjat yang sama, baki dibahagi dengan nisbah lelaki 2 : perempuan 1."
+                        ],
+                        "hijab": "Terhijab oleh anak lelaki. Apabila layak, cucu lelaki menghijab cicit lelaki dan cicit perempuan yang lebih jauh.",
+                        "formula": "Baki sebagai asabah; bersama cucu perempuan = 2:1."
+            },
+            {
+                        "key": "cucuPerempuan",
+                        "inputId": "warisCucuPerempuan",
+                        "name": "Cucu Perempuan melalui Anak Lelaki",
+                        "group": "Waris Ganti",
+                        "type": "Fardu / Asabah",
+                        "summary": "Kadar cucu perempuan bergantung kepada kewujudan anak lelaki, anak perempuan dan cucu lelaki.",
+                        "rules": [
+                                    "Terhijab jika terdapat anak lelaki.",
+                                    "Jika tiada cucu lelaki dan tiada anak perempuan: seorang menerima 1/2; dua atau lebih berkongsi 2/3.",
+                                    "Jika terdapat seorang anak perempuan dan tiada cucu lelaki, cucu perempuan berkongsi 1/6 untuk menyempurnakan 2/3.",
+                                    "Jika terdapat dua atau lebih anak perempuan yang telah mengambil 2/3 dan tiada cucu lelaki, cucu perempuan terhijab.",
+                                    "Jika bersama cucu lelaki yang layak, menjadi asabah dengan nisbah lelaki 2 : perempuan 1."
+                        ],
+                        "hijab": "Terhijab oleh anak lelaki; boleh juga terhijab oleh dua atau lebih anak perempuan dalam keadaan tertentu.",
+                        "formula": "1/2, 2/3, 1/6 penyempurna, atau asabah 2:1."
+            },
+            {
+                        "key": "cicitLelaki",
+                        "inputId": "warisCicitLelaki",
+                        "name": "Cicit Lelaki melalui Jalur Anak Lelaki",
+                        "group": "Waris Ganti",
+                        "type": "Asabah",
+                        "summary": "Cicit lelaki menjadi asabah jika tiada keturunan lelaki yang lebih hampir.",
+                        "rules": [
+                                    "Terhijab jika terdapat anak lelaki.",
+                                    "Terhijab jika terdapat cucu lelaki yang lebih hampir.",
+                                    "Jika layak, menerima baki sebagai asabah.",
+                                    "Jika bersama cicit perempuan pada darjat yang sama, baki dibahagi dengan nisbah 2 : 1."
+                        ],
+                        "hijab": "Dihijab oleh anak lelaki atau cucu lelaki yang lebih hampir.",
+                        "formula": "Baki sebagai asabah; bersama cicit perempuan = 2:1."
+            },
+            {
+                        "key": "cicitPerempuan",
+                        "inputId": "warisCicitPerempuan",
+                        "name": "Cicit Perempuan melalui Jalur Anak Lelaki",
+                        "group": "Waris Ganti",
+                        "type": "Fardu / Asabah",
+                        "summary": "Cicit perempuan menerima bahagian mengikut kewujudan waris perempuan keturunan yang lebih hampir dan cicit lelaki.",
+                        "rules": [
+                                    "Terhijab oleh anak lelaki atau cucu lelaki yang lebih hampir.",
+                                    "Jika tiada cicit lelaki dan tiada bahagian waris perempuan keturunan yang lebih hampir: seorang menerima 1/2, dua atau lebih berkongsi 2/3.",
+                                    "Jika bahagian waris perempuan keturunan yang lebih hampir berjumlah 1/2, cicit perempuan boleh menerima 1/6 untuk menyempurnakan 2/3.",
+                                    "Jika waris perempuan keturunan yang lebih hampir telah mengambil 2/3 atau lebih dan tiada cicit lelaki, cicit perempuan terhijab.",
+                                    "Jika bersama cicit lelaki yang layak, menjadi asabah dengan nisbah lelaki 2 : perempuan 1."
+                        ],
+                        "hijab": "Dihijab oleh keturunan lelaki lebih hampir; boleh terhijab apabila keturunan perempuan lebih hampir telah melengkapkan 2/3.",
+                        "formula": "1/2, 2/3, 1/6 penyempurna, atau asabah 2:1."
+            },
+            {
+                        "key": "sibl",
+                        "inputId": "warisSIBL",
+                        "name": "Saudara Seibu Sebapa Lelaki (SIBL)",
+                        "group": "Waris Kedua",
+                        "type": "Asabah",
+                        "summary": "Saudara kandung lelaki menerima baki sebagai asabah apabila tiada waris yang lebih hampir.",
+                        "rules": [
+                                    "Jika layak, menerima baki sebagai asabah.",
+                                    "Jika bersama saudara kandung perempuan, baki dibahagi dengan nisbah lelaki 2 : perempuan 1.",
+                                    "Kewujudannya menghijab saudara sebapa lelaki dan perempuan."
+                        ],
+                        "hijab": "Terhijab oleh bapa atau keturunan lelaki yang lebih hampir. Kes bersama datuk boleh menjadi kes khas yang memerlukan semakan.",
+                        "formula": "Baki sebagai asabah; bersama SIBP = 2:1."
+            },
+            {
+                        "key": "sbl",
+                        "inputId": "warisSBL",
+                        "name": "Saudara Sebapa Lelaki (SBL)",
+                        "group": "Waris Kedua",
+                        "type": "Asabah",
+                        "summary": "Saudara sebapa lelaki menjadi asabah selepas saudara kandung lelaki/perempuan yang lebih kuat tiada.",
+                        "rules": [
+                                    "Jika layak, menerima baki sebagai asabah.",
+                                    "Jika bersama saudara sebapa perempuan, baki dibahagi dengan nisbah lelaki 2 : perempuan 1."
+                        ],
+                        "hijab": "Terhijab oleh bapa, keturunan lelaki, saudara kandung lelaki, atau saudara kandung perempuan yang menjadi asabah bersama keturunan perempuan. Kes bersama datuk boleh memerlukan semakan.",
+                        "formula": "Baki sebagai asabah; bersama SBP = 2:1."
+            },
+            {
+                        "key": "sil",
+                        "inputId": "warisSIL",
+                        "name": "Saudara Seibu Lelaki (SIL)",
+                        "group": "Waris Kedua",
+                        "type": "Fardu",
+                        "summary": "Saudara seibu lelaki berkongsi sama rata dengan saudara seibu perempuan; tiada nisbah 2:1.",
+                        "rules": [
+                                    "Jika hanya seorang saudara seibu keseluruhannya, bahagiannya ialah 1/6.",
+                                    "Jika dua orang atau lebih saudara seibu lelaki/perempuan, mereka bersama-sama menerima 1/3 dan dibahagi sama rata setiap orang."
+                        ],
+                        "hijab": "Terhijab jika terdapat keturunan, bapa atau datuk yang layak.",
+                        "formula": "1/6 seorang; 1/3 dikongsi sama rata jika 2+ saudara seibu."
+            },
+            {
+                        "key": "sibp",
+                        "inputId": "warisSIBP",
+                        "name": "Saudara Seibu Sebapa Perempuan (SIBP)",
+                        "group": "Waris Kedua",
+                        "type": "Fardu / Asabah",
+                        "summary": "Saudara kandung perempuan boleh menerima fardu atau menjadi asabah bergantung kepada saudara lelaki dan keturunan perempuan.",
+                        "rules": [
+                                    "Jika tiada SIBL dan tiada keturunan perempuan: seorang menerima 1/2; dua atau lebih berkongsi 2/3.",
+                                    "Jika bersama SIBL, menjadi asabah dengan nisbah lelaki 2 : perempuan 1.",
+                                    "Jika tiada SIBL tetapi terdapat keturunan perempuan, SIBP boleh menjadi asabah ma'al ghair dan menerima baki."
+                        ],
+                        "hijab": "Terhijab oleh bapa atau keturunan lelaki. Apabila menjadi asabah bersama keturunan perempuan, ia boleh menghijab saudara sebapa.",
+                        "formula": "1/2, 2/3, atau baki sebagai asabah."
+            },
+            {
+                        "key": "sbp",
+                        "inputId": "warisSBP",
+                        "name": "Saudara Sebapa Perempuan (SBP)",
+                        "group": "Waris Kedua",
+                        "type": "Fardu / Asabah",
+                        "summary": "Saudara sebapa perempuan menerima fardu atau baki selepas mengambil kira saudara kandung dan saudara sebapa lelaki.",
+                        "rules": [
+                                    "Jika tiada SBL, tiada keturunan perempuan dan tiada SIBP: seorang menerima 1/2; dua atau lebih berkongsi 2/3.",
+                                    "Jika terdapat seorang SIBP sahaja, SBP boleh menerima 1/6 untuk menyempurnakan 2/3.",
+                                    "Jika bersama SBL, menjadi asabah dengan nisbah lelaki 2 : perempuan 1.",
+                                    "Jika terdapat keturunan perempuan, tiada SIBP dan tiada SBL, SBP boleh menjadi asabah ma'al ghair."
+                        ],
+                        "hijab": "Terhijab oleh bapa, keturunan lelaki, SIBL, SIBP yang menjadi asabah, atau dua/lebih SIBP yang telah mengambil 2/3.",
+                        "formula": "1/2, 2/3, 1/6 penyempurna, atau baki sebagai asabah."
+            },
+            {
+                        "key": "sip",
+                        "inputId": "warisSIP",
+                        "name": "Saudara Seibu Perempuan (SIP)",
+                        "group": "Waris Kedua",
+                        "type": "Fardu",
+                        "summary": "Saudara seibu perempuan berkongsi sama rata dengan saudara seibu lelaki.",
+                        "rules": [
+                                    "Jika hanya seorang saudara seibu keseluruhannya, bahagiannya ialah 1/6.",
+                                    "Jika dua orang atau lebih saudara seibu lelaki/perempuan, mereka bersama-sama menerima 1/3 dan dibahagi sama rata tanpa perbezaan jantina."
+                        ],
+                        "hijab": "Terhijab jika terdapat keturunan, bapa atau datuk yang layak.",
+                        "formula": "1/6 seorang; 1/3 dikongsi sama rata jika 2+ saudara seibu."
+            },
+            {
+                        "key": "anakSibl",
+                        "inputId": "warisAnakSIBL",
+                        "name": "Anak Lelaki kepada SIBL (Anak Saudara)",
+                        "group": "Waris Kedua",
+                        "type": "Asabah Lelaki",
+                        "summary": "Waris ini ialah asabah lelaki kerabat sebelah bapa dalam keutamaan kalkulator pada turutan 1 bagi kumpulan waris asabah yang lebih jauh.",
+                        "rules": [
+                                    "Hanya menerima bahagian apabila masih terdapat baki selepas bahagian fardu dan tiada asabah yang lebih hampir.",
+                                    "Jika kelas waris ini ialah kelas pertama yang layak dalam susunan, keseluruhan baki diperuntukkan kepada kelas tersebut.",
+                                    "Jika terdapat lebih daripada seorang pada kelas yang sama, baki kelas dibahagi sama rata sesama mereka.",
+                                    "Waris dalam kelas yang lebih jauh selepasnya akan dihijab oleh kelas yang lebih hampir."
+                        ],
+                        "hijab": "Secara umum terhijab oleh bapa, datuk yang layak, keturunan lelaki, saudara lelaki yang lebih hampir atau saudara perempuan yang menjadi asabah; turut terhijab oleh mana-mana asabah lelaki yang mendahuluinya dalam susunan.",
+                        "formula": "Menerima baki sebagai asabah mengikut turutan keutamaan kerabat sebelah bapa."
+            },
+            {
+                        "key": "anakSbl",
+                        "inputId": "warisAnakSBL",
+                        "name": "Anak Lelaki kepada SBL (Anak Saudara)",
+                        "group": "Waris Kedua",
+                        "type": "Asabah Lelaki",
+                        "summary": "Waris ini ialah asabah lelaki kerabat sebelah bapa dalam keutamaan kalkulator pada turutan 2 bagi kumpulan waris asabah yang lebih jauh.",
+                        "rules": [
+                                    "Hanya menerima bahagian apabila masih terdapat baki selepas bahagian fardu dan tiada asabah yang lebih hampir.",
+                                    "Jika kelas waris ini ialah kelas pertama yang layak dalam susunan, keseluruhan baki diperuntukkan kepada kelas tersebut.",
+                                    "Jika terdapat lebih daripada seorang pada kelas yang sama, baki kelas dibahagi sama rata sesama mereka.",
+                                    "Waris dalam kelas yang lebih jauh selepasnya akan dihijab oleh kelas yang lebih hampir."
+                        ],
+                        "hijab": "Secara umum terhijab oleh bapa, datuk yang layak, keturunan lelaki, saudara lelaki yang lebih hampir atau saudara perempuan yang menjadi asabah; turut terhijab oleh mana-mana asabah lelaki yang mendahuluinya dalam susunan.",
+                        "formula": "Menerima baki sebagai asabah mengikut turutan keutamaan kerabat sebelah bapa."
+            },
+            {
+                        "key": "bapaSaudaraSibl",
+                        "inputId": "warisBapaSaudaraSIBL",
+                        "name": "SIBL kepada Bapa (Bapa Saudara Kandung)",
+                        "group": "Waris Kedua",
+                        "type": "Asabah Lelaki",
+                        "summary": "Waris ini ialah asabah lelaki kerabat sebelah bapa dalam keutamaan kalkulator pada turutan 3 bagi kumpulan waris asabah yang lebih jauh.",
+                        "rules": [
+                                    "Hanya menerima bahagian apabila masih terdapat baki selepas bahagian fardu dan tiada asabah yang lebih hampir.",
+                                    "Jika kelas waris ini ialah kelas pertama yang layak dalam susunan, keseluruhan baki diperuntukkan kepada kelas tersebut.",
+                                    "Jika terdapat lebih daripada seorang pada kelas yang sama, baki kelas dibahagi sama rata sesama mereka.",
+                                    "Waris dalam kelas yang lebih jauh selepasnya akan dihijab oleh kelas yang lebih hampir."
+                        ],
+                        "hijab": "Secara umum terhijab oleh bapa, datuk yang layak, keturunan lelaki, saudara lelaki yang lebih hampir atau saudara perempuan yang menjadi asabah; turut terhijab oleh mana-mana asabah lelaki yang mendahuluinya dalam susunan.",
+                        "formula": "Menerima baki sebagai asabah mengikut turutan keutamaan kerabat sebelah bapa."
+            },
+            {
+                        "key": "bapaSaudaraSbl",
+                        "inputId": "warisBapaSaudaraSBL",
+                        "name": "SBL kepada Bapa (Bapa Saudara Sebapa)",
+                        "group": "Waris Kedua",
+                        "type": "Asabah Lelaki",
+                        "summary": "Waris ini ialah asabah lelaki kerabat sebelah bapa dalam keutamaan kalkulator pada turutan 4 bagi kumpulan waris asabah yang lebih jauh.",
+                        "rules": [
+                                    "Hanya menerima bahagian apabila masih terdapat baki selepas bahagian fardu dan tiada asabah yang lebih hampir.",
+                                    "Jika kelas waris ini ialah kelas pertama yang layak dalam susunan, keseluruhan baki diperuntukkan kepada kelas tersebut.",
+                                    "Jika terdapat lebih daripada seorang pada kelas yang sama, baki kelas dibahagi sama rata sesama mereka.",
+                                    "Waris dalam kelas yang lebih jauh selepasnya akan dihijab oleh kelas yang lebih hampir."
+                        ],
+                        "hijab": "Secara umum terhijab oleh bapa, datuk yang layak, keturunan lelaki, saudara lelaki yang lebih hampir atau saudara perempuan yang menjadi asabah; turut terhijab oleh mana-mana asabah lelaki yang mendahuluinya dalam susunan.",
+                        "formula": "Menerima baki sebagai asabah mengikut turutan keutamaan kerabat sebelah bapa."
+            },
+            {
+                        "key": "sepupuSibl",
+                        "inputId": "warisSepupuSIBL",
+                        "name": "Anak Lelaki kepada SIBL kepada Bapa (Sepupu)",
+                        "group": "Waris Kedua",
+                        "type": "Asabah Lelaki",
+                        "summary": "Waris ini ialah asabah lelaki kerabat sebelah bapa dalam keutamaan kalkulator pada turutan 5 bagi kumpulan waris asabah yang lebih jauh.",
+                        "rules": [
+                                    "Hanya menerima bahagian apabila masih terdapat baki selepas bahagian fardu dan tiada asabah yang lebih hampir.",
+                                    "Jika kelas waris ini ialah kelas pertama yang layak dalam susunan, keseluruhan baki diperuntukkan kepada kelas tersebut.",
+                                    "Jika terdapat lebih daripada seorang pada kelas yang sama, baki kelas dibahagi sama rata sesama mereka.",
+                                    "Waris dalam kelas yang lebih jauh selepasnya akan dihijab oleh kelas yang lebih hampir."
+                        ],
+                        "hijab": "Secara umum terhijab oleh bapa, datuk yang layak, keturunan lelaki, saudara lelaki yang lebih hampir atau saudara perempuan yang menjadi asabah; turut terhijab oleh mana-mana asabah lelaki yang mendahuluinya dalam susunan.",
+                        "formula": "Menerima baki sebagai asabah mengikut turutan keutamaan kerabat sebelah bapa."
+            },
+            {
+                        "key": "sepupuSbl",
+                        "inputId": "warisSepupuSBL",
+                        "name": "Anak Lelaki kepada SBL kepada Bapa (Sepupu)",
+                        "group": "Waris Kedua",
+                        "type": "Asabah Lelaki",
+                        "summary": "Waris ini ialah asabah lelaki kerabat sebelah bapa dalam keutamaan kalkulator pada turutan 6 bagi kumpulan waris asabah yang lebih jauh.",
+                        "rules": [
+                                    "Hanya menerima bahagian apabila masih terdapat baki selepas bahagian fardu dan tiada asabah yang lebih hampir.",
+                                    "Jika kelas waris ini ialah kelas pertama yang layak dalam susunan, keseluruhan baki diperuntukkan kepada kelas tersebut.",
+                                    "Jika terdapat lebih daripada seorang pada kelas yang sama, baki kelas dibahagi sama rata sesama mereka.",
+                                    "Waris dalam kelas yang lebih jauh selepasnya akan dihijab oleh kelas yang lebih hampir."
+                        ],
+                        "hijab": "Secara umum terhijab oleh bapa, datuk yang layak, keturunan lelaki, saudara lelaki yang lebih hampir atau saudara perempuan yang menjadi asabah; turut terhijab oleh mana-mana asabah lelaki yang mendahuluinya dalam susunan.",
+                        "formula": "Menerima baki sebagai asabah mengikut turutan keutamaan kerabat sebelah bapa."
+            },
+            {
+                        "key": "siblDatuk",
+                        "inputId": "warisSIBLDatuk",
+                        "name": "SIBL Datuk",
+                        "group": "Waris Kedua",
+                        "type": "Asabah Lelaki",
+                        "summary": "Waris ini ialah asabah lelaki kerabat sebelah bapa dalam keutamaan kalkulator pada turutan 7 bagi kumpulan waris asabah yang lebih jauh.",
+                        "rules": [
+                                    "Hanya menerima bahagian apabila masih terdapat baki selepas bahagian fardu dan tiada asabah yang lebih hampir.",
+                                    "Jika kelas waris ini ialah kelas pertama yang layak dalam susunan, keseluruhan baki diperuntukkan kepada kelas tersebut.",
+                                    "Jika terdapat lebih daripada seorang pada kelas yang sama, baki kelas dibahagi sama rata sesama mereka.",
+                                    "Waris dalam kelas yang lebih jauh selepasnya akan dihijab oleh kelas yang lebih hampir."
+                        ],
+                        "hijab": "Secara umum terhijab oleh bapa, datuk yang layak, keturunan lelaki, saudara lelaki yang lebih hampir atau saudara perempuan yang menjadi asabah; turut terhijab oleh mana-mana asabah lelaki yang mendahuluinya dalam susunan.",
+                        "formula": "Menerima baki sebagai asabah mengikut turutan keutamaan kerabat sebelah bapa."
+            },
+            {
+                        "key": "sblDatuk",
+                        "inputId": "warisSBLDatuk",
+                        "name": "SBL Datuk",
+                        "group": "Waris Kedua",
+                        "type": "Asabah Lelaki",
+                        "summary": "Waris ini ialah asabah lelaki kerabat sebelah bapa dalam keutamaan kalkulator pada turutan 8 bagi kumpulan waris asabah yang lebih jauh.",
+                        "rules": [
+                                    "Hanya menerima bahagian apabila masih terdapat baki selepas bahagian fardu dan tiada asabah yang lebih hampir.",
+                                    "Jika kelas waris ini ialah kelas pertama yang layak dalam susunan, keseluruhan baki diperuntukkan kepada kelas tersebut.",
+                                    "Jika terdapat lebih daripada seorang pada kelas yang sama, baki kelas dibahagi sama rata sesama mereka.",
+                                    "Waris dalam kelas yang lebih jauh selepasnya akan dihijab oleh kelas yang lebih hampir."
+                        ],
+                        "hijab": "Secara umum terhijab oleh bapa, datuk yang layak, keturunan lelaki, saudara lelaki yang lebih hampir atau saudara perempuan yang menjadi asabah; turut terhijab oleh mana-mana asabah lelaki yang mendahuluinya dalam susunan.",
+                        "formula": "Menerima baki sebagai asabah mengikut turutan keutamaan kerabat sebelah bapa."
+            },
+            {
+                        "key": "anakSiblDatuk",
+                        "inputId": "warisAnakSIBLDatuk",
+                        "name": "Anak Lelaki SIBL Datuk",
+                        "group": "Waris Kedua",
+                        "type": "Asabah Lelaki",
+                        "summary": "Waris ini ialah asabah lelaki kerabat sebelah bapa dalam keutamaan kalkulator pada turutan 9 bagi kumpulan waris asabah yang lebih jauh.",
+                        "rules": [
+                                    "Hanya menerima bahagian apabila masih terdapat baki selepas bahagian fardu dan tiada asabah yang lebih hampir.",
+                                    "Jika kelas waris ini ialah kelas pertama yang layak dalam susunan, keseluruhan baki diperuntukkan kepada kelas tersebut.",
+                                    "Jika terdapat lebih daripada seorang pada kelas yang sama, baki kelas dibahagi sama rata sesama mereka.",
+                                    "Waris dalam kelas yang lebih jauh selepasnya akan dihijab oleh kelas yang lebih hampir."
+                        ],
+                        "hijab": "Secara umum terhijab oleh bapa, datuk yang layak, keturunan lelaki, saudara lelaki yang lebih hampir atau saudara perempuan yang menjadi asabah; turut terhijab oleh mana-mana asabah lelaki yang mendahuluinya dalam susunan.",
+                        "formula": "Menerima baki sebagai asabah mengikut turutan keutamaan kerabat sebelah bapa."
+            },
+            {
+                        "key": "anakSblDatuk",
+                        "inputId": "warisAnakSBLDatuk",
+                        "name": "Anak Lelaki SBL Datuk",
+                        "group": "Waris Kedua",
+                        "type": "Asabah Lelaki",
+                        "summary": "Waris ini ialah asabah lelaki kerabat sebelah bapa dalam keutamaan kalkulator pada turutan 10 bagi kumpulan waris asabah yang lebih jauh.",
+                        "rules": [
+                                    "Hanya menerima bahagian apabila masih terdapat baki selepas bahagian fardu dan tiada asabah yang lebih hampir.",
+                                    "Jika kelas waris ini ialah kelas pertama yang layak dalam susunan, keseluruhan baki diperuntukkan kepada kelas tersebut.",
+                                    "Jika terdapat lebih daripada seorang pada kelas yang sama, baki kelas dibahagi sama rata sesama mereka.",
+                                    "Waris dalam kelas yang lebih jauh selepasnya akan dihijab oleh kelas yang lebih hampir."
+                        ],
+                        "hijab": "Secara umum terhijab oleh bapa, datuk yang layak, keturunan lelaki, saudara lelaki yang lebih hampir atau saudara perempuan yang menjadi asabah; turut terhijab oleh mana-mana asabah lelaki yang mendahuluinya dalam susunan.",
+                        "formula": "Menerima baki sebagai asabah mengikut turutan keutamaan kerabat sebelah bapa."
+            }
+];
+
+        let fcalcActiveHeirKey = null;
+
+        function fcalcEscapeHtml(value) {
+            return String(value ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function fcalcFindHeir(key) {
+            return faraidHeirInfo.find(function(item){ return item.key === key; }) || null;
+        }
+
+        function fcalcRenderHeirGuide(filterText) {
+            const grid = document.getElementById('fcalcHeirGuideGrid');
+            const countEl = document.getElementById('fcalcGuideCount');
+            if (!grid) return;
+
+            const q = String(filterText || '').trim().toLowerCase();
+
+            const filtered = faraidHeirInfo.filter(function(item){
+                const haystack = [
+                    item.name, item.group, item.type, item.summary,
+                    item.formula, item.hijab
+                ].concat(item.rules || []).join(' ').toLowerCase();
+                return !q || haystack.includes(q);
+            });
+
+            grid.innerHTML = filtered.map(function(item){
+                return `
+                    <article class="fcalc-heir-card" id="guide-${fcalcEscapeHtml(item.key)}">
+                        <div class="fcalc-heir-card-head">
+                            <h4>${fcalcEscapeHtml(item.name)}</h4>
+                            <span class="fcalc-heir-badge">${fcalcEscapeHtml(item.type)}</span>
+                        </div>
+                        <p>${fcalcEscapeHtml(item.summary)}</p>
+                        <div class="fcalc-heir-card-formula">
+                            ${fcalcEscapeHtml(item.formula)}
+                        </div>
+                        <button type="button" class="fcalc-heir-card-btn"
+                            onclick="fcalcOpenHeirInfo('${fcalcEscapeHtml(item.key)}')">
+                            <i class="fas fa-info-circle"></i> Lihat cara pengiraan
+                        </button>
+                    </article>`;
+            }).join('');
+
+            if (countEl) {
+                countEl.textContent = filtered.length + ' waris';
+            }
+
+            if (!filtered.length) {
+                grid.innerHTML = '<div class="faraid-result-empty" style="grid-column:1/-1;">Tiada waris yang sepadan dengan carian.</div>';
+            }
+        }
+
+        function fcalcOpenHeirInfo(key) {
+            const item = fcalcFindHeir(key);
+            const overlay = document.getElementById('fcalcHeirInfoOverlay');
+            if (!item || !overlay) return;
+
+            fcalcActiveHeirKey = key;
+
+            document.getElementById('fcalcHeirInfoGroup').textContent = item.group;
+            document.getElementById('fcalcHeirInfoTitle').textContent = item.name;
+            document.getElementById('fcalcHeirInfoType').textContent = item.type;
+            document.getElementById('fcalcHeirInfoSummary').textContent = item.summary;
+            document.getElementById('fcalcHeirInfoFormula').textContent = item.formula;
+            document.getElementById('fcalcHeirInfoHijab').textContent = item.hijab;
+
+            const rules = document.getElementById('fcalcHeirInfoRules');
+            rules.innerHTML = (item.rules || []).map(function(rule){
+                return '<li>' + fcalcEscapeHtml(rule) + '</li>';
+            }).join('');
+
+            overlay.classList.add('show');
+            overlay.setAttribute('aria-hidden','false');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function fcalcCloseHeirInfo() {
+            const overlay = document.getElementById('fcalcHeirInfoOverlay');
+            if (!overlay) return;
+            overlay.classList.remove('show');
+            overlay.setAttribute('aria-hidden','true');
+            document.body.style.overflow = '';
+        }
+
+        function fcalcInstallInlineInfoButtons() {
+            faraidHeirInfo.forEach(function(item){
+                const input = document.getElementById(item.inputId);
+                if (!input) return;
+
+                const label = document.querySelector('label[for="' + item.inputId + '"]');
+                if (!label || label.querySelector('.fcalc-inline-info')) return;
+
+                const info = document.createElement('span');
+                info.className = 'fcalc-inline-info';
+                info.setAttribute('role','button');
+                info.setAttribute('tabindex','0');
+                info.setAttribute('title','Lihat penerangan pengiraan ' + item.name);
+                info.setAttribute('aria-label','Maklumat pengiraan ' + item.name);
+                info.dataset.heirKey = item.key;
+                info.innerHTML = 'i';
+
+                info.addEventListener('click', function(event){
+                    event.preventDefault();
+                    event.stopPropagation();
+                    fcalcOpenHeirInfo(item.key);
+                });
+
+                info.addEventListener('keydown', function(event){
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        fcalcOpenHeirInfo(item.key);
+                    }
+                });
+
+                label.appendChild(info);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function(){
+            fcalcInstallInlineInfoButtons();
+            fcalcRenderHeirGuide('');
+
+            const search = document.getElementById('fcalcHeirSearch');
+            if (search) {
+                search.addEventListener('input', function(){
+                    fcalcRenderHeirGuide(this.value);
+                });
+            }
+
+            const overlay = document.getElementById('fcalcHeirInfoOverlay');
+            if (overlay) {
+                overlay.addEventListener('click', function(event){
+                    if (event.target === overlay) fcalcCloseHeirInfo();
+                });
+            }
+
+            const jump = document.getElementById('fcalcJumpToGuide');
+            if (jump) {
+                jump.addEventListener('click', function(){
+                    const key = fcalcActiveHeirKey;
+                    fcalcCloseHeirInfo();
+
+                    const guide = document.querySelector('.fcalc-heir-guide');
+                    if (guide) guide.open = true;
+
+                    setTimeout(function(){
+                        const card = document.getElementById('guide-' + key);
+                        if (card) {
+                            card.scrollIntoView({behavior:'smooth', block:'center'});
+                        }
+                    }, 120);
+                });
+            }
+
+            document.addEventListener('keydown', function(event){
+                if (event.key === 'Escape') fcalcCloseHeirInfo();
+            });
+        });
 
 
         /* =========================================================
