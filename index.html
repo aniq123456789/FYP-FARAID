@@ -5680,6 +5680,447 @@ body.cover-active{
     #page-informasi .guide-search-panel{padding:13px;}
 }
 
+
+/* =========================================================
+   FEATURE HUBUNGI - MYFARAIDLOT
+   Rekaan Islamik hijau-emas
+========================================================= */
+#page-hubungi.contact-page{
+    --contact-green:#0d604f;
+    --contact-green-dark:#073f35;
+    --contact-green-mid:#12806a;
+    --contact-gold:#b79b45;
+    --contact-gold-soft:#e5d49b;
+    --contact-cream:#fbf7ea;
+    --contact-ink:#28483f;
+    --contact-muted:#69766f;
+    background:
+        radial-gradient(circle at 15px 15px,rgba(183,155,69,.052) 1.8px,transparent 2.2px) 0 0/30px 30px,
+        linear-gradient(180deg,#f7f2e4 0%,#fbf8ef 50%,#f1ead7 100%);
+}
+
+/* ---------- HERO ---------- */
+#page-hubungi .contact-hero{
+    position:relative;
+    overflow:hidden;
+    min-height:290px;
+    padding:40px 5.5% 44px;
+    color:#fff;
+    border-bottom:4px solid var(--contact-gold);
+    background:
+        linear-gradient(112deg,rgba(5,55,46,.985),rgba(10,91,75,.955) 59%,rgba(21,115,92,.90)),
+        url("corak-islamik.png") center/cover no-repeat;
+    box-shadow:0 10px 28px rgba(23,66,55,.12);
+}
+
+#page-hubungi .contact-hero::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    opacity:.20;
+    background:
+        repeating-conic-gradient(from 22.5deg at 50% 50%,
+            rgba(244,217,125,.56) 0 5deg,
+            transparent 5deg 40deg,
+            rgba(244,217,125,.24) 40deg 45deg,
+            transparent 45deg 90deg);
+    background-size:105px 105px;
+    mask-image:linear-gradient(90deg,black,rgba(0,0,0,.55) 52%,transparent 88%);
+    -webkit-mask-image:linear-gradient(90deg,black,rgba(0,0,0,.55) 52%,transparent 88%);
+}
+
+#page-hubungi .contact-hero::after{
+    content:"";
+    position:absolute;
+    width:360px;
+    height:360px;
+    right:-90px;
+    top:-110px;
+    border:1px solid rgba(235,213,142,.42);
+    border-radius:50%;
+    box-shadow:
+        0 0 0 32px rgba(235,213,142,.045),
+        0 0 0 65px rgba(235,213,142,.033),
+        0 0 0 100px rgba(235,213,142,.022);
+}
+
+#page-hubungi .contact-hero-inner{
+    position:relative;
+    z-index:2;
+    width:min(1180px,100%);
+    margin:0 auto;
+}
+
+#page-hubungi .contact-breadcrumb{
+    color:rgba(255,255,255,.73);
+    font-size:10px;
+    margin-bottom:18px;
+}
+
+#page-hubungi .contact-bismillah{
+    margin:0 0 6px;
+    font-family:'Amiri',serif;
+    color:#f0d77e;
+    font-size:25px;
+    line-height:1.35;
+}
+
+#page-hubungi .contact-eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:9px;
+    color:#f2d980;
+    font-size:9px;
+    font-weight:800;
+    letter-spacing:2.1px;
+    text-transform:uppercase;
+}
+
+#page-hubungi .contact-eyebrow::before,
+#page-hubungi .contact-eyebrow::after{
+    content:"";
+    width:25px;
+    height:1px;
+    background:#d9be68;
+}
+
+#page-hubungi .contact-hero h1{
+    margin:10px 0 0;
+    max-width:850px;
+    color:#fffef8;
+    font-family:'Libre Baskerville',Georgia,serif;
+    font-size:clamp(32px,4vw,52px);
+    line-height:1.12;
+    font-weight:700;
+}
+
+#page-hubungi .contact-hero h1 span{
+    color:#f0d478;
+}
+
+#page-hubungi .contact-hero-copy{
+    max-width:760px;
+    margin:15px 0 0;
+    color:rgba(255,255,255,.88);
+    font-size:12.5px;
+    line-height:1.8;
+}
+
+/* ---------- CONTAINER ---------- */
+#page-hubungi .contact-container{
+    width:min(1180px,89%);
+    margin:0 auto;
+    padding:0 0 64px;
+}
+
+#page-hubungi .contact-profile-card{
+    position:relative;
+    z-index:5;
+    width:min(900px,100%);
+    margin:-55px auto 0;
+    overflow:hidden;
+    border:1px solid rgba(183,155,69,.45);
+    border-radius:16px;
+    background:
+        linear-gradient(rgba(255,253,247,.97),rgba(255,253,247,.97)),
+        url("corak-islamik.png") center/cover;
+    box-shadow:0 16px 38px rgba(24,68,57,.14);
+}
+
+#page-hubungi .contact-profile-card::before,
+#page-hubungi .contact-profile-card::after{
+    content:"";
+    position:absolute;
+    width:90px;
+    height:90px;
+    border-color:rgba(183,155,69,.48);
+    pointer-events:none;
+}
+
+#page-hubungi .contact-profile-card::before{
+    top:10px;
+    left:10px;
+    border-top:2px solid;
+    border-left:2px solid;
+    border-radius:13px 0 0 0;
+}
+
+#page-hubungi .contact-profile-card::after{
+    right:10px;
+    bottom:10px;
+    border-right:2px solid;
+    border-bottom:2px solid;
+    border-radius:0 0 13px 0;
+}
+
+#page-hubungi .contact-profile-top{
+    position:relative;
+    z-index:2;
+    display:flex;
+    align-items:center;
+    gap:20px;
+    padding:30px 32px 24px;
+    border-bottom:1px solid #eadfbe;
+}
+
+#page-hubungi .contact-profile-emblem{
+    width:82px;
+    height:82px;
+    flex:0 0 82px;
+    display:grid;
+    place-items:center;
+    border-radius:50%;
+    color:#f2da88;
+    font-size:29px;
+    background:
+        radial-gradient(circle,#14715e 0 46%,transparent 47%),
+        conic-gradient(from 22.5deg,
+            #b79b45 0 12.5%,
+            #0d604f 0 25%,
+            #b79b45 0 37.5%,
+            #0d604f 0 50%,
+            #b79b45 0 62.5%,
+            #0d604f 0 75%,
+            #b79b45 0 87.5%,
+            #0d604f 0);
+    border:5px solid #efe1b4;
+    box-shadow:
+        0 0 0 1px rgba(183,155,69,.50),
+        0 8px 20px rgba(15,93,77,.16);
+}
+
+#page-hubungi .contact-profile-label{
+    display:block;
+    margin-bottom:4px;
+    color:#a08431;
+    font-size:8.5px;
+    font-weight:800;
+    letter-spacing:1.7px;
+    text-transform:uppercase;
+}
+
+#page-hubungi .contact-profile-name{
+    margin:0;
+    color:#123f35;
+    font-family:'Libre Baskerville',Georgia,serif;
+    font-size:clamp(21px,2.4vw,30px);
+    line-height:1.35;
+}
+
+#page-hubungi .contact-profile-sub{
+    margin:7px 0 0;
+    color:#6a7771;
+    font-size:10px;
+    line-height:1.6;
+}
+
+/* ---------- CONTACT DETAILS ---------- */
+#page-hubungi .contact-details-grid{
+    position:relative;
+    z-index:2;
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:14px;
+    padding:24px 30px 30px;
+}
+
+#page-hubungi .contact-detail-card{
+    position:relative;
+    overflow:hidden;
+    min-height:190px;
+    padding:21px 18px;
+    border:1px solid #e1d6b7;
+    border-radius:11px;
+    background:linear-gradient(180deg,#fffef9,#faf5e8);
+    transition:.2s ease;
+}
+
+#page-hubungi .contact-detail-card::after{
+    content:"";
+    position:absolute;
+    width:58px;
+    height:58px;
+    right:-30px;
+    top:-30px;
+    border:1px solid rgba(183,155,69,.26);
+    transform:rotate(45deg);
+}
+
+#page-hubungi .contact-detail-card:hover{
+    transform:translateY(-3px);
+    border-color:#cdb86d;
+    box-shadow:0 9px 22px rgba(28,75,63,.08);
+}
+
+#page-hubungi .contact-detail-icon{
+    width:48px;
+    height:48px;
+    display:grid;
+    place-items:center;
+    margin-bottom:13px;
+    border-radius:50%;
+    color:#f1d77f;
+    background:#0b6151;
+    border:2px solid #c9ad57;
+    box-shadow:0 0 0 4px #edf5f1;
+}
+
+#page-hubungi .contact-detail-card span{
+    display:block;
+    margin-bottom:5px;
+    color:#9b8035;
+    font-size:8px;
+    font-weight:800;
+    letter-spacing:1px;
+    text-transform:uppercase;
+}
+
+#page-hubungi .contact-detail-card h3{
+    margin:0 0 7px;
+    color:#18493e;
+    font-family:Georgia,serif;
+    font-size:14px;
+    line-height:1.45;
+}
+
+#page-hubungi .contact-detail-card p{
+    margin:0;
+    color:#66746f;
+    font-size:9.5px;
+    line-height:1.65;
+}
+
+#page-hubungi .contact-email-link{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    margin-top:10px;
+    padding:7px 10px;
+    border:1px solid #b7d7cd;
+    border-radius:6px;
+    background:#edf8f4;
+    color:#0c735f;
+    text-decoration:none;
+    font-size:8.5px;
+    font-weight:800;
+}
+
+#page-hubungi .contact-email-link:hover{
+    background:#dff3ec;
+    color:#075b4c;
+}
+
+/* ---------- LOWER INFO ---------- */
+#page-hubungi .contact-lower{
+    width:min(900px,100%);
+    margin:22px auto 0;
+}
+
+#page-hubungi .contact-note{
+    position:relative;
+    overflow:hidden;
+    padding:20px 22px;
+    border:1px solid #c8ac55;
+    border-left:5px solid #d5b85d;
+    border-radius:11px;
+    background:linear-gradient(110deg,#123f36,#0c6654);
+    color:#fff;
+    box-shadow:0 8px 22px rgba(24,66,56,.08);
+}
+
+#page-hubungi .contact-note::after{
+    content:"";
+    position:absolute;
+    width:150px;
+    height:150px;
+    right:-65px;
+    bottom:-90px;
+    border:1px solid rgba(240,214,128,.42);
+    transform:rotate(45deg);
+}
+
+#page-hubungi .contact-note h3{
+    position:relative;
+    z-index:2;
+    margin:0 0 7px;
+    color:#f2da89;
+    font-family:Georgia,serif;
+    font-size:14px;
+}
+
+#page-hubungi .contact-note p{
+    position:relative;
+    z-index:2;
+    margin:0;
+    color:rgba(255,255,255,.86);
+    font-size:9.5px;
+    line-height:1.7;
+}
+
+#page-hubungi .contact-islamic-divider{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    margin:21px auto 0;
+    color:#ad9038;
+}
+
+#page-hubungi .contact-islamic-divider::before,
+#page-hubungi .contact-islamic-divider::after{
+    content:"";
+    width:72px;
+    height:1px;
+    background:linear-gradient(90deg,transparent,#c6ac59);
+}
+
+#page-hubungi .contact-islamic-divider::after{
+    background:linear-gradient(90deg,#c6ac59,transparent);
+}
+
+#page-hubungi .contact-islamic-divider i{
+    font-size:10px;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media(max-width:850px){
+    #page-hubungi .contact-details-grid{
+        grid-template-columns:1fr;
+    }
+
+    #page-hubungi .contact-detail-card{
+        min-height:0;
+    }
+}
+
+@media(max-width:600px){
+    #page-hubungi .contact-hero{
+        padding:31px 6% 75px;
+    }
+
+    #page-hubungi .contact-container{
+        width:92%;
+    }
+
+    #page-hubungi .contact-profile-top{
+        flex-direction:column;
+        align-items:flex-start;
+        padding:25px 20px 21px;
+    }
+
+    #page-hubungi .contact-details-grid{
+        padding:20px;
+    }
+
+    #page-hubungi .contact-profile-emblem{
+        width:70px;
+        height:70px;
+        flex-basis:70px;
+        font-size:24px;
+    }
+}
+
 </style>
 
 </head>
@@ -7156,33 +7597,109 @@ body.cover-active{
         </div>
     </section>
 
+    <section id="page-hubungi" class="dashboard-page contact-page">
+        <div class="contact-hero">
+            <div class="contact-hero-inner">
+                <div class="contact-breadcrumb">
+                    <i class="fas fa-home"></i>&nbsp; &gt; &nbsp;Hubungi
+                </div>
 
-    <section id="page-hubungi" class="dashboard-page">
-        <div class="dashboard-hero">
-            <div class="dashboard-breadcrumb"><i class="fas fa-home"></i> &nbsp;>&nbsp; Hubungi</div>
-            <h1>Hubungi</h1>
-            <p>Maklumat hubungan dan saluran pertanyaan.</p>
+                <div class="contact-bismillah" lang="ar" dir="rtl">
+                    بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
+                </div>
+
+                <div class="contact-eyebrow">Hubungi Pembangun</div>
+
+                <h1>Hubungi <span>MyFaraidLot</span></h1>
+
+                <p class="contact-hero-copy">
+                    Untuk pertanyaan berkaitan sistem MyFaraidLot, fungsi WebGIS, pengiraan Faraid
+                    atau penggunaan projek ini, pengguna boleh menghubungi pembangun melalui maklumat
+                    yang disediakan di bawah.
+                </p>
+            </div>
         </div>
-        <div class="dashboard-container">
-            <div class="contact-box">
-                <div class="contact-item">
-                    <i class="fas fa-university"></i>
-                    <h3>Jabatan Geomatik</h3>
-                    <p>Politeknik Ungku Omar</p>
+
+        <div class="contact-container">
+            <section class="contact-profile-card">
+                <div class="contact-profile-top">
+                    <div class="contact-profile-emblem">
+                        <i class="fas fa-user-cog"></i>
+                    </div>
+
+                    <div>
+                        <span class="contact-profile-label">Pembangun MyFaraidLot</span>
+                        <h2 class="contact-profile-name">
+                            Muhammad Aniq Irfan Bin Mohd Asmazi
+                        </h2>
+                        <p class="contact-profile-sub">
+                            Pembangun sistem Web Pengiraan dan Pembahagian Lot Tanah Mengikut Hukum Faraid
+                            berasaskan integrasi Faraid dan Sistem Maklumat Geografi (GIS).
+                        </p>
+                    </div>
                 </div>
-                <div class="contact-item">
-                    <i class="fas fa-envelope"></i>
-                    <h3>E-mel</h3>
-                    <p>Gunakan saluran rasmi institusi untuk pertanyaan berkaitan sistem.</p>
+
+                <div class="contact-details-grid">
+                    <article class="contact-detail-card">
+                        <div class="contact-detail-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <span>Pembangun</span>
+                        <h3>Muhammad Aniq Irfan Bin Mohd Asmazi</h3>
+                        <p>
+                            Bertanggungjawab dalam pembangunan dan penyediaan sistem MyFaraidLot.
+                        </p>
+                    </article>
+
+                    <article class="contact-detail-card">
+                        <div class="contact-detail-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <span>E-mel</span>
+                        <h3>aniqirfan1005@gmail.com</h3>
+                        <p>
+                            Gunakan e-mel ini untuk pertanyaan atau maklum balas berkaitan sistem.
+                        </p>
+                        <a class="contact-email-link"
+                            href="mailto:aniqirfan1005@gmail.com">
+                            <i class="fas fa-paper-plane"></i>
+                            Hantar E-mel
+                        </a>
+                    </article>
+
+                    <article class="contact-detail-card">
+                        <div class="contact-detail-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <span>Lokasi</span>
+                        <h3>Politeknik Ungku Omar</h3>
+                        <p>
+                            Ipoh, Perak, Malaysia
+                        </p>
+                    </article>
                 </div>
-                <div class="contact-item">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <h3>Lokasi</h3>
-                    <p>Politeknik Ungku Omar, Perak, Malaysia.</p>
+            </section>
+
+            <div class="contact-lower">
+                <div class="contact-islamic-divider">
+                    <i class="fas fa-star-and-crescent"></i>
                 </div>
+
+                <section class="contact-note">
+                    <h3>
+                        <i class="fas fa-info-circle me-2"></i>
+                        Maklumat Hubungan
+                    </h3>
+                    <p>
+                        MyFaraidLot merupakan projek akademik yang menggabungkan Faraid dan GIS.
+                        Maklumat hubungan ini disediakan bagi memudahkan pengguna menyampaikan
+                        pertanyaan, cadangan atau maklum balas berkaitan penggunaan dan pembangunan sistem.
+                    </p>
+                </section>
             </div>
         </div>
     </section>
+
 
     <section id="page-login" class="dashboard-page">
         <div class="dashboard-hero">
