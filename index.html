@@ -6884,6 +6884,61 @@ body.cover-active{
     }
 }
 
+
+
+/* =========================================================
+   PELAN PEMBAHAGIAN - GAYA PELAN AKUI (SIMULASI AKADEMIK)
+   Hanya mempengaruhi paparan canvas keputusan Faraid.
+========================================================= */
+.fcalc-plan-disclaimer{
+    display:flex;
+    align-items:flex-start;
+    gap:9px;
+    margin:0 0 9px;
+    padding:10px 12px;
+    border:1px solid #dccb91;
+    border-left:4px solid #a9872e;
+    border-radius:4px;
+    background:#fffaf0;
+    color:#67572d;
+    font-size:9.5px;
+    line-height:1.55;
+}
+.fcalc-plan-disclaimer i{
+    margin-top:2px;
+    color:#9e7e28;
+}
+.fcalc-plan-scroll{
+    width:100%;
+    overflow-x:auto;
+    overflow-y:hidden;
+    padding:8px;
+    border:1px solid #d7d7d7;
+    background:#ececec;
+    -webkit-overflow-scrolling:touch;
+}
+.fcalc-result-card #lotCanvas{
+    display:block;
+    width:100%;
+    min-width:1050px;
+    max-width:none;
+    height:auto;
+    min-height:0;
+    margin:0 auto;
+    border:1px solid #9a9a9a;
+    border-radius:0;
+    background:#ffffff;
+    box-shadow:0 2px 7px rgba(0,0,0,.10);
+}
+@media(max-width:700px){
+    .fcalc-plan-scroll{
+        padding:5px;
+    }
+    .fcalc-result-card #lotCanvas{
+        min-width:980px;
+    }
+}
+
 </style>
 
 </head>
@@ -7848,8 +7903,18 @@ body.cover-active{
                 <div id="faraidTableContainer"></div>
                 <div id="faraidBlockedContainer"></div>
 
-                <div class="fcalc-visual-title">Pelan Pembahagian Lot (Visual)</div>
-                <canvas id="lotCanvas" width="900" height="420"></canvas>
+                <div class="fcalc-visual-title">Pelan Pembahagian Lot — Gaya Pelan Akui (Simulasi)</div>
+                <div class="fcalc-plan-disclaimer">
+                    <i class="fas fa-info-circle"></i>
+                    <span>
+                        Paparan ini menggunakan gaya pelan ukur kadaster untuk tujuan akademik.
+                        <strong>Bukan Pelan Akui rasmi JUPEM dan bukan untuk urusan ukur, pendaftaran atau hak milik.</strong>
+                    </span>
+                </div>
+                <div class="fcalc-plan-scroll">
+                    <canvas id="lotCanvas" width="1400" height="980"
+                        aria-label="Pelan pembahagian lot gaya Pelan Akui"></canvas>
+                </div>
             </div>
         </div>
     </section>
@@ -10840,298 +10905,768 @@ body.cover-active{
             };
         }
 
-        function drawRoadAndFrame(ctx, W, H, lotBox) {
+        /* =========================================================
+           PELAN PEMBAHAGIAN LOT - GAYA PELAN AKUI
+           ---------------------------------------------------------
+           PENTING:
+           - Ini ialah SIMULASI AKADEMIK.
+           - Bukan Pelan Akui rasmi JUPEM.
+           - Bearing/jarak sempadan dikira daripada geometri WebGIS
+             dan dipaparkan sebagai anggaran, bukan ukuran kadaster
+             yang telah disahkan.
+        ========================================================== */
 
-            const roadH = 34;
-            const roadY = H - roadH;
+        function paGetLotMeta(selectedLayer) {
+            const p =
+                selectedLayer &&
+                selectedLayer.feature &&
+                selectedLayer.feature.properties
+                    ? selectedLayer.feature.properties
+                    : {};
 
-            /*
-             * JANGAN melukis semula seluruh canvas di sini kerana
-             * fungsi ini dipanggil SELEPAS polygon lot dilukis.
-             * Melukis fillRect(0,0,W,H) akan memadam keseluruhan
-             * visual lot. Hanya kawasan rizab jalan dilukis semula.
-             */
+            const read = function(keys, fallback) {
+                for (let i = 0; i < keys.length; i++) {
+                    const v = p[keys[i]];
+                    if (v !== undefined && v !== null && String(v).trim() !== "") {
+                        return String(v);
+                    }
+                }
+                return fallback;
+            };
 
-            /*
-             * Rizab jalan kekal sebagai komponen visual berasingan,
-             * seperti fungsi asal sistem.
-             */
-            ctx.fillStyle = "#d9dde1";
-            ctx.fillRect(0, roadY, W, roadH);
+            const rawArea =
+                Number(
+                    p["AREA"] ??
+                    p["Area"] ??
+                    document.getElementById("luasTanah")?.value
+                );
 
-            ctx.strokeStyle = "#4b5563";
-            ctx.lineWidth = 2;
-            ctx.setLineDash([6, 4]);
+            return {
+                lot: read(["NO LOT","NO_LOT","LOT","Lot"], "-"),
+                negeri: read(["NEGERI","Negeri"], "-"),
+                daerah: read(["DAERAH","Daerah"], "-"),
+                mukim: read(["MUKIM","Mukim"], "-"),
+                owner: read(["tsp — pe","Pemilik","PEMILIK"], "Tidak dinyatakan"),
+                area: Number.isFinite(rawArea) ? rawArea : 0
+            };
+        }
 
-            ctx.beginPath();
-            ctx.moveTo(0, roadY);
-            ctx.lineTo(W, roadY);
-            ctx.stroke();
+        function paPad2(n) {
+            return String(Math.abs(Math.floor(n))).padStart(2, "0");
+        }
 
-            ctx.setLineDash([]);
+        function paBearingToDMS(deg) {
+            let d = ((deg % 360) + 360) % 360;
+            let D = Math.floor(d);
+            let mFloat = (d - D) * 60;
+            let M = Math.floor(mFloat);
+            let S = Math.round((mFloat - M) * 60);
 
-            ctx.strokeStyle = "#ffffff";
-            ctx.lineWidth = 2;
-            ctx.setLineDash([12, 8]);
+            if (S === 60) {
+                S = 0;
+                M += 1;
+            }
+            if (M === 60) {
+                M = 0;
+                D = (D + 1) % 360;
+            }
 
-            ctx.beginPath();
-            ctx.moveTo(0, roadY + roadH / 2);
-            ctx.lineTo(W, roadY + roadH / 2);
-            ctx.stroke();
+            return D + "° " + paPad2(M) + "' " + paPad2(S) + '"';
+        }
 
-            ctx.setLineDash([]);
+        function paHaversineMeters(a, b) {
+            const R = 6371008.8;
+            const lat1 = a.y * Math.PI / 180;
+            const lat2 = b.y * Math.PI / 180;
+            const dLat = (b.y - a.y) * Math.PI / 180;
+            const dLon = (b.x - a.x) * Math.PI / 180;
 
-            ctx.fillStyle = "#374151";
-            ctx.font = "bold 9px Poppins, sans-serif";
+            const h =
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1) * Math.cos(lat2) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+            return 2 * R * Math.atan2(Math.sqrt(h), Math.sqrt(1 - h));
+        }
+
+        function paInitialBearing(a, b) {
+            const lat1 = a.y * Math.PI / 180;
+            const lat2 = b.y * Math.PI / 180;
+            const dLon = (b.x - a.x) * Math.PI / 180;
+
+            const y = Math.sin(dLon) * Math.cos(lat2);
+            const x =
+                Math.cos(lat1) * Math.sin(lat2) -
+                Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon);
+
+            return (Math.atan2(y, x) * 180 / Math.PI + 360) % 360;
+        }
+
+        function paCanvasPoint(p, geometry, scale, offsetX, offsetY) {
+            return {
+                x: offsetX + (p.u - geometry.minU) * scale,
+                y: offsetY + (geometry.maxV - p.v) * scale
+            };
+        }
+
+        function paNiceScaleBar(targetMeters) {
+            if (!Number.isFinite(targetMeters) || targetMeters <= 0) return 10;
+
+            const power = Math.pow(10, Math.floor(Math.log10(targetMeters)));
+            const n = targetMeters / power;
+
+            let nice;
+            if (n < 1.5) nice = 1;
+            else if (n < 3.5) nice = 2;
+            else if (n < 7.5) nice = 5;
+            else nice = 10;
+
+            return nice * power;
+        }
+
+        function paDrawNorthArrow(ctx, x, y) {
+            ctx.save();
+
+            ctx.strokeStyle = "#111";
+            ctx.fillStyle = "#111";
+            ctx.lineWidth = 1.5;
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
 
+            ctx.font = "bold 20px Georgia, serif";
+            ctx.fillText("U", x, y - 46);
+
+            ctx.beginPath();
+            ctx.moveTo(x, y - 36);
+            ctx.lineTo(x - 9, y - 7);
+            ctx.lineTo(x, y - 13);
+            ctx.lineTo(x + 9, y - 7);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.moveTo(x, y - 11);
+            ctx.lineTo(x, y + 36);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(x - 14, y + 10);
+            ctx.lineTo(x + 14, y + 10);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(x, y + 10, 4, 0, Math.PI * 2);
+            ctx.stroke();
+
+            ctx.restore();
+        }
+
+        function paDrawScaleBar(ctx, x, y, pxPerMeter, availablePx) {
+            if (!Number.isFinite(pxPerMeter) || pxPerMeter <= 0) return;
+
+            const targetPx = Math.min(220, Math.max(110, availablePx || 180));
+            const targetMeters = targetPx / pxPerMeter;
+            const totalM = paNiceScaleBar(targetMeters);
+            const totalPx = totalM * pxPerMeter;
+
+            if (!Number.isFinite(totalPx) || totalPx < 45 || totalPx > 320) return;
+
+            const segments = 4;
+            const segPx = totalPx / segments;
+            const segM = totalM / segments;
+
+            ctx.save();
+            ctx.strokeStyle = "#111";
+            ctx.fillStyle = "#111";
+            ctx.lineWidth = 1;
+            ctx.font = "10px Arial, sans-serif";
+            ctx.textAlign = "center";
+
+            ctx.fillText("SKALA GRAFIK (ANGGARAN)", x + totalPx / 2, y - 12);
+
+            for (let i = 0; i < segments; i++) {
+                ctx.fillStyle = i % 2 === 0 ? "#111" : "#fff";
+                ctx.fillRect(x + i * segPx, y, segPx, 9);
+                ctx.strokeRect(x + i * segPx, y, segPx, 9);
+            }
+
+            ctx.fillStyle = "#111";
+            for (let i = 0; i <= segments; i++) {
+                const val = (i * segM);
+                ctx.fillText(
+                    (Math.abs(val - Math.round(val)) < 1e-6 ? Math.round(val) : val.toFixed(1)),
+                    x + i * segPx,
+                    y + 23
+                );
+            }
+
+            ctx.textAlign = "left";
+            ctx.fillText("m", x + totalPx + 8, y + 23);
+            ctx.restore();
+        }
+
+        function paDrawHatch(ctx, ring, geometry, scale, offsetX, offsetY, index) {
+            if (!ring || ring.length < 3) return;
+
+            ctx.save();
+            drawPolygonPath(ctx, ring, geometry, scale, offsetX, offsetY);
+            ctx.clip();
+
+            ctx.fillStyle = index % 2 === 0 ? "#fbfbfb" : "#f4f4f4";
+            ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+            ctx.strokeStyle = index % 3 === 0 ? "#c9c9c9" : "#d7d7d7";
+            ctx.lineWidth = 0.7;
+
+            const gap = 16 + (index % 3) * 3;
+            const H = ctx.canvas.height;
+            const W = ctx.canvas.width;
+
+            if (index % 2 === 0) {
+                for (let x = -H; x < W + H; x += gap) {
+                    ctx.beginPath();
+                    ctx.moveTo(x, 0);
+                    ctx.lineTo(x + H, H);
+                    ctx.stroke();
+                }
+            } else {
+                for (let x = 0; x < W + H; x += gap) {
+                    ctx.beginPath();
+                    ctx.moveTo(x, 0);
+                    ctx.lineTo(x - H, H);
+                    ctx.stroke();
+                }
+            }
+
+            ctx.restore();
+
+            drawPolygonPath(ctx, ring, geometry, scale, offsetX, offsetY);
+            ctx.strokeStyle = "#111";
+            ctx.lineWidth = 1.35;
+            ctx.stroke();
+        }
+
+        function paDrawTextBox(ctx, x, y, lines, options) {
+            const opt = options || {};
+            const font = opt.font || "11px Arial, sans-serif";
+            const fontBold = opt.fontBold || "bold 12px Arial, sans-serif";
+            const padX = opt.padX || 7;
+            const padY = opt.padY || 6;
+            const lineH = opt.lineH || 15;
+
+            ctx.save();
+            ctx.font = font;
+            let maxW = 0;
+
+            lines.forEach(function(line) {
+                ctx.font = line.bold ? fontBold : font;
+                maxW = Math.max(maxW, ctx.measureText(line.text).width);
+            });
+
+            const w = maxW + padX * 2;
+            const h = lines.length * lineH + padY * 2;
+
+            ctx.fillStyle = "rgba(255,255,255,.90)";
+            ctx.fillRect(x - w / 2, y - h / 2, w, h);
+
+            if (opt.border !== false) {
+                ctx.strokeStyle = "#555";
+                ctx.lineWidth = 0.6;
+                ctx.strokeRect(x - w / 2, y - h / 2, w, h);
+            }
+
+            ctx.fillStyle = "#111";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+
+            lines.forEach(function(line, i) {
+                ctx.font = line.bold ? fontBold : font;
+                ctx.fillText(
+                    line.text,
+                    x,
+                    y - (lines.length - 1) * lineH / 2 + i * lineH
+                );
+            });
+
+            ctx.restore();
+        }
+
+        function paDrawBoundaryAnnotations(
+            ctx,
+            geoRings,
+            geometry,
+            scale,
+            offsetX,
+            offsetY
+        ) {
+            if (!geoRings || !geoRings.length) return;
+
+            const transformed = geometry.rings || [];
+
+            geoRings.forEach(function(geoRing, ringIndex) {
+                const tRing = transformed[ringIndex];
+                if (!tRing || tRing.length < 2) return;
+
+                const n = Math.min(geoRing.length, tRing.length);
+                const step = Math.max(1, Math.ceil(n / 12));
+
+                let cent = {x:0,y:0};
+                tRing.forEach(function(p) {
+                    const cp = paCanvasPoint(p, geometry, scale, offsetX, offsetY);
+                    cent.x += cp.x;
+                    cent.y += cp.y;
+                });
+                cent.x /= tRing.length;
+                cent.y /= tRing.length;
+
+                for (let i = 0; i < n; i += step) {
+                    const j = (i + 1) % n;
+
+                    const aGeo = geoRing[i];
+                    const bGeo = geoRing[j];
+                    const a = paCanvasPoint(tRing[i], geometry, scale, offsetX, offsetY);
+                    const b = paCanvasPoint(tRing[j], geometry, scale, offsetX, offsetY);
+
+                    const dist = paHaversineMeters(aGeo, bGeo);
+                    const bearing = paInitialBearing(aGeo, bGeo);
+
+                    if (!Number.isFinite(dist) || dist < 0.05) continue;
+
+                    let mx = (a.x + b.x) / 2;
+                    let my = (a.y + b.y) / 2;
+
+                    const dx = b.x - a.x;
+                    const dy = b.y - a.y;
+                    const len = Math.hypot(dx, dy) || 1;
+
+                    let nx = -dy / len;
+                    let ny = dx / len;
+
+                    const towardCenter =
+                        (cent.x - mx) * nx +
+                        (cent.y - my) * ny;
+
+                    if (towardCenter > 0) {
+                        nx *= -1;
+                        ny *= -1;
+                    }
+
+                    mx += nx * 18;
+                    my += ny * 18;
+
+                    let angle = Math.atan2(dy, dx);
+                    if (angle > Math.PI / 2 || angle < -Math.PI / 2) {
+                        angle += Math.PI;
+                    }
+
+                    ctx.save();
+                    ctx.translate(mx, my);
+                    ctx.rotate(angle);
+
+                    ctx.fillStyle = "#111";
+                    ctx.textAlign = "center";
+                    ctx.textBaseline = "bottom";
+                    ctx.font = "9px Arial, sans-serif";
+                    ctx.fillText(paBearingToDMS(bearing), 0, -1);
+
+                    ctx.textBaseline = "top";
+                    ctx.font = "8.5px Arial, sans-serif";
+                    ctx.fillText(dist.toFixed(2) + " m", 0, 2);
+                    ctx.restore();
+                }
+
+                /* Tanda titik sempadan */
+                const pointStep = Math.max(1, Math.ceil(n / 18));
+                for (let i = 0; i < n; i += pointStep) {
+                    const p = paCanvasPoint(tRing[i], geometry, scale, offsetX, offsetY);
+
+                    ctx.save();
+                    ctx.fillStyle = "#fff";
+                    ctx.strokeStyle = "#111";
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, 3.2, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.stroke();
+
+                    ctx.fillStyle = "#111";
+                    ctx.font = "7px Arial, sans-serif";
+                    ctx.textAlign = "left";
+                    ctx.textBaseline = "bottom";
+                    ctx.fillText("P" + (i + 1), p.x + 5, p.y - 3);
+                    ctx.restore();
+                }
+            });
+        }
+
+        function paDrawRoad(ctx, x, y, w, h) {
+            ctx.save();
+
+            ctx.fillStyle = "#fff";
+            ctx.fillRect(x, y, w, h);
+
+            ctx.strokeStyle = "#111";
+            ctx.lineWidth = 1.3;
+
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(x + w, y);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(x, y + h);
+            ctx.lineTo(x + w, y + h);
+            ctx.stroke();
+
+            ctx.setLineDash([14, 10]);
+            ctx.lineWidth = 0.8;
+
+            ctx.beginPath();
+            ctx.moveTo(x + 10, y + h / 2);
+            ctx.lineTo(x + w - 10, y + h / 2);
+            ctx.stroke();
+
+            ctx.setLineDash([]);
+
+            ctx.fillStyle = "#111";
+            ctx.font = "bold 10px Arial, sans-serif";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
             ctx.fillText(
-                "RIZAB JALAN " +
-                RIZAB_JALAN_LEBAR_M +
-                " m",
+                "RIZAB JALAN " + RIZAB_JALAN_LEBAR_M + " m  (PAPARAN SKEMATIK)",
+                x + w / 2,
+                y + h / 2
+            );
+
+            ctx.restore();
+        }
+
+        function paDrawTitleAndNorth(ctx, W, meta) {
+            ctx.save();
+
+            paDrawNorthArrow(ctx, W / 2, 83);
+
+            ctx.fillStyle = "#111";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "alphabetic";
+
+            ctx.font = "bold 23px Georgia, serif";
+            ctx.fillText("PELAN PEMBAHAGIAN LOT", W / 2, 145);
+
+            ctx.font = "bold 17px Georgia, serif";
+            ctx.fillText(
+                "LOT " + meta.lot,
                 W / 2,
-                roadY + roadH / 2
+                170
             );
 
-            /* Bingkai */
-            ctx.strokeStyle = "#6b4b2a";
-            ctx.lineWidth = 1.5;
-            ctx.strokeRect(
-                0.75,
-                0.75,
-                W - 1.5,
-                H - 1.5
+            ctx.font = "12px Arial, sans-serif";
+            ctx.fillText(
+                "MUKIM " + String(meta.mukim).toUpperCase() +
+                "  •  DAERAH " + String(meta.daerah).toUpperCase() +
+                "  •  " + String(meta.negeri).toUpperCase(),
+                W / 2,
+                191
             );
 
-            return {
-                roadY,
-                lotH: roadY
-            };
+            ctx.beginPath();
+            ctx.moveTo(W / 2 - 205, 202);
+            ctx.lineTo(W / 2 + 205, 202);
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = "#111";
+            ctx.stroke();
+
+            ctx.restore();
+        }
+
+        function paDrawSimulationStamp(ctx, W) {
+            const x = W - 322;
+            const y = 45;
+            const w = 255;
+            const h = 112;
+
+            ctx.save();
+            ctx.strokeStyle = "#111";
+            ctx.lineWidth = 1;
+            ctx.strokeRect(x, y, w, h);
+
+            ctx.fillStyle = "#111";
+            ctx.textAlign = "center";
+
+            ctx.font = "bold 12px Arial, sans-serif";
+            ctx.fillText("SIMULASI AKADEMIK", x + w / 2, y + 26);
+
+            ctx.font = "bold 11px Arial, sans-serif";
+            ctx.fillText("BUKAN PELAN AKUI RASMI JUPEM", x + w / 2, y + 48);
+
+            ctx.font = "9px Arial, sans-serif";
+            ctx.fillText("Tidak untuk ukur, pendaftaran,", x + w / 2, y + 72);
+            ctx.fillText("hak milik atau urus niaga tanah.", x + w / 2, y + 87);
+
+            ctx.font = "italic 8px Arial, sans-serif";
+            ctx.fillText("MyFaraidLot", x + w / 2, y + 104);
+            ctx.restore();
+        }
+
+        function paDrawBottomTitleBlock(ctx, W, H, meta, senaraiWaris) {
+            const top = H - 205;
+            const left = 48;
+            const right = W - 48;
+            const width = right - left;
+
+            ctx.save();
+            ctx.strokeStyle = "#111";
+            ctx.fillStyle = "#111";
+            ctx.lineWidth = 1;
+
+            ctx.beginPath();
+            ctx.moveTo(left, top);
+            ctx.lineTo(right, top);
+            ctx.stroke();
+
+            const col1 = left;
+            const col2 = left + width * 0.36;
+            const col3 = left + width * 0.68;
+
+            ctx.beginPath();
+            ctx.moveTo(col2, top);
+            ctx.lineTo(col2, H - 38);
+            ctx.moveTo(col3, top);
+            ctx.lineTo(col3, H - 38);
+            ctx.stroke();
+
+            /* Kolum 1: metadata lot */
+            ctx.textAlign = "left";
+            ctx.font = "bold 10px Arial, sans-serif";
+            ctx.fillText("MAKLUMAT LOT", col1 + 8, top + 18);
+
+            ctx.font = "9px Arial, sans-serif";
+            const metaLines = [
+                "No. Lot : " + meta.lot,
+                "Mukim   : " + meta.mukim,
+                "Daerah  : " + meta.daerah,
+                "Negeri  : " + meta.negeri,
+                "Luas    : " + (meta.area ? meta.area.toFixed(3) + " m²" : "-"),
+                "Pemilik : " + meta.owner
+            ];
+            metaLines.forEach(function(t, i) {
+                ctx.fillText(t, col1 + 8, top + 39 + i * 16);
+            });
+
+            /* Kolum 2: nota */
+            ctx.font = "bold 10px Arial, sans-serif";
+            ctx.fillText("NOTA TEKNIKAL", col2 + 8, top + 18);
+
+            ctx.font = "8.5px Arial, sans-serif";
+            const notes = [
+                "1. Garisan pecahan menunjukkan simulasi bahagian waris.",
+                "2. Bearing dan jarak adalah anggaran daripada geometri WebGIS.",
+                "3. Rizab jalan dipaparkan secara skematik dan tidak menolak saham Faraid.",
+                "4. Pelan ini bukan Pelan Akui, Pelan Hakmilik atau pelan ukur rasmi.",
+                "5. Pengesahan sebenar memerlukan proses dan pihak berkuasa berkaitan."
+            ];
+            notes.forEach(function(t, i) {
+                ctx.fillText(t, col2 + 8, top + 39 + i * 17);
+            });
+
+            /* Kolum 3: nombor pelan / status */
+            const simNo =
+                "SIM-" +
+                String(meta.lot).replace(/[^0-9A-Za-z_-]/g, "") +
+                "-01";
+
+            ctx.font = "bold 10px Arial, sans-serif";
+            ctx.fillText("BUTIRAN PELAN", col3 + 8, top + 18);
+
+            ctx.font = "9px Arial, sans-serif";
+            ctx.fillText("No. Pelan Simulasi : " + simNo, col3 + 8, top + 41);
+            ctx.fillText("Helaian            : 1 / 1", col3 + 8, top + 58);
+            ctx.fillText("Bil. Bahagian      : " + senaraiWaris.length, col3 + 8, top + 75);
+            ctx.fillText("Disediakan oleh    : MyFaraidLot", col3 + 8, top + 92);
+
+            ctx.font = "bold 9px Arial, sans-serif";
+            ctx.fillText("STATUS:", col3 + 8, top + 119);
+
+            ctx.font = "bold 11px Arial, sans-serif";
+            ctx.fillText(
+                "SIMULASI AKADEMIK — TIDAK DISAHKAN JUPEM",
+                col3 + 8,
+                top + 139
+            );
+
+            ctx.font = "italic 8px Arial, sans-serif";
+            ctx.fillText(
+                "Ruang pengesahan rasmi: TIDAK BERKENAAN",
+                col3 + 8,
+                top + 158
+            );
+
+            /* Garis bawah title block */
+            ctx.beginPath();
+            ctx.moveTo(left, H - 38);
+            ctx.lineTo(right, H - 38);
+            ctx.stroke();
+
+            ctx.textAlign = "center";
+            ctx.font = "8px Arial, sans-serif";
+            ctx.fillText(
+                "MYFARAIDLOT • PELAN PEMBAHAGIAN LOT BERDASARKAN PENGIRAAN FARAID • UNTUK TUJUAN PEMBELAJARAN",
+                W / 2,
+                H - 19
+            );
+
+            ctx.restore();
+        }
+
+        function paDrawFallback(ctx, W, H, senaraiWaris, meta) {
+            ctx.save();
+
+            ctx.fillStyle = "#fff";
+            ctx.fillRect(0, 0, W, H);
+
+            ctx.strokeStyle = "#111";
+            ctx.lineWidth = 1.4;
+            ctx.strokeRect(22, 22, W - 44, H - 44);
+
+            paDrawTitleAndNorth(ctx, W, meta);
+            paDrawSimulationStamp(ctx, W);
+
+            ctx.fillStyle = "#111";
+            ctx.textAlign = "center";
+            ctx.font = "bold 17px Arial, sans-serif";
+            ctx.fillText(
+                "GEOMETRI LOT TIDAK TERSEDIA UNTUK DILUKIS",
+                W / 2,
+                H / 2 - 15
+            );
+
+            ctx.font = "11px Arial, sans-serif";
+            ctx.fillText(
+                "Sila pilih semula lot daripada Peta Lot sebelum menjalankan pengiraan.",
+                W / 2,
+                H / 2 + 10
+            );
+
+            paDrawBottomTitleBlock(ctx, W, H, meta, senaraiWaris);
+            ctx.restore();
         }
 
         function lukisPelanLot(senaraiWaris, selectedLayer) {
 
-            /* Pastikan lot semasa sentiasa digunakan. */
             selectedLayer = selectedLayer || highlightLayer;
 
-            const canvas =
-                document.getElementById("lotCanvas");
-
+            const canvas = document.getElementById("lotCanvas");
             if (!canvas) return;
 
-            const ctx =
-                canvas.getContext("2d");
+            /*
+             * Gunakan helaian yang lebih besar supaya gaya pelan
+             * teknikal, bearing, jarak dan title block boleh dibaca.
+             */
+            if (canvas.width !== 1400) canvas.width = 1400;
+            if (canvas.height !== 980) canvas.height = 980;
 
+            const ctx = canvas.getContext("2d");
             const W = canvas.width;
             const H = canvas.height;
 
-            ctx.clearRect(
-                0,
-                0,
-                W,
-                H
-            );
+            ctx.clearRect(0, 0, W, H);
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, W, H);
 
-            const colors = [
-                "#79502b",
-                "#2563eb",
-                "#d97706",
-                "#db2777",
-                "#9333ea",
-                "#0d9488",
-                "#dc2626"
-            ];
+            /* Bingkai helaian seperti pelan ukur. */
+            ctx.strokeStyle = "#111";
+            ctx.lineWidth = 1.5;
+            ctx.strokeRect(22, 22, W - 44, H - 44);
+            ctx.lineWidth = 0.55;
+            ctx.strokeRect(30, 30, W - 60, H - 60);
 
-            /*
-             * Cuba mendapatkan bentuk lot sebenar daripada polygon
-             * yang sedang dipilih.
-             */
-            let geometry =
-                prepareLotGeometry(selectedLayer);
+            const meta = paGetLotMeta(selectedLayer);
+            const geometry = prepareLotGeometry(selectedLayer);
+            const geoRings = extractLotRings(selectedLayer);
 
-            /*
-             * Jika geometry tidak tersedia, gunakan visual lama
-             * sebagai fallback supaya fungsi asal tidak rosak.
-             */
+            paDrawTitleAndNorth(ctx, W, meta);
+            paDrawSimulationStamp(ctx, W);
+
             if (!geometry) {
-
-                const roadH = 34;
-                const lotH = H - roadH;
-                let currentX = 0;
-
-                ctx.fillStyle = "#fffdf8";
-                ctx.fillRect(
-                    0,
-                    0,
-                    W,
-                    lotH
-                );
-
-                senaraiWaris.forEach((w, index) => {
-
-                    const lebar =
-                        W * w.peratus;
-
-                    ctx.fillStyle =
-                        colors[index % colors.length];
-
-                    ctx.fillRect(
-                        currentX,
-                        0,
-                        lebar,
-                        lotH
-                    );
-
-                    ctx.strokeStyle =
-                        "#ffffff";
-
-                    ctx.lineWidth = 2;
-
-                    ctx.strokeRect(
-                        currentX,
-                        0,
-                        lebar,
-                        lotH
-                    );
-
-                    if (lebar > 25) {
-
-                        ctx.fillStyle =
-                            "#ffffff";
-
-                        ctx.font =
-                            "bold 10px Poppins, sans-serif";
-
-                        ctx.textAlign =
-                            "center";
-
-                        ctx.textBaseline =
-                            "middle";
-
-                        ctx.save();
-
-                        ctx.translate(
-                            currentX + lebar / 2,
-                            lotH / 2
-                        );
-
-                        ctx.rotate(-Math.PI / 2);
-
-                        ctx.fillText(
-                            w.nama,
-                            0,
-                            -3
-                        );
-
-                        ctx.font =
-                            "9px Poppins, sans-serif";
-
-                        ctx.fillText(
-                            w.luas.toFixed(1) + "m²",
-                            0,
-                            10
-                        );
-
-                        ctx.restore();
-                    }
-
-                    currentX += lebar;
-                });
-
-                drawRoadAndFrame(
-                    ctx,
-                    W,
-                    H
-                );
-
+                paDrawFallback(ctx, W, H, senaraiWaris, meta);
                 return;
             }
 
             /*
-             * Padding supaya sempadan lot tidak melekat pada tepi
-             * canvas.
+             * Kawasan lukisan utama.
+             * Ruang kiri/kanan lebih besar untuk bearing & jarak.
              */
-            const padding = 10;
+            const drawing = {
+                x: 90,
+                y: 245,
+                w: W - 180,
+                h: 400
+            };
 
-            const lotH =
-                H - 34;
+            const geomWidth = geometry.maxU - geometry.minU;
+            const geomHeight = geometry.maxV - geometry.minV;
 
-            const geomWidth =
-                geometry.maxU -
-                geometry.minU;
-
-            const geomHeight =
-                geometry.maxV -
-                geometry.minV;
-
-            const scale =
-                Math.min(
-                    (W - padding * 2) / geomWidth,
-                    (lotH - padding * 2) / geomHeight
-                );
-
-            const drawWidth =
-                geomWidth * scale;
-
-            const drawHeight =
-                geomHeight * scale;
-
-            const offsetX =
-                (W - drawWidth) / 2;
-
-            const offsetY =
-                padding +
-                (lotH - drawHeight - padding) / 2;
-
-            /*
-             * Latar lot.
-             */
-            ctx.fillStyle = "#fffdf8";
-            ctx.fillRect(
-                0,
-                0,
-                W,
-                lotH
+            const scale = Math.min(
+                drawing.w / geomWidth,
+                drawing.h / geomHeight
             );
 
-            /*
-             * Cari sempadan U untuk setiap bahagian waris.
-             * Setiap bahagian menggunakan luas sebenar polygon,
-             * bukan sekadar lebar rectangle.
-             */
-            let lowerU =
-                geometry.minU;
+            const drawWidth = geomWidth * scale;
+            const drawHeight = geomHeight * scale;
 
+            const offsetX =
+                drawing.x +
+                (drawing.w - drawWidth) / 2;
+
+            const offsetY =
+                drawing.y +
+                (drawing.h - drawHeight) / 2;
+
+            /*
+             * Caption lot asal.
+             */
+            ctx.save();
+            ctx.fillStyle = "#111";
+            ctx.font = "bold 10px Arial, sans-serif";
+            ctx.textAlign = "left";
+            ctx.fillText(
+                "LOT ASAL " + meta.lot +
+                (meta.area ? "   •   " + meta.area.toFixed(3) + " m²" : ""),
+                drawing.x,
+                drawing.y - 25
+            );
+            ctx.font = "8.5px Arial, sans-serif";
+            ctx.fillText(
+                "GARISAN LUAR = SEMPADAN LOT ASAL   |   GARISAN DALAM = CADANGAN PEMBAHAGIAN FARAID",
+                drawing.x,
+                drawing.y - 10
+            );
+            ctx.restore();
+
+            /*
+             * Bahagikan polygon mengikut saham Faraid.
+             */
+            let lowerU = geometry.minU;
             let cumulativeFraction = 0;
 
-            senaraiWaris.forEach((w, index) => {
+            senaraiWaris.forEach(function(w, index) {
 
                 const fraction =
-                    Math.max(
-                        0,
-                        Number(w.peratus) || 0
-                    );
+                    Math.max(0, Number(w.peratus) || 0);
 
                 const isLast =
-                    index ===
-                    senaraiWaris.length - 1;
+                    index === senaraiWaris.length - 1;
 
                 let upperU;
 
                 if (isLast) {
                     upperU = geometry.maxU;
                 } else {
-
-                    cumulativeFraction +=
-                        fraction;
+                    cumulativeFraction += fraction;
 
                     const targetArea =
                         geometry.totalArea *
-                        Math.min(
-                            1,
-                            cumulativeFraction
-                        );
+                        Math.min(1, cumulativeFraction);
 
                     upperU =
                         findAreaCut(
@@ -11150,124 +11685,80 @@ body.cover-active{
                         upperU
                     );
 
-                const color =
-                    colors[index % colors.length];
-
-                /*
-                 * Lukis setiap komponen polygon yang dimiliki
-                 * oleh bahagian waris.
-                 */
-                pieceRings.forEach(ring => {
-
-                    drawPolygonPath(
+                pieceRings.forEach(function(ring) {
+                    paDrawHatch(
                         ctx,
                         ring,
                         geometry,
                         scale,
                         offsetX,
-                        offsetY
+                        offsetY,
+                        index
                     );
-
-                    ctx.fillStyle =
-                        color;
-
-                    ctx.fill();
-
-                    ctx.strokeStyle =
-                        "#ffffff";
-
-                    ctx.lineWidth = 2;
-
-                    ctx.stroke();
                 });
 
-                /*
-                 * Cari centroid untuk label.
-                 */
                 const centroid =
-                    getPieceCentroid(
-                        pieceRings
-                    );
+                    getPieceCentroid(pieceRings);
 
                 if (centroid) {
-
                     const labelX =
                         offsetX +
-                        (centroid.u -
-                            geometry.minU) *
+                        (centroid.u - geometry.minU) *
                         scale;
 
                     const labelY =
                         offsetY +
-                        (geometry.maxV -
-                            centroid.v) *
+                        (geometry.maxV - centroid.v) *
                         scale;
 
-                    /*
-                     * Label hanya dipaparkan jika bahagian cukup
-                     * besar supaya tidak bertindih.
-                     */
-                    const approxWidth =
-                        Math.max(
-                            18,
-                            (upperU - lowerU) *
-                            scale
-                        );
+                    const areaText =
+                        Number.isFinite(Number(w.luas))
+                            ? Number(w.luas).toFixed(2) + " m²"
+                            : "-";
 
-                    if (approxWidth > 35) {
+                    const shareText =
+                        w.nisbahText ||
+                        ((Number(w.peratus) * 100).toFixed(2) + "%");
 
-                        ctx.fillStyle =
-                            "#ffffff";
-
-                        ctx.textAlign =
-                            "center";
-
-                        ctx.textBaseline =
-                            "middle";
-
-                        ctx.font =
-                            "bold 9px Poppins, sans-serif";
-
-                        ctx.save();
-
-                        ctx.translate(
-                            labelX,
-                            labelY
-                        );
-
-                        /*
-                         * Tidak lagi dipaksa menegak seperti visual
-                         * lama; label mengikuti ruang polygon.
-                         */
-                        ctx.fillText(
-                            w.nama,
-                            0,
-                            -5
-                        );
-
-                        ctx.font =
-                            "8px Poppins, sans-serif";
-
-                        ctx.fillText(
-                            w.luas.toFixed(1) +
-                            " m²",
-                            0,
-                            7
-                        );
-
-                        ctx.restore();
-                    }
+                    paDrawTextBox(
+                        ctx,
+                        labelX,
+                        labelY,
+                        [
+                            {
+                                text:
+                                    "BAHAGIAN " +
+                                    String(index + 1).padStart(2, "0"),
+                                bold:true
+                            },
+                            {
+                                text:w.nama,
+                                bold:true
+                            },
+                            {
+                                text:"Saham: " + shareText
+                            },
+                            {
+                                text:"Luas: " + areaText
+                            }
+                        ],
+                        {
+                            font:"9px Arial, sans-serif",
+                            fontBold:"bold 10px Arial, sans-serif",
+                            lineH:13,
+                            padX:6,
+                            padY:5
+                        }
+                    );
                 }
 
-                lowerU =
-                    upperU;
+                lowerU = upperU;
             });
 
             /*
-             * Garisan luar lot asal.
+             * Garisan luar lot asal dibuat lebih tebal.
              */
-            geometry.rings.forEach(ring => {
-
+            geometry.rings.forEach(function(ring) {
                 drawPolygonPath(
                     ctx,
                     ring,
@@ -11277,22 +11768,73 @@ body.cover-active{
                     offsetY
                 );
 
-                ctx.strokeStyle =
-                    "#6b4b2a";
-
-                ctx.lineWidth =
-                    2.2;
-
+                ctx.strokeStyle = "#000";
+                ctx.lineWidth = 2.5;
                 ctx.stroke();
             });
 
             /*
-             * Rizab jalan kekal sebagai komponen berasingan.
+             * Bearing, jarak dan titik sempadan.
              */
-            drawRoadAndFrame(
+            paDrawBoundaryAnnotations(
+                ctx,
+                geoRings,
+                geometry,
+                scale,
+                offsetX,
+                offsetY
+            );
+
+            /*
+             * Skala grafik.
+             * geometry U/V berskala darjah yang telah disesuaikan cos(lat);
+             * anggaran 1° = 111,320 m.
+             */
+            const pxPerMeter = scale / 111320;
+            paDrawScaleBar(
+                ctx,
+                drawing.x,
+                674,
+                pxPerMeter,
+                190
+            );
+
+            /*
+             * Rizab jalan daripada visual sistem asal dikekalkan
+             * tetapi ditukar kepada gaya linework Pelan Akui.
+             */
+            paDrawRoad(
+                ctx,
+                drawing.x,
+                706,
+                drawing.w,
+                40
+            );
+
+            /*
+             * Label umum di luar kawasan lot.
+             */
+            ctx.save();
+            ctx.fillStyle = "#111";
+            ctx.font = "9px Arial, sans-serif";
+            ctx.textAlign = "right";
+            ctx.fillText(
+                "Bearing / jarak: anggaran geometri WebGIS",
+                drawing.x + drawing.w,
+                683
+            );
+            ctx.restore();
+
+            /*
+             * Blok maklumat di bawah, diinspirasikan susunan helaian
+             * pelan ukur tanpa meniru cop/tandatangan rasmi.
+             */
+            paDrawBottomTitleBlock(
                 ctx,
                 W,
-                H
+                H,
+                meta,
+                senaraiWaris
             );
         }
 
