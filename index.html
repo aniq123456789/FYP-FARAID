@@ -4,8 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport"
-        content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
     <title>MyFaraidLot - Web Pengiraan dan Pembahagian Lot Tanah</title>
 
@@ -6121,6 +6120,258 @@ body.cover-active{
     }
 }
 
+
+
+/* =========================================================
+   MOBILE NAVIGATION FINAL FIX - MyFaraidLot
+   Diletakkan paling akhir supaya mengatasi CSS lama yang
+   menyebabkan menu telefon sentiasa terbuka.
+========================================================= */
+
+.mobile-nav-backdrop{
+    display:none;
+}
+
+/* Desktop kekal seperti asal */
+@media (min-width:801px){
+    .mobile-nav-backdrop{
+        display:none !important;
+    }
+}
+
+/* Telefon / tablet kecil */
+@media (max-width:800px){
+
+    /* Header kekal di hadapan kandungan */
+    header{
+        position:relative !important;
+        z-index:4000 !important;
+    }
+
+    /*
+     * PENTING:
+     * Menu MESTI tersembunyi secara default.
+     * !important diperlukan kerana terdapat .top-nav {display:flex}
+     * pada CSS interface yang lebih bawah dalam fail asal.
+     */
+    header .top-nav{
+        display:none !important;
+
+        position:fixed !important;
+        top:68px !important;
+        right:12px !important;
+        left:auto !important;
+
+        width:min(340px, calc(100vw - 24px)) !important;
+        height:auto !important;
+        max-height:calc(100vh - 84px) !important;
+        max-height:calc(100dvh - 84px) !important;
+
+        margin:0 !important;
+        padding:8px !important;
+
+        flex-direction:column !important;
+        align-items:stretch !important;
+        justify-content:flex-start !important;
+        gap:4px !important;
+
+        overflow-y:auto !important;
+        overflow-x:hidden !important;
+        -webkit-overflow-scrolling:touch;
+
+        background:
+            linear-gradient(rgba(255,253,247,.985),rgba(255,253,247,.985)),
+            url("corak-islamik.png") center/cover !important;
+
+        border:1px solid rgba(183,154,69,.55) !important;
+        border-bottom:3px solid #0d6a58 !important;
+        border-radius:14px !important;
+
+        box-shadow:
+            0 18px 45px rgba(6,48,40,.25),
+            inset 0 0 0 1px rgba(255,255,255,.65) !important;
+
+        z-index:5000 !important;
+    }
+
+    /* Hanya dibuka apabila butang hamburger menambah class .open */
+    header .top-nav.open{
+        display:flex !important;
+        animation:mflMobileMenuIn .18s ease-out;
+    }
+
+    @keyframes mflMobileMenuIn{
+        from{
+            opacity:0;
+            transform:translateY(-8px) scale(.985);
+        }
+        to{
+            opacity:1;
+            transform:translateY(0) scale(1);
+        }
+    }
+
+    /* Pastikan item tidak mengambil height desktop */
+    header .top-nav > .nav-item{
+        display:block !important;
+        width:100% !important;
+        height:auto !important;
+        min-height:0 !important;
+        margin:0 !important;
+    }
+
+    /* Pautan feature */
+    header .top-nav > .nav-item > a,
+    header .top-nav a,
+    header .top-nav a:not(.nav-search){
+        display:flex !important;
+        align-items:center !important;
+        justify-content:flex-start !important;
+        gap:12px !important;
+
+        width:100% !important;
+        height:auto !important;
+        min-height:48px !important;
+
+        margin:0 !important;
+        padding:11px 14px !important;
+
+        border:1px solid transparent !important;
+        border-radius:9px !important;
+
+        background:transparent !important;
+        color:#254b42 !important;
+
+        font-family:'Poppins',sans-serif !important;
+        font-size:13px !important;
+        font-weight:600 !important;
+        line-height:1.25 !important;
+
+        text-align:left !important;
+        text-decoration:none !important;
+    }
+
+    header .top-nav > .nav-item > a i,
+    header .top-nav a i{
+        width:22px !important;
+        min-width:22px !important;
+        margin:0 !important;
+        text-align:center !important;
+        color:#0d6a58 !important;
+        font-size:15px !important;
+    }
+
+    /* Hover / active seperti desktop, tetapi mesra sentuhan */
+    header .top-nav > .nav-item > a:hover,
+    header .top-nav > .nav-item > a:focus,
+    header .top-nav > .nav-item > a.active{
+        background:linear-gradient(180deg,#11745f,#0a5a4b) !important;
+        color:#ffffff !important;
+        border-color:#0a5a4b !important;
+    }
+
+    header .top-nav > .nav-item > a:hover i,
+    header .top-nav > .nav-item > a:focus i,
+    header .top-nav > .nav-item > a.active i{
+        color:#f1d77e !important;
+    }
+
+    /* Log masuk dipisahkan sedikit */
+    header .top-nav .mfl-login-link{
+        margin-top:5px !important;
+        background:#f7f0dc !important;
+        border-color:#dfcf9f !important;
+        color:#2e5148 !important;
+    }
+
+    header .top-nav .mfl-login-link:hover,
+    header .top-nav .mfl-login-link.active{
+        background:linear-gradient(180deg,#11745f,#0a5a4b) !important;
+        color:#fff !important;
+    }
+
+    /* Butang hamburger sentiasa boleh ditekan */
+    #mobileNavToggle{
+        position:relative !important;
+        z-index:5100 !important;
+        display:flex !important;
+        align-items:center !important;
+        justify-content:center !important;
+
+        width:44px !important;
+        height:44px !important;
+        flex:0 0 44px !important;
+
+        padding:0 !important;
+        margin-left:auto !important;
+
+        border:1px solid #c8d2cf !important;
+        border-radius:50% !important;
+
+        background:#fffdf7 !important;
+        color:#0d6a58 !important;
+
+        box-shadow:0 4px 12px rgba(27,73,62,.08) !important;
+        cursor:pointer !important;
+    }
+
+    #mobileNavToggle i{
+        margin:0 !important;
+        font-size:18px !important;
+        line-height:1 !important;
+    }
+
+    #mobileNavToggle[aria-expanded="true"]{
+        background:#0d6a58 !important;
+        color:#fff !important;
+        border-color:#0d6a58 !important;
+    }
+
+    /* Lapisan gelap nipis: sentuh di luar menu untuk tutup */
+    .mobile-nav-backdrop{
+        display:none;
+        position:fixed;
+        top:60px;
+        right:0;
+        bottom:0;
+        left:0;
+        z-index:2990;
+        background:rgba(12,38,33,.30);
+        backdrop-filter:blur(1.5px);
+        -webkit-backdrop-filter:blur(1.5px);
+    }
+
+    body.mobile-nav-open .mobile-nav-backdrop{
+        display:block;
+    }
+
+    /*
+     * Halaman utama / dashboard kekal pada tempat asal.
+     * Menu hanya berada di atas halaman ketika pengguna sengaja membukanya.
+     */
+    .dashboard-page,
+    #wrapper{
+        position:relative;
+        z-index:1;
+    }
+
+    /* Jangan ubah sidebar WebGIS; ia masih menggunakan butang sendiri */
+    #sidebar{
+        z-index:1500 !important;
+    }
+
+    #sidebarCollapse{
+        z-index:1600 !important;
+    }
+}
+
+@media (max-width:430px){
+    header .top-nav{
+        right:8px !important;
+        width:calc(100vw - 16px) !important;
+    }
+}
+
 </style>
 
 </head>
@@ -6202,10 +6453,10 @@ body.cover-active{
 
             <nav class="top-nav" aria-label="Navigasi utama">
                 <div class="nav-item"><a href="#" class="active page-link" data-page="home"><i class="fas fa-home"></i> Utama</a></div>
-                <div class="nav-item"><a href="#" class="page-link" data-page="tentang"><i class="far fa-question-circle"></i> Tentang</a></div>
+                <div class="nav-item"><a href="#" class="page-link" data-page="tentang"><i class="fas fa-info-circle"></i> Tentang</a></div>
                 <div class="nav-item"><a href="#" class="page-link" data-page="kiraan-faraid"><i class="fas fa-calculator"></i> Kiraan Faraid</a></div>
                 <div class="nav-item"><a href="#" onclick="openMapView(event)"><i class="fas fa-map-marker-alt"></i> Peta Lot</a></div>
-                <div class="nav-item"><a href="#" class="page-link" data-page="informasi"><i class="far fa-list-alt"></i> Panduan</a></div>
+                <div class="nav-item"><a href="#" class="page-link" data-page="informasi"><i class="fas fa-book-open"></i> Panduan</a></div>
                 <div class="nav-item"><a href="#" class="page-link" data-page="hubungi"><i class="fas fa-phone-alt"></i> Hubungi</a></div>
                 <div class="nav-item"><a href="#" class="page-link mfl-login-link" data-page="login"><i class="fas fa-user"></i> Log Masuk</a></div>
             </nav>
@@ -10830,6 +11081,135 @@ function focusDashboardSearch(e){
             window.masukKeMyFaraidLot();
         }
     });
+})();
+</script>
+
+
+
+<script>
+/* =========================================================
+   MOBILE NAVIGATION CONTROLLER - FINAL FIX
+   - Menu mula tertutup
+   - Hamburger buka/tutup
+   - Klik di luar menu = tutup
+   - Pilih feature = tutup
+   - ESC = tutup
+   - Tukar orientasi / kembali desktop = reset
+========================================================= */
+(function(){
+
+    var MOBILE_BP = 800;
+    var nav = document.querySelector('.top-nav');
+    var toggle = document.getElementById('mobileNavToggle');
+
+    if(!nav || !toggle) return;
+
+    /* Backdrop diwujudkan secara automatik supaya struktur HTML lain kekal. */
+    var backdrop = document.getElementById('mobileNavBackdrop');
+
+    if(!backdrop){
+        backdrop = document.createElement('div');
+        backdrop.id = 'mobileNavBackdrop';
+        backdrop.className = 'mobile-nav-backdrop';
+        backdrop.setAttribute('aria-hidden','true');
+        document.body.appendChild(backdrop);
+    }
+
+    function isMobile(){
+        return window.innerWidth <= MOBILE_BP;
+    }
+
+    function syncMobileNavUI(){
+        var opened = isMobile() && nav.classList.contains('open');
+
+        document.body.classList.toggle('mobile-nav-open', opened);
+
+        toggle.setAttribute('aria-expanded', opened ? 'true' : 'false');
+        toggle.setAttribute(
+            'aria-label',
+            opened ? 'Tutup menu navigasi' : 'Buka menu navigasi'
+        );
+
+        toggle.innerHTML = opened
+            ? '<i class="fas fa-times"></i>'
+            : '<i class="fas fa-bars"></i>';
+
+        backdrop.setAttribute('aria-hidden', opened ? 'false' : 'true');
+    }
+
+    function closeMobileMenu(){
+        nav.classList.remove('open');
+
+        document.querySelectorAll('.top-nav .nav-item.open').forEach(function(item){
+            item.classList.remove('open');
+        });
+
+        syncMobileNavUI();
+    }
+
+    /*
+     * Kod toggle asal dalam projek masih digunakan.
+     * MutationObserver ini hanya menyelaraskan backdrop, ikon dan aria
+     * setiap kali class "open" berubah.
+     */
+    var observer = new MutationObserver(function(){
+        syncMobileNavUI();
+    });
+
+    observer.observe(nav,{
+        attributes:true,
+        attributeFilter:['class']
+    });
+
+    /* Sentuh kawasan luar menu untuk tutup. */
+    backdrop.addEventListener('click',function(){
+        closeMobileMenu();
+    });
+
+    /* Selepas pilih mana-mana feature, menu ditutup secara automatik. */
+    nav.addEventListener('click',function(event){
+        var link = event.target.closest ? event.target.closest('a') : null;
+        if(!link || !isMobile()) return;
+
+        window.setTimeout(function(){
+            closeMobileMenu();
+        },30);
+    });
+
+    /* ESC juga boleh menutup menu. */
+    document.addEventListener('keydown',function(event){
+        if(event.key === 'Escape' && nav.classList.contains('open')){
+            closeMobileMenu();
+            try{ toggle.focus(); }catch(e){}
+        }
+    });
+
+    /* Klik pada logo juga menutup menu. */
+    var brand = document.querySelector('.mfl-brand');
+    if(brand){
+        brand.addEventListener('click',function(){
+            if(isMobile()) closeMobileMenu();
+        });
+    }
+
+    /* Apabila kembali ke desktop, jangan simpan keadaan menu telefon. */
+    window.addEventListener('resize',function(){
+        if(!isMobile()){
+            closeMobileMenu();
+        }else{
+            syncMobileNavUI();
+        }
+    });
+
+    window.addEventListener('orientationchange',function(){
+        window.setTimeout(function(){
+            closeMobileMenu();
+        },150);
+    });
+
+    /* Pastikan menu SENTIASA tertutup semasa halaman mula dimuatkan. */
+    closeMobileMenu();
+
 })();
 </script>
 
