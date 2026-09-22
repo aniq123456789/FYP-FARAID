@@ -6372,6 +6372,248 @@ body.cover-active{
     }
 }
 
+
+
+/* =========================================================
+   MYFARAIDLOT MOBILE MENU - HARD FIX V2
+   Sistem mobile baharu yang diasingkan daripada controller lama.
+   Desktop / laptop tidak diubah.
+========================================================= */
+
+/* Toggle baharu tidak ditunjukkan pada desktop */
+#mflMobileMenuToggle{
+    display:none;
+}
+
+#mflMobileMenuBackdrop{
+    display:none;
+}
+
+@media (max-width:960px){
+
+    /*
+     * NAV ASAL DIGUNAKAN, TETAPI KEADAANNYA DIKAWAL OLEH
+     * CLASS KHAS .mfl-mobile-open SAHAJA.
+     *
+     * Class lama .open tidak lagi menentukan paparan menu.
+     */
+    header #mflMainNavigation.top-nav{
+        display:none !important;
+        position:fixed !important;
+
+        top:60px !important;
+        right:10px !important;
+        left:auto !important;
+
+        width:min(350px, calc(100vw - 20px)) !important;
+        height:auto !important;
+        max-height:calc(100vh - 75px) !important;
+        max-height:calc(100dvh - 75px) !important;
+
+        margin:0 !important;
+        padding:8px !important;
+
+        flex-direction:column !important;
+        align-items:stretch !important;
+        justify-content:flex-start !important;
+        gap:4px !important;
+
+        overflow-y:auto !important;
+        overflow-x:hidden !important;
+        -webkit-overflow-scrolling:touch;
+
+        background:
+            linear-gradient(rgba(255,253,247,.99),rgba(255,253,247,.99)),
+            url("corak-islamik.png") center/cover !important;
+
+        border:1px solid rgba(181,150,63,.55) !important;
+        border-bottom:3px solid #0b6553 !important;
+        border-radius:12px !important;
+
+        box-shadow:
+            0 18px 45px rgba(6,48,40,.25),
+            inset 0 0 0 1px rgba(255,255,255,.72) !important;
+
+        z-index:10020 !important;
+
+        opacity:0 !important;
+        visibility:hidden !important;
+        pointer-events:none !important;
+        transform:translateY(-8px) scale(.985) !important;
+
+        transition:
+            opacity .18s ease,
+            transform .18s ease,
+            visibility .18s ease !important;
+    }
+
+    /*
+     * INILAH SATU-SATUNYA KEADAAN YANG MEMBUKA MENU.
+     */
+    header #mflMainNavigation.top-nav.mfl-mobile-open{
+        display:flex !important;
+        opacity:1 !important;
+        visibility:visible !important;
+        pointer-events:auto !important;
+        transform:translateY(0) scale(1) !important;
+    }
+
+    /* Item menu telefon */
+    header #mflMainNavigation.top-nav > .nav-item{
+        display:block !important;
+        width:100% !important;
+        height:auto !important;
+        min-height:0 !important;
+        margin:0 !important;
+        padding:0 !important;
+    }
+
+    header #mflMainNavigation.top-nav > .nav-item > a,
+    header #mflMainNavigation.top-nav a,
+    header #mflMainNavigation.top-nav a:not(.nav-search){
+        display:flex !important;
+        align-items:center !important;
+        justify-content:flex-start !important;
+
+        width:100% !important;
+        height:auto !important;
+        min-height:47px !important;
+
+        margin:0 !important;
+        padding:11px 13px !important;
+        gap:11px !important;
+
+        border:1px solid transparent !important;
+        border-radius:8px !important;
+
+        background:transparent !important;
+        color:#284c43 !important;
+
+        font-family:'Poppins',sans-serif !important;
+        font-size:12px !important;
+        font-weight:600 !important;
+        line-height:1.25 !important;
+
+        text-decoration:none !important;
+        white-space:normal !important;
+    }
+
+    header #mflMainNavigation.top-nav a i{
+        width:22px !important;
+        min-width:22px !important;
+        margin:0 !important;
+        color:#0c6d59 !important;
+        text-align:center !important;
+        font-size:14px !important;
+    }
+
+    header #mflMainNavigation.top-nav a:hover,
+    header #mflMainNavigation.top-nav a:focus,
+    header #mflMainNavigation.top-nav a.active{
+        background:linear-gradient(180deg,#11745f,#0a5a4b) !important;
+        color:#ffffff !important;
+        border-color:#0a5a4b !important;
+    }
+
+    header #mflMainNavigation.top-nav a:hover i,
+    header #mflMainNavigation.top-nav a:focus i,
+    header #mflMainNavigation.top-nav a.active i{
+        color:#f2d980 !important;
+    }
+
+    header #mflMainNavigation.top-nav .mfl-login-link{
+        margin-top:4px !important;
+        background:#faf4e3 !important;
+        border-color:#e3d5aa !important;
+    }
+
+    header #mflMainNavigation.top-nav .mfl-login-link.active,
+    header #mflMainNavigation.top-nav .mfl-login-link:hover{
+        background:linear-gradient(180deg,#11745f,#0a5a4b) !important;
+        color:#fff !important;
+    }
+
+    /* Butang hamburger baharu */
+    #mflMobileMenuToggle{
+        display:flex !important;
+        align-items:center !important;
+        justify-content:center !important;
+
+        position:relative !important;
+        z-index:10040 !important;
+
+        width:44px !important;
+        height:44px !important;
+        min-width:44px !important;
+        flex:0 0 44px !important;
+
+        margin-left:auto !important;
+        padding:0 !important;
+
+        border:1px solid #cbd5d1 !important;
+        border-radius:50% !important;
+
+        background:#fffdf8 !important;
+        color:#0c6d59 !important;
+
+        box-shadow:0 4px 12px rgba(28,75,63,.10) !important;
+        cursor:pointer !important;
+        -webkit-tap-highlight-color:transparent;
+        touch-action:manipulation;
+    }
+
+    #mflMobileMenuToggle i{
+        margin:0 !important;
+        font-size:18px !important;
+        line-height:1 !important;
+        pointer-events:none;
+    }
+
+    #mflMobileMenuToggle[aria-expanded="true"]{
+        background:#0b6553 !important;
+        color:#ffffff !important;
+        border-color:#0b6553 !important;
+    }
+
+    /* Backdrop hanya wujud ketika menu ON */
+    #mflMobileMenuBackdrop{
+        display:none;
+        position:fixed;
+        top:60px;
+        right:0;
+        bottom:0;
+        left:0;
+
+        z-index:10000;
+
+        background:rgba(8,35,30,.25);
+        backdrop-filter:blur(1px);
+        -webkit-backdrop-filter:blur(1px);
+    }
+
+    body.mfl-mobile-menu-open #mflMobileMenuBackdrop{
+        display:block;
+    }
+
+    /*
+     * Pastikan halaman berada di bawah menu dan tidak berubah saiz.
+     * Jadi apabila menu OFF, pengguna terus nampak feature/halaman asal.
+     */
+    .dashboard-page,
+    #wrapper{
+        position:relative;
+        z-index:1;
+    }
+}
+
+@media (max-width:430px){
+    header #mflMainNavigation.top-nav{
+        right:7px !important;
+        width:calc(100vw - 14px) !important;
+        max-height:calc(100dvh - 70px) !important;
+    }
+}
+
 </style>
 
 </head>
@@ -6451,7 +6693,7 @@ body.cover-active{
                 </span>
             </a>
 
-            <nav class="top-nav" aria-label="Navigasi utama">
+            <nav id="mflMainNavigation" class="top-nav" aria-label="Navigasi utama">
                 <div class="nav-item"><a href="#" class="active page-link" data-page="home"><i class="fas fa-home"></i> Utama</a></div>
                 <div class="nav-item"><a href="#" class="page-link" data-page="tentang"><i class="fas fa-info-circle"></i> Tentang</a></div>
                 <div class="nav-item"><a href="#" class="page-link" data-page="kiraan-faraid"><i class="fas fa-calculator"></i> Kiraan Faraid</a></div>
@@ -6461,7 +6703,13 @@ body.cover-active{
                 <div class="nav-item"><a href="#" class="page-link mfl-login-link" data-page="login"><i class="fas fa-user"></i> Log Masuk</a></div>
             </nav>
 
-            <button type="button" id="mobileNavToggle" class="mobile-nav-toggle" aria-label="Menu" aria-expanded="false">
+            
+            <button type="button"
+                id="mflMobileMenuToggle"
+                class="mobile-nav-toggle mfl-mobile-menu-toggle"
+                aria-label="Buka menu navigasi"
+                aria-expanded="false"
+                aria-controls="mflMainNavigation">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
@@ -11209,6 +11457,222 @@ function focusDashboardSearch(e){
 
     /* Pastikan menu SENTIASA tertutup semasa halaman mula dimuatkan. */
     closeMobileMenu();
+
+})();
+</script>
+
+
+
+<script>
+/* =========================================================
+   MYFARAIDLOT MOBILE MENU CONTROLLER - HARD FIX V2
+   Controller ini menggunakan ID baharu:
+   #mflMobileMenuToggle
+   dan class:
+   .mfl-mobile-open
+   supaya tidak bertembung dengan controller lama.
+========================================================= */
+(function(){
+
+    var MOBILE_MAX_WIDTH = 960;
+
+    var nav = document.getElementById('mflMainNavigation');
+    var oldToggle = document.getElementById('mflMobileMenuToggle');
+
+    if(!nav || !oldToggle){
+        return;
+    }
+
+    /*
+     * Clone butang sekali.
+     * Ini membuang SEMUA event listener lama yang mungkin masih
+     * tersambung pada elemen akibat versi terdahulu.
+     */
+    var toggle = oldToggle.cloneNode(true);
+    oldToggle.parentNode.replaceChild(toggle, oldToggle);
+
+    var backdrop = document.getElementById('mflMobileMenuBackdrop');
+
+    if(!backdrop){
+        backdrop = document.createElement('div');
+        backdrop.id = 'mflMobileMenuBackdrop';
+        backdrop.setAttribute('aria-hidden','true');
+        document.body.appendChild(backdrop);
+    }
+
+    function isMobileLayout(){
+        return window.innerWidth <= MOBILE_MAX_WIDTH;
+    }
+
+    function menuIsOpen(){
+        return nav.classList.contains('mfl-mobile-open');
+    }
+
+    function renderState(opened){
+        nav.classList.toggle('mfl-mobile-open', opened);
+        document.body.classList.toggle(
+            'mfl-mobile-menu-open',
+            opened && isMobileLayout()
+        );
+
+        toggle.setAttribute(
+            'aria-expanded',
+            opened ? 'true' : 'false'
+        );
+
+        toggle.setAttribute(
+            'aria-label',
+            opened ? 'Tutup menu navigasi' : 'Buka menu navigasi'
+        );
+
+        toggle.innerHTML = opened
+            ? '<i class="fas fa-times"></i>'
+            : '<i class="fas fa-bars"></i>';
+
+        backdrop.setAttribute(
+            'aria-hidden',
+            opened ? 'false' : 'true'
+        );
+    }
+
+    function openMenu(){
+        if(!isMobileLayout()){
+            return;
+        }
+
+        renderState(true);
+    }
+
+    function closeMenu(){
+        renderState(false);
+
+        /*
+         * Buang juga class lama sekiranya controller lama pernah
+         * meninggalkannya pada nav.
+         */
+        nav.classList.remove('open');
+
+        document
+            .querySelectorAll('#mflMainNavigation .nav-item.open')
+            .forEach(function(item){
+                item.classList.remove('open');
+            });
+    }
+
+    function toggleMenu(event){
+        if(event){
+            event.preventDefault();
+            event.stopPropagation();
+        }
+
+        if(!isMobileLayout()){
+            closeMenu();
+            return;
+        }
+
+        if(menuIsOpen()){
+            closeMenu();
+        }else{
+            openMenu();
+        }
+    }
+
+    /* Butang hamburger: ON / OFF */
+    toggle.addEventListener('click', toggleMenu, false);
+
+    /*
+     * Selepas pengguna memilih feature, menu terus OFF.
+     * Link asal masih menjalankan fungsi showPage/openMapView sedia ada.
+     */
+    nav.addEventListener('click', function(event){
+        if(!isMobileLayout()){
+            return;
+        }
+
+        var link = event.target.closest
+            ? event.target.closest('a')
+            : null;
+
+        if(!link){
+            return;
+        }
+
+        window.setTimeout(function(){
+            closeMenu();
+        }, 40);
+    }, false);
+
+    /* Klik kawasan luar menu = OFF */
+    backdrop.addEventListener('click', function(event){
+        event.preventDefault();
+        closeMenu();
+    }, false);
+
+    /*
+     * Jika pengguna sentuh bahagian header selain menu/toggle
+     * ketika menu dibuka, tutup menu.
+     */
+    document.addEventListener('pointerdown', function(event){
+        if(!isMobileLayout() || !menuIsOpen()){
+            return;
+        }
+
+        if(nav.contains(event.target) || toggle.contains(event.target)){
+            return;
+        }
+
+        closeMenu();
+    }, false);
+
+    /* Escape = OFF */
+    document.addEventListener('keydown', function(event){
+        if(event.key === 'Escape' && menuIsOpen()){
+            closeMenu();
+            try{
+                toggle.focus({preventScroll:true});
+            }catch(err){
+                toggle.focus();
+            }
+        }
+    }, false);
+
+    /*
+     * Bila orientation berubah, menu sentiasa reset OFF.
+     * Ini mengelakkan panel tersangkut selepas portrait/landscape.
+     */
+    window.addEventListener('orientationchange', function(){
+        window.setTimeout(function(){
+            closeMenu();
+        }, 120);
+    });
+
+    /*
+     * Desktop/laptop:
+     * nav kembali kepada gaya desktop asal.
+     * Class mobile dibuang dan tidak menyentuh fungsi desktop.
+     */
+    var resizeTimer = null;
+
+    window.addEventListener('resize', function(){
+        clearTimeout(resizeTimer);
+
+        resizeTimer = window.setTimeout(function(){
+            if(!isMobileLayout()){
+                closeMenu();
+            }
+        }, 80);
+    });
+
+    /*
+     * Jika halaman dibuka semula dari BFCache / history browser,
+     * paksa keadaan awal OFF pada telefon.
+     */
+    window.addEventListener('pageshow', function(){
+        closeMenu();
+    });
+
+    /* Keadaan mula = OFF */
+    closeMenu();
 
 })();
 </script>
