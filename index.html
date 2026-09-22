@@ -6939,6 +6939,14 @@ body.cover-active{
     }
 }
 
+
+
+/* =========================================================
+   LOT ORIENTATION LOCK
+   Pelan hasil menggunakan geometri WebGIS north-up.
+   Tiada PCA rotation / auto-rotate digunakan pada pelan.
+========================================================= */
+
 </style>
 
 </head>
@@ -10606,6 +10614,27 @@ body.cover-active{
          * Ini menyebabkan bahagian waris benar-benar mengikut
          * bentuk polygon dan bukannya sekadar membahagi lebar canvas.
          */
+        function polygonAreaUV(points) {
+
+            if (!points || points.length < 3) {
+                return 0;
+            }
+
+            let area = 0;
+
+            for (let i = 0; i < points.length; i++) {
+
+                const a = points[i];
+                const b = points[(i + 1) % points.length];
+
+                area +=
+                    (a.u * b.v) -
+                    (b.u * a.v);
+            }
+
+            return Math.abs(area / 2);
+        }
+
         function findAreaCut(rings, targetArea, minU, maxU, totalArea) {
 
             let low = minU;
@@ -10623,7 +10652,7 @@ body.cover-active{
                         clipPolygonByU(ring, mid, true);
 
                     if (clipped.length >= 3) {
-                        areaAtMid += polygonArea(clipped);
+                        areaAtMid += polygonAreaUV(clipped);
                     }
 
                 });
@@ -10645,130 +10674,256 @@ body.cover-active{
          */
         function prepareLotGeometry(layer) {
 
+            /*
+             * =====================================================
+             * NORTH-UP / TRUE MAP ORIENTATION
+             * =====================================================
+             *
+             * Versi terdahulu menggunakan PCA untuk memusing lot
+             * mengikut paksi memanjang. Itu menyebabkan bentuk relatif
+             * masih betul tetapi arah/bearing pada helaian berubah.
+             *
+             * Versi ini TIDAK memusing polygon.
+             *
+             * Titik lot diproyeksikan menggunakan CRS yang sama seperti
+             * Leaflet/WebGIS (EPSG:3857 bagi peta ini), kemudian:
+             *
+             *      U = EASTING  (Timur)
+             *      V = NORTHING (Utara)
+             *
+             * Oleh itu:
+             * - Utara kekal ke atas helaian.
+             * - Timur kekal ke kanan.
+             * - Bentuk lot sama seperti lot yang dipilih pada WebGIS.
+             * - Arah setiap garisan sempadan tidak diputar.
+             * - Pembahagian dibuat di dalam polygon sebenar tersebut.
+             */
+
             const ringsGeo = extractLotRings(layer);
 
             if (!ringsGeo.length) {
                 return null;
             }
 
+            /*
+             * Gunakan projection Leaflet yang sama dengan map.
+             * L.CRS.EPSG3857.project() menghasilkan koordinat projected
+             * dalam unit meter dan mengekalkan orientasi north-up.
+             */
+            function projectPoint(p) {
+
+                try {
+
+                    if (
+                        typeof map !== "undefined" &&
+                        map &&
+                        map.options &&
+                        map.options.crs &&
+                        typeof map.options.crs.project === "function" &&
+                        typeof L !== "undefined"
+                    ) {
+
+                        const projected =
+                            map.options.crs.project(
+                                L.latLng(p.y, p.x)
+                            );
+
+                        if (
+                            projected &&
+                            Number.isFinite(projected.x) &&
+                            Number.isFinite(projected.y)
+                        ) {
+                            return {
+                                east: projected.x,
+                                north: projected.y
+                            };
+                        }
+                    }
+
+                } catch (err) {
+                    console.warn(
+                        "Projection Leaflet gagal. Menggunakan projection lokal fallback.",
+                        err
+                    );
+                }
+
+                /*
+                 * Fallback local equirectangular.
+                 * Hanya digunakan jika CRS Leaflet tidak tersedia.
+                 */
+                return null;
+            }
+
+            /*
+             * Titik rujukan untuk fallback.
+             */
             let meanLat = 0;
+            let meanLon = 0;
             let count = 0;
 
-            ringsGeo.forEach(ring => {
-                ring.forEach(p => {
+            ringsGeo.forEach(function(ring) {
+                ring.forEach(function(p) {
+                    meanLon += p.x;
                     meanLat += p.y;
                     count++;
                 });
             });
 
-            meanLat = count ? meanLat / count : 0;
-
-            const cosLat =
-                Math.cos(meanLat * Math.PI / 180) || 1;
-
-            const rawPoints = [];
-
-            ringsGeo.forEach(ring => {
-                ring.forEach(p => {
-                    rawPoints.push({
-                        x: p.x * cosLat,
-                        y: p.y
-                    });
-                });
-            });
-
-            if (rawPoints.length < 3) {
+            if (!count) {
                 return null;
             }
 
-            /*
-             * PCA ringkas untuk mencari arah panjang utama lot.
-             * Pembahagian akan dibuat sepanjang arah utama ini supaya
-             * hasil lebih natural untuk lot yang memanjang / senget.
-             */
-            let cx = 0;
-            let cy = 0;
+            meanLon /= count;
+            meanLat /= count;
 
-            rawPoints.forEach(p => {
-                cx += p.x;
-                cy += p.y;
-            });
+            const R = 6378137;
+            const lat0Rad = meanLat * Math.PI / 180;
+            const cosLat0 = Math.cos(lat0Rad) || 1;
 
-            cx /= rawPoints.length;
-            cy /= rawPoints.length;
+            function projectFallback(p) {
+                return {
+                    east:
+                        (p.x - meanLon) *
+                        Math.PI / 180 *
+                        R *
+                        cosLat0,
 
-            let xx = 0;
-            let xy = 0;
-            let yy = 0;
-
-            rawPoints.forEach(p => {
-
-                const dx = p.x - cx;
-                const dy = p.y - cy;
-
-                xx += dx * dx;
-                xy += dx * dy;
-                yy += dy * dy;
-            });
-
-            const angle =
-                0.5 * Math.atan2(
-                    2 * xy,
-                    xx - yy
-                );
-
-            const ux = Math.cos(angle);
-            const uy = Math.sin(angle);
+                    north:
+                        (p.y - meanLat) *
+                        Math.PI / 180 *
+                        R
+                };
+            }
 
             /*
-             * Vektor V berserenjang dengan U.
+             * Project semua titik dahulu.
              */
-            const vx = -uy;
-            const vy = ux;
+            let projectedRings =
+                ringsGeo.map(function(ring) {
 
-            const rings = ringsGeo.map(ring => {
+                    return ring.map(function(p) {
 
-                return ring.map(p => {
+                        const leaf =
+                            projectPoint(p);
 
-                    const x = p.x * cosLat;
-                    const y = p.y;
+                        const q =
+                            leaf || projectFallback(p);
 
-                    const dx = x - cx;
-                    const dy = y - cy;
+                        return {
+                            geoX: p.x,
+                            geoY: p.y,
+                            east: q.east,
+                            north: q.north
+                        };
+                    });
 
-                    return {
-                        x: x,
-                        y: y,
-                        u: dx * ux + dy * uy,
-                        v: dx * vx + dy * vy
-                    };
                 });
 
+            /*
+             * Gunakan satu origin lokal supaya nombor koordinat kecil.
+             * Ini TIDAK memusing lot — hanya translation.
+             */
+            let originEast = 0;
+            let originNorth = 0;
+            let projectedCount = 0;
+
+            projectedRings.forEach(function(ring) {
+                ring.forEach(function(p) {
+                    originEast += p.east;
+                    originNorth += p.north;
+                    projectedCount++;
+                });
             });
+
+            originEast /= projectedCount;
+            originNorth /= projectedCount;
+
+            /*
+             * u/v terus mewakili EAST/NORTH.
+             * Tiada cos/sin rotation, tiada PCA.
+             */
+            const rings =
+                projectedRings.map(function(ring) {
+
+                    return ring.map(function(p) {
+
+                        return {
+                            /*
+                             * x/y asal dikekalkan untuk compatibility
+                             * dengan fungsi clipping/area sedia ada.
+                             */
+                            x: p.geoX,
+                            y: p.geoY,
+
+                            /*
+                             * U = Timur, V = Utara.
+                             */
+                            u: p.east - originEast,
+                            v: p.north - originNorth,
+
+                            east: p.east,
+                            north: p.north
+                        };
+                    });
+
+                });
 
             let minU = Infinity;
             let maxU = -Infinity;
             let minV = Infinity;
             let maxV = -Infinity;
 
-            rings.forEach(ring => {
+            rings.forEach(function(ring) {
 
-                ring.forEach(p => {
+                ring.forEach(function(p) {
 
                     minU = Math.min(minU, p.u);
                     maxU = Math.max(maxU, p.u);
 
                     minV = Math.min(minV, p.v);
                     maxV = Math.max(maxV, p.v);
-
                 });
 
             });
 
+            const widthM = maxU - minU;
+            const heightM = maxV - minV;
+
+            if (
+                !Number.isFinite(widthM) ||
+                !Number.isFinite(heightM) ||
+                widthM <= 0 ||
+                heightM <= 0
+            ) {
+                return null;
+            }
+
+            /*
+             * Area untuk pembahagian dikira dalam projected meter.
+             * Oleh sebab x/y lama ialah lon/lat, bina salinan khusus
+             * untuk polygonArea berdasarkan u/v sebagai meter.
+             */
+            function ringAreaUV(ring) {
+
+                let area = 0;
+
+                for (let i = 0; i < ring.length; i++) {
+
+                    const a = ring[i];
+                    const b = ring[(i + 1) % ring.length];
+
+                    area +=
+                        (a.u * b.v) -
+                        (b.u * a.v);
+                }
+
+                return Math.abs(area / 2);
+            }
+
             let totalArea = 0;
 
-            rings.forEach(ring => {
-                totalArea += polygonArea(ring);
+            rings.forEach(function(ring) {
+                totalArea += ringAreaUV(ring);
             });
 
             if (
@@ -10785,13 +10940,37 @@ body.cover-active{
                 minV,
                 maxV,
                 totalArea,
-                centerX: cx,
-                centerY: cy,
-                ux,
-                uy,
-                vx,
-                vy,
-                cosLat
+
+                /*
+                 * Maklumat tambahan untuk debugging / pelan.
+                 */
+                centerX: originEast,
+                centerY: originNorth,
+
+                /*
+                 * Tiada rotation:
+                 * U = East, V = North.
+                 */
+                ux: 1,
+                uy: 0,
+                vx: 0,
+                vy: 1,
+
+                cosLat: cosLat0,
+
+                projectionMode:
+                    (
+                        typeof map !== "undefined" &&
+                        map &&
+                        map.options &&
+                        map.options.crs &&
+                        typeof map.options.crs.project === "function"
+                    )
+                        ? "LEAFLET_CRS_NORTH_UP"
+                        : "LOCAL_ENU_NORTH_UP",
+
+                units: "meter",
+                northUp: true
             };
         }
 
@@ -10858,41 +11037,70 @@ body.cover-active{
 
         function getPieceCentroid(pieceRings) {
 
+            /*
+             * Centroid dikira terus pada U/V projected meter.
+             * Ini memastikan label kekal pada lokasi sebenar bahagian
+             * walaupun lot mempunyai bearing / orientasi tertentu.
+             */
             let total = 0;
             let sx = 0;
             let sy = 0;
 
-            pieceRings.forEach(ring => {
+            pieceRings.forEach(function(ring) {
 
-                const a =
-                    polygonSignedArea(ring);
-
-                if (Math.abs(a) < 1e-12) {
+                if (!ring || ring.length < 3) {
                     return;
                 }
 
-                let cu = 0;
-                let cv = 0;
+                let twiceArea = 0;
+                let cuNumerator = 0;
+                let cvNumerator = 0;
 
                 for (let i = 0; i < ring.length; i++) {
 
-                    const p = ring[i];
-                    const q = ring[(i + 1) % ring.length];
+                    const p =
+                        ring[i];
+
+                    const q =
+                        ring[(i + 1) % ring.length];
 
                     const cross =
                         (p.u * q.v) -
                         (q.u * p.v);
 
-                    cu += (p.u + q.u) * cross;
-                    cv += (p.v + q.v) * cross;
+                    twiceArea += cross;
+
+                    cuNumerator +=
+                        (p.u + q.u) * cross;
+
+                    cvNumerator +=
+                        (p.v + q.v) * cross;
                 }
 
-                cu /= (6 * a);
-                cv /= (6 * a);
+                const signedArea =
+                    twiceArea / 2;
 
-                sx += cu * Math.abs(a);
-                sy += cv * Math.abs(a);
-                total += Math.abs(a);
+                if (
+                    !Number.isFinite(signedArea) ||
+                    Math.abs(signedArea) < 1e-9
+                ) {
+                    return;
+                }
+
+                const cu =
+                    cuNumerator /
+                    (6 * signedArea);
+
+                const cv =
+                    cvNumerator /
+                    (6 * signedArea);
+
+                const absArea =
+                    Math.abs(signedArea);
+
+                sx += cu * absArea;
+                sy += cv * absArea;
+                total += absArea;
             });
 
             if (total <= 0) {
@@ -11460,10 +11668,11 @@ body.cover-active{
             ctx.font = "8.5px Arial, sans-serif";
             const notes = [
                 "1. Garisan pecahan menunjukkan simulasi bahagian waris.",
-                "2. Bearing dan jarak adalah anggaran daripada geometri WebGIS.",
-                "3. Rizab jalan dipaparkan secara skematik dan tidak menolak saham Faraid.",
-                "4. Pelan ini bukan Pelan Akui, Pelan Hakmilik atau pelan ukur rasmi.",
-                "5. Pengesahan sebenar memerlukan proses dan pihak berkuasa berkaitan."
+                "2. Bentuk dan orientasi lot dikekalkan north-up mengikut lot WebGIS terpilih.",
+                "3. Bearing dan jarak adalah anggaran daripada koordinat sempadan WebGIS.",
+                "4. Rizab jalan dipaparkan secara skematik dan tidak menolak saham Faraid.",
+                "5. Pelan ini bukan Pelan Akui, Pelan Hakmilik atau pelan ukur rasmi.",
+                "6. Pengesahan sebenar memerlukan proses dan pihak berkuasa berkaitan."
             ];
             notes.forEach(function(t, i) {
                 ctx.fillText(t, col2 + 8, top + 39 + i * 17);
@@ -11641,6 +11850,15 @@ body.cover-active{
                 drawing.x,
                 drawing.y - 10
             );
+
+            ctx.fillStyle = "#111";
+            ctx.font = "bold 8.5px Arial, sans-serif";
+            ctx.textAlign = "right";
+            ctx.fillText(
+                "ORIENTASI: NORTH-UP • BENTUK & ARAH MENGIKUT LOT WEBGIS TERPILIH",
+                drawing.x + drawing.w,
+                drawing.y - 10
+            );
             ctx.restore();
 
             /*
@@ -11787,10 +12005,10 @@ body.cover-active{
 
             /*
              * Skala grafik.
-             * geometry U/V berskala darjah yang telah disesuaikan cos(lat);
-             * anggaran 1° = 111,320 m.
+             * Geometry north-up sekarang menggunakan projected meter,
+             * maka nilai scale terus bersamaan pixel per meter.
              */
-            const pxPerMeter = scale / 111320;
+            const pxPerMeter = scale;
             paDrawScaleBar(
                 ctx,
                 drawing.x,
