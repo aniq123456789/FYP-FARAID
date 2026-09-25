@@ -2427,15 +2427,32 @@ header::after {
     place-items:center;
     position:relative;
 }
-.mfl-brand-mark::before,
-.mfl-brand-mark::after {
-    display:none;
+.mfl-brand-mark::before {
+    content:"";
+    position:absolute;
+    width:40px;
+    height:40px;
+    border:4px solid var(--mfl-green);
+    border-radius:10px 10px 17px 17px;
+    transform:rotate(45deg);
+    background:rgba(247,243,231,.92);
 }
-.mfl-brand-mark img {
-    width:58px;
-    height:58px;
-    object-fit:contain;
-    display:block;
+.mfl-brand-mark::after {
+    content:"";
+    position:absolute;
+    width:31px;
+    height:13px;
+    bottom:5px;
+    left:13px;
+    background:linear-gradient(145deg,var(--mfl-green) 48%,var(--mfl-gold) 49% 72%,transparent 73%);
+    clip-path:polygon(0 0,100% 25%,78% 100%,20% 76%);
+}
+.mfl-brand-mark i {
+    position:relative;
+    z-index:2;
+    font-size:22px;
+    color:var(--mfl-green);
+    transform:translateY(-2px);
 }
 .mfl-brand-copy { line-height:1; }
 .mfl-brand-name {
@@ -6355,581 +6372,6 @@ body.cover-active{
     }
 }
 
-
-
-/* =========================================================
-   MYFARAIDLOT MOBILE MENU - HARD FIX V2
-   Sistem mobile baharu yang diasingkan daripada controller lama.
-   Desktop / laptop tidak diubah.
-========================================================= */
-
-/* Toggle baharu tidak ditunjukkan pada desktop */
-#mflMobileMenuToggle{
-    display:none;
-}
-
-#mflMobileMenuBackdrop{
-    display:none;
-}
-
-@media (max-width:960px){
-
-    /*
-     * NAV ASAL DIGUNAKAN, TETAPI KEADAANNYA DIKAWAL OLEH
-     * CLASS KHAS .mfl-mobile-open SAHAJA.
-     *
-     * Class lama .open tidak lagi menentukan paparan menu.
-     */
-    header #mflMainNavigation.top-nav{
-        display:none !important;
-        position:fixed !important;
-
-        top:60px !important;
-        right:10px !important;
-        left:auto !important;
-
-        width:min(350px, calc(100vw - 20px)) !important;
-        height:auto !important;
-        max-height:calc(100vh - 75px) !important;
-        max-height:calc(100dvh - 75px) !important;
-
-        margin:0 !important;
-        padding:8px !important;
-
-        flex-direction:column !important;
-        align-items:stretch !important;
-        justify-content:flex-start !important;
-        gap:4px !important;
-
-        overflow-y:auto !important;
-        overflow-x:hidden !important;
-        -webkit-overflow-scrolling:touch;
-
-        background:
-            linear-gradient(rgba(255,253,247,.99),rgba(255,253,247,.99)),
-            url("corak-islamik.png") center/cover !important;
-
-        border:1px solid rgba(181,150,63,.55) !important;
-        border-bottom:3px solid #0b6553 !important;
-        border-radius:12px !important;
-
-        box-shadow:
-            0 18px 45px rgba(6,48,40,.25),
-            inset 0 0 0 1px rgba(255,255,255,.72) !important;
-
-        z-index:10020 !important;
-
-        opacity:0 !important;
-        visibility:hidden !important;
-        pointer-events:none !important;
-        transform:translateY(-8px) scale(.985) !important;
-
-        transition:
-            opacity .18s ease,
-            transform .18s ease,
-            visibility .18s ease !important;
-    }
-
-    /*
-     * INILAH SATU-SATUNYA KEADAAN YANG MEMBUKA MENU.
-     */
-    header #mflMainNavigation.top-nav.mfl-mobile-open{
-        display:flex !important;
-        opacity:1 !important;
-        visibility:visible !important;
-        pointer-events:auto !important;
-        transform:translateY(0) scale(1) !important;
-    }
-
-    /* Item menu telefon */
-    header #mflMainNavigation.top-nav > .nav-item{
-        display:block !important;
-        width:100% !important;
-        height:auto !important;
-        min-height:0 !important;
-        margin:0 !important;
-        padding:0 !important;
-    }
-
-    header #mflMainNavigation.top-nav > .nav-item > a,
-    header #mflMainNavigation.top-nav a,
-    header #mflMainNavigation.top-nav a:not(.nav-search){
-        display:flex !important;
-        align-items:center !important;
-        justify-content:flex-start !important;
-
-        width:100% !important;
-        height:auto !important;
-        min-height:47px !important;
-
-        margin:0 !important;
-        padding:11px 13px !important;
-        gap:11px !important;
-
-        border:1px solid transparent !important;
-        border-radius:8px !important;
-
-        background:transparent !important;
-        color:#284c43 !important;
-
-        font-family:'Poppins',sans-serif !important;
-        font-size:12px !important;
-        font-weight:600 !important;
-        line-height:1.25 !important;
-
-        text-decoration:none !important;
-        white-space:normal !important;
-    }
-
-    header #mflMainNavigation.top-nav a i{
-        width:22px !important;
-        min-width:22px !important;
-        margin:0 !important;
-        color:#0c6d59 !important;
-        text-align:center !important;
-        font-size:14px !important;
-    }
-
-    header #mflMainNavigation.top-nav a:hover,
-    header #mflMainNavigation.top-nav a:focus,
-    header #mflMainNavigation.top-nav a.active{
-        background:linear-gradient(180deg,#11745f,#0a5a4b) !important;
-        color:#ffffff !important;
-        border-color:#0a5a4b !important;
-    }
-
-    header #mflMainNavigation.top-nav a:hover i,
-    header #mflMainNavigation.top-nav a:focus i,
-    header #mflMainNavigation.top-nav a.active i{
-        color:#f2d980 !important;
-    }
-
-    header #mflMainNavigation.top-nav .mfl-login-link{
-        margin-top:4px !important;
-        background:#faf4e3 !important;
-        border-color:#e3d5aa !important;
-    }
-
-    header #mflMainNavigation.top-nav .mfl-login-link.active,
-    header #mflMainNavigation.top-nav .mfl-login-link:hover{
-        background:linear-gradient(180deg,#11745f,#0a5a4b) !important;
-        color:#fff !important;
-    }
-
-    /* Butang hamburger baharu */
-    #mflMobileMenuToggle{
-        display:flex !important;
-        align-items:center !important;
-        justify-content:center !important;
-
-        position:relative !important;
-        z-index:10040 !important;
-
-        width:44px !important;
-        height:44px !important;
-        min-width:44px !important;
-        flex:0 0 44px !important;
-
-        margin-left:auto !important;
-        padding:0 !important;
-
-        border:1px solid #cbd5d1 !important;
-        border-radius:50% !important;
-
-        background:#fffdf8 !important;
-        color:#0c6d59 !important;
-
-        box-shadow:0 4px 12px rgba(28,75,63,.10) !important;
-        cursor:pointer !important;
-        -webkit-tap-highlight-color:transparent;
-        touch-action:manipulation;
-    }
-
-    #mflMobileMenuToggle i{
-        margin:0 !important;
-        font-size:18px !important;
-        line-height:1 !important;
-        pointer-events:none;
-    }
-
-    #mflMobileMenuToggle[aria-expanded="true"]{
-        background:#0b6553 !important;
-        color:#ffffff !important;
-        border-color:#0b6553 !important;
-    }
-
-    /* Backdrop hanya wujud ketika menu ON */
-    #mflMobileMenuBackdrop{
-        display:none;
-        position:fixed;
-        top:60px;
-        right:0;
-        bottom:0;
-        left:0;
-
-        z-index:10000;
-
-        background:rgba(8,35,30,.25);
-        backdrop-filter:blur(1px);
-        -webkit-backdrop-filter:blur(1px);
-    }
-
-    body.mfl-mobile-menu-open #mflMobileMenuBackdrop{
-        display:block;
-    }
-
-    /*
-     * Pastikan halaman berada di bawah menu dan tidak berubah saiz.
-     * Jadi apabila menu OFF, pengguna terus nampak feature/halaman asal.
-     */
-    .dashboard-page,
-    #wrapper{
-        position:relative;
-        z-index:1;
-    }
-}
-
-@media (max-width:430px){
-    header #mflMainNavigation.top-nav{
-        right:7px !important;
-        width:calc(100vw - 14px) !important;
-        max-height:calc(100dvh - 70px) !important;
-    }
-}
-
-
-
-/* =========================================================
-   MYFARAIDLOT - MOBILE MENU ISOLATED V4
-   KHAS TELEFON SAHAJA
-   Desktop / laptop dikekalkan seperti asal.
-========================================================= */
-
-/* Elemen menu telefon baharu tidak wujud secara visual di desktop */
-#mflPhoneMenu,
-#mflPhoneBackdrop{
-    display:none;
-}
-
-@media (max-width:960px){
-
-    /*
-     * Menu desktop asal hanya disembunyikan pada telefon.
-     * Ia masih kekal sepenuhnya untuk laptop/desktop.
-     */
-    header #mflMainNavigation.top-nav{
-        display:none !important;
-        visibility:hidden !important;
-        pointer-events:none !important;
-    }
-
-    /*
-     * Header dan butang hamburger.
-     */
-    header{
-        position:relative !important;
-        z-index:31000 !important;
-    }
-
-    #mflMobileMenuToggle{
-        display:flex !important;
-        align-items:center !important;
-        justify-content:center !important;
-
-        position:relative !important;
-        z-index:31020 !important;
-
-        width:44px !important;
-        height:44px !important;
-        min-width:44px !important;
-        flex:0 0 44px !important;
-
-        margin-left:auto !important;
-        padding:0 !important;
-
-        border:1px solid #cbd5d1 !important;
-        border-radius:50% !important;
-
-        background:#fffdf8 !important;
-        color:#0c6d59 !important;
-
-        box-shadow:0 4px 12px rgba(28,75,63,.10) !important;
-
-        cursor:pointer !important;
-        pointer-events:auto !important;
-        touch-action:manipulation !important;
-        -webkit-tap-highlight-color:transparent !important;
-    }
-
-    #mflMobileMenuToggle i{
-        margin:0 !important;
-        padding:0 !important;
-        font-size:18px !important;
-        line-height:1 !important;
-        pointer-events:none !important;
-    }
-
-    #mflMobileMenuToggle[aria-expanded="true"]{
-        background:#0b6553 !important;
-        color:#ffffff !important;
-        border-color:#0b6553 !important;
-    }
-
-    /*
-     * BACKDROP BARU.
-     * Diletakkan di luar header dan di bawah menu telefon.
-     */
-    #mflPhoneBackdrop{
-        display:block;
-
-        position:fixed;
-        top:60px;
-        right:0;
-        bottom:0;
-        left:0;
-
-        z-index:32000;
-
-        background:rgba(7,31,27,.30);
-
-        opacity:0;
-        visibility:hidden;
-        pointer-events:none;
-
-        transition:
-            opacity .18s ease,
-            visibility .18s ease;
-
-        -webkit-tap-highlight-color:transparent;
-    }
-
-    #mflPhoneBackdrop.is-open{
-        opacity:1;
-        visibility:visible;
-        pointer-events:auto;
-    }
-
-    /*
-     * MENU TELEFON BARU.
-     * Tidak menggunakan .top-nav.
-     * Tidak berada di dalam stacking context header.
-     */
-    #mflPhoneMenu{
-        display:flex;
-
-        position:fixed;
-        top:66px;
-        right:10px;
-
-        width:min(350px, calc(100vw - 20px));
-        max-height:calc(100vh - 80px);
-        max-height:calc(100dvh - 80px);
-
-        z-index:32020;
-
-        flex-direction:column;
-        align-items:stretch;
-        justify-content:flex-start;
-        gap:4px;
-
-        margin:0;
-        padding:9px;
-
-        overflow-y:auto;
-        overflow-x:hidden;
-        -webkit-overflow-scrolling:touch;
-
-        background:
-            linear-gradient(
-                rgba(255,253,247,.995),
-                rgba(255,253,247,.995)
-            ),
-            url("corak-islamik.png") center/cover;
-
-        border:1px solid rgba(181,150,63,.58);
-        border-bottom:3px solid #0b6553;
-        border-radius:13px;
-
-        box-shadow:
-            0 18px 45px rgba(6,48,40,.28),
-            inset 0 0 0 1px rgba(255,255,255,.72);
-
-        opacity:0;
-        visibility:hidden;
-        pointer-events:none;
-
-        transform:translateY(-8px) scale(.985);
-
-        transition:
-            opacity .18s ease,
-            transform .18s ease,
-            visibility .18s ease;
-    }
-
-    #mflPhoneMenu.is-open{
-        opacity:1;
-        visibility:visible;
-        pointer-events:auto;
-        transform:translateY(0) scale(1);
-    }
-
-    /*
-     * Setiap feature telefon ialah link sebenar yang mempunyai
-     * handler tersendiri.
-     */
-    #mflPhoneMenu .mfl-phone-menu-link{
-        display:flex !important;
-        align-items:center !important;
-        justify-content:flex-start !important;
-
-        width:100% !important;
-        min-height:48px !important;
-
-        gap:12px !important;
-
-        margin:0 !important;
-        padding:11px 14px !important;
-
-        border:1px solid transparent !important;
-        border-radius:8px !important;
-
-        background:transparent !important;
-        color:#284c43 !important;
-
-        font-family:'Poppins',sans-serif !important;
-        font-size:13px !important;
-        font-weight:600 !important;
-        line-height:1.25 !important;
-
-        text-decoration:none !important;
-        text-align:left !important;
-        white-space:normal !important;
-
-        cursor:pointer !important;
-        pointer-events:auto !important;
-        touch-action:manipulation !important;
-
-        -webkit-tap-highlight-color:rgba(13,106,88,.15) !important;
-        user-select:none;
-    }
-
-    #mflPhoneMenu .mfl-phone-menu-link i{
-        width:23px !important;
-        min-width:23px !important;
-
-        margin:0 !important;
-
-        color:#0c6d59 !important;
-        text-align:center !important;
-        font-size:15px !important;
-
-        pointer-events:none !important;
-    }
-
-    #mflPhoneMenu .mfl-phone-menu-link:hover,
-    #mflPhoneMenu .mfl-phone-menu-link:focus,
-    #mflPhoneMenu .mfl-phone-menu-link:active,
-    #mflPhoneMenu .mfl-phone-menu-link.active{
-        background:linear-gradient(180deg,#11745f,#0a5a4b) !important;
-        color:#ffffff !important;
-        border-color:#0a5a4b !important;
-        outline:none !important;
-    }
-
-    #mflPhoneMenu .mfl-phone-menu-link:hover i,
-    #mflPhoneMenu .mfl-phone-menu-link:focus i,
-    #mflPhoneMenu .mfl-phone-menu-link:active i,
-    #mflPhoneMenu .mfl-phone-menu-link.active i{
-        color:#f2d980 !important;
-    }
-
-    #mflPhoneMenu .mfl-phone-login{
-        margin-top:5px !important;
-
-        background:#faf4e3 !important;
-        border-color:#e3d5aa !important;
-    }
-
-    #mflPhoneMenu .mfl-phone-login:hover,
-    #mflPhoneMenu .mfl-phone-login:focus,
-    #mflPhoneMenu .mfl-phone-login.active{
-        background:linear-gradient(180deg,#11745f,#0a5a4b) !important;
-        color:#fff !important;
-    }
-}
-
-@media (max-width:430px){
-    #mflPhoneMenu{
-        right:7px;
-        width:calc(100vw - 14px);
-        top:63px;
-        max-height:calc(100dvh - 72px);
-    }
-}
-
-
-
-/* =========================================================
-   PELAN PEMBAHAGIAN - GAYA PELAN AKUI (SIMULASI AKADEMIK)
-   Hanya mempengaruhi paparan canvas keputusan Faraid.
-========================================================= */
-.fcalc-plan-disclaimer{
-    display:flex;
-    align-items:flex-start;
-    gap:9px;
-    margin:0 0 9px;
-    padding:10px 12px;
-    border:1px solid #dccb91;
-    border-left:4px solid #a9872e;
-    border-radius:4px;
-    background:#fffaf0;
-    color:#67572d;
-    font-size:9.5px;
-    line-height:1.55;
-}
-.fcalc-plan-disclaimer i{
-    margin-top:2px;
-    color:#9e7e28;
-}
-.fcalc-plan-scroll{
-    width:100%;
-    overflow-x:auto;
-    overflow-y:hidden;
-    padding:8px;
-    border:1px solid #d7d7d7;
-    background:#ececec;
-    -webkit-overflow-scrolling:touch;
-}
-.fcalc-result-card #lotCanvas{
-    display:block;
-    width:100%;
-    min-width:1050px;
-    max-width:none;
-    height:auto;
-    min-height:0;
-    margin:0 auto;
-    border:1px solid #9a9a9a;
-    border-radius:0;
-    background:#ffffff;
-    box-shadow:0 2px 7px rgba(0,0,0,.10);
-}
-@media(max-width:700px){
-    .fcalc-plan-scroll{
-        padding:5px;
-    }
-    .fcalc-result-card #lotCanvas{
-        min-width:980px;
-    }
-}
-
-
-
-/* =========================================================
-   LOT ORIENTATION LOCK
-   Pelan hasil menggunakan geometri WebGIS north-up.
-   Tiada PCA rotation / auto-rotate digunakan pada pelan.
-========================================================= */
-
 </style>
 
 </head>
@@ -7002,14 +6444,14 @@ body.cover-active{
     <header>
         <div class="header-content">
             <a href="#" class="mfl-brand page-link" data-page="home" aria-label="MyFaraidLot - Utama">
-                <span class="mfl-brand-mark"><img src="myfaraidlot-logo.png" alt="Logo MyFaraidLot"></span>
+                <span class="mfl-brand-mark"><i class="fas fa-mosque"></i></span>
                 <span class="mfl-brand-copy">
                     <span class="mfl-brand-name">MyFaraidLot</span>
                     <span class="mfl-brand-sub">Faraid Tepat, Lot Teratur, Masa Depan Bersama</span>
                 </span>
             </a>
 
-            <nav id="mflMainNavigation" class="top-nav" aria-label="Navigasi utama">
+            <nav class="top-nav" aria-label="Navigasi utama">
                 <div class="nav-item"><a href="#" class="active page-link" data-page="home"><i class="fas fa-home"></i> Utama</a></div>
                 <div class="nav-item"><a href="#" class="page-link" data-page="tentang"><i class="fas fa-info-circle"></i> Tentang</a></div>
                 <div class="nav-item"><a href="#" class="page-link" data-page="kiraan-faraid"><i class="fas fa-calculator"></i> Kiraan Faraid</a></div>
@@ -7019,13 +6461,7 @@ body.cover-active{
                 <div class="nav-item"><a href="#" class="page-link mfl-login-link" data-page="login"><i class="fas fa-user"></i> Log Masuk</a></div>
             </nav>
 
-            
-            <button type="button"
-                id="mflMobileMenuToggle"
-                class="mobile-nav-toggle mfl-mobile-menu-toggle"
-                aria-label="Buka menu navigasi"
-                aria-expanded="false"
-                aria-controls="mflMainNavigation">
+            <button type="button" id="mobileNavToggle" class="mobile-nav-toggle" aria-label="Menu" aria-expanded="false">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
@@ -7894,18 +7330,8 @@ body.cover-active{
                 <div id="faraidTableContainer"></div>
                 <div id="faraidBlockedContainer"></div>
 
-                <div class="fcalc-visual-title">Pelan Pembahagian Lot — Gaya Pelan Akui (Simulasi)</div>
-                <div class="fcalc-plan-disclaimer">
-                    <i class="fas fa-info-circle"></i>
-                    <span>
-                        Paparan ini menggunakan gaya pelan ukur kadaster untuk tujuan akademik.
-                        <strong>Bukan Pelan Akui rasmi JUPEM dan bukan untuk urusan ukur, pendaftaran atau hak milik.</strong>
-                    </span>
-                </div>
-                <div class="fcalc-plan-scroll">
-                    <canvas id="lotCanvas" width="1400" height="980"
-                        aria-label="Pelan pembahagian lot gaya Pelan Akui"></canvas>
-                </div>
+                <div class="fcalc-visual-title">Pelan Pembahagian Lot (Visual)</div>
+                <canvas id="lotCanvas" width="900" height="420"></canvas>
             </div>
         </div>
     </section>
@@ -10597,27 +10023,6 @@ body.cover-active{
          * Ini menyebabkan bahagian waris benar-benar mengikut
          * bentuk polygon dan bukannya sekadar membahagi lebar canvas.
          */
-        function polygonAreaUV(points) {
-
-            if (!points || points.length < 3) {
-                return 0;
-            }
-
-            let area = 0;
-
-            for (let i = 0; i < points.length; i++) {
-
-                const a = points[i];
-                const b = points[(i + 1) % points.length];
-
-                area +=
-                    (a.u * b.v) -
-                    (b.u * a.v);
-            }
-
-            return Math.abs(area / 2);
-        }
-
         function findAreaCut(rings, targetArea, minU, maxU, totalArea) {
 
             let low = minU;
@@ -10635,7 +10040,7 @@ body.cover-active{
                         clipPolygonByU(ring, mid, true);
 
                     if (clipped.length >= 3) {
-                        areaAtMid += polygonAreaUV(clipped);
+                        areaAtMid += polygonArea(clipped);
                     }
 
                 });
@@ -10657,256 +10062,130 @@ body.cover-active{
          */
         function prepareLotGeometry(layer) {
 
-            /*
-             * =====================================================
-             * NORTH-UP / TRUE MAP ORIENTATION
-             * =====================================================
-             *
-             * Versi terdahulu menggunakan PCA untuk memusing lot
-             * mengikut paksi memanjang. Itu menyebabkan bentuk relatif
-             * masih betul tetapi arah/bearing pada helaian berubah.
-             *
-             * Versi ini TIDAK memusing polygon.
-             *
-             * Titik lot diproyeksikan menggunakan CRS yang sama seperti
-             * Leaflet/WebGIS (EPSG:3857 bagi peta ini), kemudian:
-             *
-             *      U = EASTING  (Timur)
-             *      V = NORTHING (Utara)
-             *
-             * Oleh itu:
-             * - Utara kekal ke atas helaian.
-             * - Timur kekal ke kanan.
-             * - Bentuk lot sama seperti lot yang dipilih pada WebGIS.
-             * - Arah setiap garisan sempadan tidak diputar.
-             * - Pembahagian dibuat di dalam polygon sebenar tersebut.
-             */
-
             const ringsGeo = extractLotRings(layer);
 
             if (!ringsGeo.length) {
                 return null;
             }
 
-            /*
-             * Gunakan projection Leaflet yang sama dengan map.
-             * L.CRS.EPSG3857.project() menghasilkan koordinat projected
-             * dalam unit meter dan mengekalkan orientasi north-up.
-             */
-            function projectPoint(p) {
-
-                try {
-
-                    if (
-                        typeof map !== "undefined" &&
-                        map &&
-                        map.options &&
-                        map.options.crs &&
-                        typeof map.options.crs.project === "function" &&
-                        typeof L !== "undefined"
-                    ) {
-
-                        const projected =
-                            map.options.crs.project(
-                                L.latLng(p.y, p.x)
-                            );
-
-                        if (
-                            projected &&
-                            Number.isFinite(projected.x) &&
-                            Number.isFinite(projected.y)
-                        ) {
-                            return {
-                                east: projected.x,
-                                north: projected.y
-                            };
-                        }
-                    }
-
-                } catch (err) {
-                    console.warn(
-                        "Projection Leaflet gagal. Menggunakan projection lokal fallback.",
-                        err
-                    );
-                }
-
-                /*
-                 * Fallback local equirectangular.
-                 * Hanya digunakan jika CRS Leaflet tidak tersedia.
-                 */
-                return null;
-            }
-
-            /*
-             * Titik rujukan untuk fallback.
-             */
             let meanLat = 0;
-            let meanLon = 0;
             let count = 0;
 
-            ringsGeo.forEach(function(ring) {
-                ring.forEach(function(p) {
-                    meanLon += p.x;
+            ringsGeo.forEach(ring => {
+                ring.forEach(p => {
                     meanLat += p.y;
                     count++;
                 });
             });
 
-            if (!count) {
-                return null;
-            }
+            meanLat = count ? meanLat / count : 0;
 
-            meanLon /= count;
-            meanLat /= count;
+            const cosLat =
+                Math.cos(meanLat * Math.PI / 180) || 1;
 
-            const R = 6378137;
-            const lat0Rad = meanLat * Math.PI / 180;
-            const cosLat0 = Math.cos(lat0Rad) || 1;
+            const rawPoints = [];
 
-            function projectFallback(p) {
-                return {
-                    east:
-                        (p.x - meanLon) *
-                        Math.PI / 180 *
-                        R *
-                        cosLat0,
-
-                    north:
-                        (p.y - meanLat) *
-                        Math.PI / 180 *
-                        R
-                };
-            }
-
-            /*
-             * Project semua titik dahulu.
-             */
-            let projectedRings =
-                ringsGeo.map(function(ring) {
-
-                    return ring.map(function(p) {
-
-                        const leaf =
-                            projectPoint(p);
-
-                        const q =
-                            leaf || projectFallback(p);
-
-                        return {
-                            geoX: p.x,
-                            geoY: p.y,
-                            east: q.east,
-                            north: q.north
-                        };
+            ringsGeo.forEach(ring => {
+                ring.forEach(p => {
+                    rawPoints.push({
+                        x: p.x * cosLat,
+                        y: p.y
                     });
-
-                });
-
-            /*
-             * Gunakan satu origin lokal supaya nombor koordinat kecil.
-             * Ini TIDAK memusing lot — hanya translation.
-             */
-            let originEast = 0;
-            let originNorth = 0;
-            let projectedCount = 0;
-
-            projectedRings.forEach(function(ring) {
-                ring.forEach(function(p) {
-                    originEast += p.east;
-                    originNorth += p.north;
-                    projectedCount++;
                 });
             });
 
-            originEast /= projectedCount;
-            originNorth /= projectedCount;
+            if (rawPoints.length < 3) {
+                return null;
+            }
 
             /*
-             * u/v terus mewakili EAST/NORTH.
-             * Tiada cos/sin rotation, tiada PCA.
+             * PCA ringkas untuk mencari arah panjang utama lot.
+             * Pembahagian akan dibuat sepanjang arah utama ini supaya
+             * hasil lebih natural untuk lot yang memanjang / senget.
              */
-            const rings =
-                projectedRings.map(function(ring) {
+            let cx = 0;
+            let cy = 0;
 
-                    return ring.map(function(p) {
+            rawPoints.forEach(p => {
+                cx += p.x;
+                cy += p.y;
+            });
 
-                        return {
-                            /*
-                             * x/y asal dikekalkan untuk compatibility
-                             * dengan fungsi clipping/area sedia ada.
-                             */
-                            x: p.geoX,
-                            y: p.geoY,
+            cx /= rawPoints.length;
+            cy /= rawPoints.length;
 
-                            /*
-                             * U = Timur, V = Utara.
-                             */
-                            u: p.east - originEast,
-                            v: p.north - originNorth,
+            let xx = 0;
+            let xy = 0;
+            let yy = 0;
 
-                            east: p.east,
-                            north: p.north
-                        };
-                    });
+            rawPoints.forEach(p => {
 
+                const dx = p.x - cx;
+                const dy = p.y - cy;
+
+                xx += dx * dx;
+                xy += dx * dy;
+                yy += dy * dy;
+            });
+
+            const angle =
+                0.5 * Math.atan2(
+                    2 * xy,
+                    xx - yy
+                );
+
+            const ux = Math.cos(angle);
+            const uy = Math.sin(angle);
+
+            /*
+             * Vektor V berserenjang dengan U.
+             */
+            const vx = -uy;
+            const vy = ux;
+
+            const rings = ringsGeo.map(ring => {
+
+                return ring.map(p => {
+
+                    const x = p.x * cosLat;
+                    const y = p.y;
+
+                    const dx = x - cx;
+                    const dy = y - cy;
+
+                    return {
+                        x: x,
+                        y: y,
+                        u: dx * ux + dy * uy,
+                        v: dx * vx + dy * vy
+                    };
                 });
+
+            });
 
             let minU = Infinity;
             let maxU = -Infinity;
             let minV = Infinity;
             let maxV = -Infinity;
 
-            rings.forEach(function(ring) {
+            rings.forEach(ring => {
 
-                ring.forEach(function(p) {
+                ring.forEach(p => {
 
                     minU = Math.min(minU, p.u);
                     maxU = Math.max(maxU, p.u);
 
                     minV = Math.min(minV, p.v);
                     maxV = Math.max(maxV, p.v);
+
                 });
 
             });
 
-            const widthM = maxU - minU;
-            const heightM = maxV - minV;
-
-            if (
-                !Number.isFinite(widthM) ||
-                !Number.isFinite(heightM) ||
-                widthM <= 0 ||
-                heightM <= 0
-            ) {
-                return null;
-            }
-
-            /*
-             * Area untuk pembahagian dikira dalam projected meter.
-             * Oleh sebab x/y lama ialah lon/lat, bina salinan khusus
-             * untuk polygonArea berdasarkan u/v sebagai meter.
-             */
-            function ringAreaUV(ring) {
-
-                let area = 0;
-
-                for (let i = 0; i < ring.length; i++) {
-
-                    const a = ring[i];
-                    const b = ring[(i + 1) % ring.length];
-
-                    area +=
-                        (a.u * b.v) -
-                        (b.u * a.v);
-                }
-
-                return Math.abs(area / 2);
-            }
-
             let totalArea = 0;
 
-            rings.forEach(function(ring) {
-                totalArea += ringAreaUV(ring);
+            rings.forEach(ring => {
+                totalArea += polygonArea(ring);
             });
 
             if (
@@ -10923,37 +10202,13 @@ body.cover-active{
                 minV,
                 maxV,
                 totalArea,
-
-                /*
-                 * Maklumat tambahan untuk debugging / pelan.
-                 */
-                centerX: originEast,
-                centerY: originNorth,
-
-                /*
-                 * Tiada rotation:
-                 * U = East, V = North.
-                 */
-                ux: 1,
-                uy: 0,
-                vx: 0,
-                vy: 1,
-
-                cosLat: cosLat0,
-
-                projectionMode:
-                    (
-                        typeof map !== "undefined" &&
-                        map &&
-                        map.options &&
-                        map.options.crs &&
-                        typeof map.options.crs.project === "function"
-                    )
-                        ? "LEAFLET_CRS_NORTH_UP"
-                        : "LOCAL_ENU_NORTH_UP",
-
-                units: "meter",
-                northUp: true
+                centerX: cx,
+                centerY: cy,
+                ux,
+                uy,
+                vx,
+                vy,
+                cosLat
             };
         }
 
@@ -11020,70 +10275,41 @@ body.cover-active{
 
         function getPieceCentroid(pieceRings) {
 
-            /*
-             * Centroid dikira terus pada U/V projected meter.
-             * Ini memastikan label kekal pada lokasi sebenar bahagian
-             * walaupun lot mempunyai bearing / orientasi tertentu.
-             */
             let total = 0;
             let sx = 0;
             let sy = 0;
 
-            pieceRings.forEach(function(ring) {
+            pieceRings.forEach(ring => {
 
-                if (!ring || ring.length < 3) {
+                const a =
+                    polygonSignedArea(ring);
+
+                if (Math.abs(a) < 1e-12) {
                     return;
                 }
 
-                let twiceArea = 0;
-                let cuNumerator = 0;
-                let cvNumerator = 0;
+                let cu = 0;
+                let cv = 0;
 
                 for (let i = 0; i < ring.length; i++) {
 
-                    const p =
-                        ring[i];
-
-                    const q =
-                        ring[(i + 1) % ring.length];
+                    const p = ring[i];
+                    const q = ring[(i + 1) % ring.length];
 
                     const cross =
                         (p.u * q.v) -
                         (q.u * p.v);
 
-                    twiceArea += cross;
-
-                    cuNumerator +=
-                        (p.u + q.u) * cross;
-
-                    cvNumerator +=
-                        (p.v + q.v) * cross;
+                    cu += (p.u + q.u) * cross;
+                    cv += (p.v + q.v) * cross;
                 }
 
-                const signedArea =
-                    twiceArea / 2;
+                cu /= (6 * a);
+                cv /= (6 * a);
 
-                if (
-                    !Number.isFinite(signedArea) ||
-                    Math.abs(signedArea) < 1e-9
-                ) {
-                    return;
-                }
-
-                const cu =
-                    cuNumerator /
-                    (6 * signedArea);
-
-                const cv =
-                    cvNumerator /
-                    (6 * signedArea);
-
-                const absArea =
-                    Math.abs(signedArea);
-
-                sx += cu * absArea;
-                sy += cv * absArea;
-                total += absArea;
+                sx += cu * Math.abs(a);
+                sy += cv * Math.abs(a);
+                total += Math.abs(a);
             });
 
             if (total <= 0) {
@@ -11096,778 +10322,298 @@ body.cover-active{
             };
         }
 
-        /* =========================================================
-           PELAN PEMBAHAGIAN LOT - GAYA PELAN AKUI
-           ---------------------------------------------------------
-           PENTING:
-           - Ini ialah SIMULASI AKADEMIK.
-           - Bukan Pelan Akui rasmi JUPEM.
-           - Bearing/jarak sempadan dikira daripada geometri WebGIS
-             dan dipaparkan sebagai anggaran, bukan ukuran kadaster
-             yang telah disahkan.
-        ========================================================== */
+        function drawRoadAndFrame(ctx, W, H, lotBox) {
 
-        function paGetLotMeta(selectedLayer) {
-            const p =
-                selectedLayer &&
-                selectedLayer.feature &&
-                selectedLayer.feature.properties
-                    ? selectedLayer.feature.properties
-                    : {};
+            const roadH = 34;
+            const roadY = H - roadH;
 
-            const read = function(keys, fallback) {
-                for (let i = 0; i < keys.length; i++) {
-                    const v = p[keys[i]];
-                    if (v !== undefined && v !== null && String(v).trim() !== "") {
-                        return String(v);
-                    }
-                }
-                return fallback;
-            };
+            /*
+             * JANGAN melukis semula seluruh canvas di sini kerana
+             * fungsi ini dipanggil SELEPAS polygon lot dilukis.
+             * Melukis fillRect(0,0,W,H) akan memadam keseluruhan
+             * visual lot. Hanya kawasan rizab jalan dilukis semula.
+             */
 
-            const rawArea =
-                Number(
-                    p["AREA"] ??
-                    p["Area"] ??
-                    document.getElementById("luasTanah")?.value
-                );
+            /*
+             * Rizab jalan kekal sebagai komponen visual berasingan,
+             * seperti fungsi asal sistem.
+             */
+            ctx.fillStyle = "#d9dde1";
+            ctx.fillRect(0, roadY, W, roadH);
 
-            return {
-                lot: read(["NO LOT","NO_LOT","LOT","Lot"], "-"),
-                negeri: read(["NEGERI","Negeri"], "-"),
-                daerah: read(["DAERAH","Daerah"], "-"),
-                mukim: read(["MUKIM","Mukim"], "-"),
-                owner: read(["tsp — pe","Pemilik","PEMILIK"], "Tidak dinyatakan"),
-                area: Number.isFinite(rawArea) ? rawArea : 0
-            };
-        }
-
-        function paPad2(n) {
-            return String(Math.abs(Math.floor(n))).padStart(2, "0");
-        }
-
-        function paBearingToDMS(deg) {
-            let d = ((deg % 360) + 360) % 360;
-            let D = Math.floor(d);
-            let mFloat = (d - D) * 60;
-            let M = Math.floor(mFloat);
-            let S = Math.round((mFloat - M) * 60);
-
-            if (S === 60) {
-                S = 0;
-                M += 1;
-            }
-            if (M === 60) {
-                M = 0;
-                D = (D + 1) % 360;
-            }
-
-            return D + "° " + paPad2(M) + "' " + paPad2(S) + '"';
-        }
-
-        function paHaversineMeters(a, b) {
-            const R = 6371008.8;
-            const lat1 = a.y * Math.PI / 180;
-            const lat2 = b.y * Math.PI / 180;
-            const dLat = (b.y - a.y) * Math.PI / 180;
-            const dLon = (b.x - a.x) * Math.PI / 180;
-
-            const h =
-                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                Math.cos(lat1) * Math.cos(lat2) *
-                Math.sin(dLon / 2) * Math.sin(dLon / 2);
-
-            return 2 * R * Math.atan2(Math.sqrt(h), Math.sqrt(1 - h));
-        }
-
-        function paInitialBearing(a, b) {
-            const lat1 = a.y * Math.PI / 180;
-            const lat2 = b.y * Math.PI / 180;
-            const dLon = (b.x - a.x) * Math.PI / 180;
-
-            const y = Math.sin(dLon) * Math.cos(lat2);
-            const x =
-                Math.cos(lat1) * Math.sin(lat2) -
-                Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon);
-
-            return (Math.atan2(y, x) * 180 / Math.PI + 360) % 360;
-        }
-
-        function paCanvasPoint(p, geometry, scale, offsetX, offsetY) {
-            return {
-                x: offsetX + (p.u - geometry.minU) * scale,
-                y: offsetY + (geometry.maxV - p.v) * scale
-            };
-        }
-
-        function paNiceScaleBar(targetMeters) {
-            if (!Number.isFinite(targetMeters) || targetMeters <= 0) return 10;
-
-            const power = Math.pow(10, Math.floor(Math.log10(targetMeters)));
-            const n = targetMeters / power;
-
-            let nice;
-            if (n < 1.5) nice = 1;
-            else if (n < 3.5) nice = 2;
-            else if (n < 7.5) nice = 5;
-            else nice = 10;
-
-            return nice * power;
-        }
-
-        function paDrawNorthArrow(ctx, x, y) {
-            ctx.save();
-
-            ctx.strokeStyle = "#111";
-            ctx.fillStyle = "#111";
-            ctx.lineWidth = 1.5;
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-
-            ctx.font = "bold 20px Georgia, serif";
-            ctx.fillText("U", x, y - 46);
+            ctx.strokeStyle = "#4b5563";
+            ctx.lineWidth = 2;
+            ctx.setLineDash([6, 4]);
 
             ctx.beginPath();
-            ctx.moveTo(x, y - 36);
-            ctx.lineTo(x - 9, y - 7);
-            ctx.lineTo(x, y - 13);
-            ctx.lineTo(x + 9, y - 7);
-            ctx.closePath();
-            ctx.fill();
-
-            ctx.beginPath();
-            ctx.moveTo(x, y - 11);
-            ctx.lineTo(x, y + 36);
-            ctx.stroke();
-
-            ctx.beginPath();
-            ctx.moveTo(x - 14, y + 10);
-            ctx.lineTo(x + 14, y + 10);
-            ctx.stroke();
-
-            ctx.beginPath();
-            ctx.arc(x, y + 10, 4, 0, Math.PI * 2);
-            ctx.stroke();
-
-            ctx.restore();
-        }
-
-        function paDrawScaleBar(ctx, x, y, pxPerMeter, availablePx) {
-            if (!Number.isFinite(pxPerMeter) || pxPerMeter <= 0) return;
-
-            const targetPx = Math.min(220, Math.max(110, availablePx || 180));
-            const targetMeters = targetPx / pxPerMeter;
-            const totalM = paNiceScaleBar(targetMeters);
-            const totalPx = totalM * pxPerMeter;
-
-            if (!Number.isFinite(totalPx) || totalPx < 45 || totalPx > 320) return;
-
-            const segments = 4;
-            const segPx = totalPx / segments;
-            const segM = totalM / segments;
-
-            ctx.save();
-            ctx.strokeStyle = "#111";
-            ctx.fillStyle = "#111";
-            ctx.lineWidth = 1;
-            ctx.font = "10px Arial, sans-serif";
-            ctx.textAlign = "center";
-
-            ctx.fillText("SKALA GRAFIK (ANGGARAN)", x + totalPx / 2, y - 12);
-
-            for (let i = 0; i < segments; i++) {
-                ctx.fillStyle = i % 2 === 0 ? "#111" : "#fff";
-                ctx.fillRect(x + i * segPx, y, segPx, 9);
-                ctx.strokeRect(x + i * segPx, y, segPx, 9);
-            }
-
-            ctx.fillStyle = "#111";
-            for (let i = 0; i <= segments; i++) {
-                const val = (i * segM);
-                ctx.fillText(
-                    (Math.abs(val - Math.round(val)) < 1e-6 ? Math.round(val) : val.toFixed(1)),
-                    x + i * segPx,
-                    y + 23
-                );
-            }
-
-            ctx.textAlign = "left";
-            ctx.fillText("m", x + totalPx + 8, y + 23);
-            ctx.restore();
-        }
-
-        function paDrawHatch(ctx, ring, geometry, scale, offsetX, offsetY, index) {
-            if (!ring || ring.length < 3) return;
-
-            ctx.save();
-            drawPolygonPath(ctx, ring, geometry, scale, offsetX, offsetY);
-            ctx.clip();
-
-            ctx.fillStyle = index % 2 === 0 ? "#fbfbfb" : "#f4f4f4";
-            ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-
-            ctx.strokeStyle = index % 3 === 0 ? "#c9c9c9" : "#d7d7d7";
-            ctx.lineWidth = 0.7;
-
-            const gap = 16 + (index % 3) * 3;
-            const H = ctx.canvas.height;
-            const W = ctx.canvas.width;
-
-            if (index % 2 === 0) {
-                for (let x = -H; x < W + H; x += gap) {
-                    ctx.beginPath();
-                    ctx.moveTo(x, 0);
-                    ctx.lineTo(x + H, H);
-                    ctx.stroke();
-                }
-            } else {
-                for (let x = 0; x < W + H; x += gap) {
-                    ctx.beginPath();
-                    ctx.moveTo(x, 0);
-                    ctx.lineTo(x - H, H);
-                    ctx.stroke();
-                }
-            }
-
-            ctx.restore();
-
-            drawPolygonPath(ctx, ring, geometry, scale, offsetX, offsetY);
-            ctx.strokeStyle = "#111";
-            ctx.lineWidth = 1.35;
-            ctx.stroke();
-        }
-
-        function paDrawTextBox(ctx, x, y, lines, options) {
-            const opt = options || {};
-            const font = opt.font || "11px Arial, sans-serif";
-            const fontBold = opt.fontBold || "bold 12px Arial, sans-serif";
-            const padX = opt.padX || 7;
-            const padY = opt.padY || 6;
-            const lineH = opt.lineH || 15;
-
-            ctx.save();
-            ctx.font = font;
-            let maxW = 0;
-
-            lines.forEach(function(line) {
-                ctx.font = line.bold ? fontBold : font;
-                maxW = Math.max(maxW, ctx.measureText(line.text).width);
-            });
-
-            const w = maxW + padX * 2;
-            const h = lines.length * lineH + padY * 2;
-
-            ctx.fillStyle = "rgba(255,255,255,.90)";
-            ctx.fillRect(x - w / 2, y - h / 2, w, h);
-
-            if (opt.border !== false) {
-                ctx.strokeStyle = "#555";
-                ctx.lineWidth = 0.6;
-                ctx.strokeRect(x - w / 2, y - h / 2, w, h);
-            }
-
-            ctx.fillStyle = "#111";
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-
-            lines.forEach(function(line, i) {
-                ctx.font = line.bold ? fontBold : font;
-                ctx.fillText(
-                    line.text,
-                    x,
-                    y - (lines.length - 1) * lineH / 2 + i * lineH
-                );
-            });
-
-            ctx.restore();
-        }
-
-        function paDrawBoundaryAnnotations(
-            ctx,
-            geoRings,
-            geometry,
-            scale,
-            offsetX,
-            offsetY
-        ) {
-            if (!geoRings || !geoRings.length) return;
-
-            const transformed = geometry.rings || [];
-
-            geoRings.forEach(function(geoRing, ringIndex) {
-                const tRing = transformed[ringIndex];
-                if (!tRing || tRing.length < 2) return;
-
-                const n = Math.min(geoRing.length, tRing.length);
-                const step = Math.max(1, Math.ceil(n / 12));
-
-                let cent = {x:0,y:0};
-                tRing.forEach(function(p) {
-                    const cp = paCanvasPoint(p, geometry, scale, offsetX, offsetY);
-                    cent.x += cp.x;
-                    cent.y += cp.y;
-                });
-                cent.x /= tRing.length;
-                cent.y /= tRing.length;
-
-                for (let i = 0; i < n; i += step) {
-                    const j = (i + 1) % n;
-
-                    const aGeo = geoRing[i];
-                    const bGeo = geoRing[j];
-                    const a = paCanvasPoint(tRing[i], geometry, scale, offsetX, offsetY);
-                    const b = paCanvasPoint(tRing[j], geometry, scale, offsetX, offsetY);
-
-                    const dist = paHaversineMeters(aGeo, bGeo);
-                    const bearing = paInitialBearing(aGeo, bGeo);
-
-                    if (!Number.isFinite(dist) || dist < 0.05) continue;
-
-                    let mx = (a.x + b.x) / 2;
-                    let my = (a.y + b.y) / 2;
-
-                    const dx = b.x - a.x;
-                    const dy = b.y - a.y;
-                    const len = Math.hypot(dx, dy) || 1;
-
-                    let nx = -dy / len;
-                    let ny = dx / len;
-
-                    const towardCenter =
-                        (cent.x - mx) * nx +
-                        (cent.y - my) * ny;
-
-                    if (towardCenter > 0) {
-                        nx *= -1;
-                        ny *= -1;
-                    }
-
-                    mx += nx * 18;
-                    my += ny * 18;
-
-                    let angle = Math.atan2(dy, dx);
-                    if (angle > Math.PI / 2 || angle < -Math.PI / 2) {
-                        angle += Math.PI;
-                    }
-
-                    ctx.save();
-                    ctx.translate(mx, my);
-                    ctx.rotate(angle);
-
-                    ctx.fillStyle = "#111";
-                    ctx.textAlign = "center";
-                    ctx.textBaseline = "bottom";
-                    ctx.font = "9px Arial, sans-serif";
-                    ctx.fillText(paBearingToDMS(bearing), 0, -1);
-
-                    ctx.textBaseline = "top";
-                    ctx.font = "8.5px Arial, sans-serif";
-                    ctx.fillText(dist.toFixed(2) + " m", 0, 2);
-                    ctx.restore();
-                }
-
-                /* Tanda titik sempadan */
-                const pointStep = Math.max(1, Math.ceil(n / 18));
-                for (let i = 0; i < n; i += pointStep) {
-                    const p = paCanvasPoint(tRing[i], geometry, scale, offsetX, offsetY);
-
-                    ctx.save();
-                    ctx.fillStyle = "#fff";
-                    ctx.strokeStyle = "#111";
-                    ctx.lineWidth = 1;
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y, 3.2, 0, Math.PI * 2);
-                    ctx.fill();
-                    ctx.stroke();
-
-                    ctx.fillStyle = "#111";
-                    ctx.font = "7px Arial, sans-serif";
-                    ctx.textAlign = "left";
-                    ctx.textBaseline = "bottom";
-                    ctx.fillText("P" + (i + 1), p.x + 5, p.y - 3);
-                    ctx.restore();
-                }
-            });
-        }
-
-        function paDrawRoad(ctx, x, y, w, h) {
-            ctx.save();
-
-            ctx.fillStyle = "#fff";
-            ctx.fillRect(x, y, w, h);
-
-            ctx.strokeStyle = "#111";
-            ctx.lineWidth = 1.3;
-
-            ctx.beginPath();
-            ctx.moveTo(x, y);
-            ctx.lineTo(x + w, y);
-            ctx.stroke();
-
-            ctx.beginPath();
-            ctx.moveTo(x, y + h);
-            ctx.lineTo(x + w, y + h);
-            ctx.stroke();
-
-            ctx.setLineDash([14, 10]);
-            ctx.lineWidth = 0.8;
-
-            ctx.beginPath();
-            ctx.moveTo(x + 10, y + h / 2);
-            ctx.lineTo(x + w - 10, y + h / 2);
+            ctx.moveTo(0, roadY);
+            ctx.lineTo(W, roadY);
             ctx.stroke();
 
             ctx.setLineDash([]);
 
-            ctx.fillStyle = "#111";
-            ctx.font = "bold 10px Arial, sans-serif";
+            ctx.strokeStyle = "#ffffff";
+            ctx.lineWidth = 2;
+            ctx.setLineDash([12, 8]);
+
+            ctx.beginPath();
+            ctx.moveTo(0, roadY + roadH / 2);
+            ctx.lineTo(W, roadY + roadH / 2);
+            ctx.stroke();
+
+            ctx.setLineDash([]);
+
+            ctx.fillStyle = "#374151";
+            ctx.font = "bold 9px Poppins, sans-serif";
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
+
             ctx.fillText(
-                "RIZAB JALAN " + RIZAB_JALAN_LEBAR_M + " m  (PAPARAN SKEMATIK)",
-                x + w / 2,
-                y + h / 2
-            );
-
-            ctx.restore();
-        }
-
-        function paDrawTitleAndNorth(ctx, W, meta) {
-            ctx.save();
-
-            paDrawNorthArrow(ctx, W / 2, 83);
-
-            ctx.fillStyle = "#111";
-            ctx.textAlign = "center";
-            ctx.textBaseline = "alphabetic";
-
-            ctx.font = "bold 23px Georgia, serif";
-            ctx.fillText("PELAN PEMBAHAGIAN LOT", W / 2, 145);
-
-            ctx.font = "bold 17px Georgia, serif";
-            ctx.fillText(
-                "LOT " + meta.lot,
+                "RIZAB JALAN " +
+                RIZAB_JALAN_LEBAR_M +
+                " m",
                 W / 2,
-                170
+                roadY + roadH / 2
             );
 
-            ctx.font = "12px Arial, sans-serif";
-            ctx.fillText(
-                "MUKIM " + String(meta.mukim).toUpperCase() +
-                "  •  DAERAH " + String(meta.daerah).toUpperCase() +
-                "  •  " + String(meta.negeri).toUpperCase(),
-                W / 2,
-                191
+            /* Bingkai */
+            ctx.strokeStyle = "#6b4b2a";
+            ctx.lineWidth = 1.5;
+            ctx.strokeRect(
+                0.75,
+                0.75,
+                W - 1.5,
+                H - 1.5
             );
 
-            ctx.beginPath();
-            ctx.moveTo(W / 2 - 205, 202);
-            ctx.lineTo(W / 2 + 205, 202);
-            ctx.lineWidth = 1;
-            ctx.strokeStyle = "#111";
-            ctx.stroke();
-
-            ctx.restore();
-        }
-
-        function paDrawSimulationStamp(ctx, W) {
-            const x = W - 322;
-            const y = 45;
-            const w = 255;
-            const h = 112;
-
-            ctx.save();
-            ctx.strokeStyle = "#111";
-            ctx.lineWidth = 1;
-            ctx.strokeRect(x, y, w, h);
-
-            ctx.fillStyle = "#111";
-            ctx.textAlign = "center";
-
-            ctx.font = "bold 12px Arial, sans-serif";
-            ctx.fillText("SIMULASI AKADEMIK", x + w / 2, y + 26);
-
-            ctx.font = "bold 11px Arial, sans-serif";
-            ctx.fillText("BUKAN PELAN AKUI RASMI JUPEM", x + w / 2, y + 48);
-
-            ctx.font = "9px Arial, sans-serif";
-            ctx.fillText("Tidak untuk ukur, pendaftaran,", x + w / 2, y + 72);
-            ctx.fillText("hak milik atau urus niaga tanah.", x + w / 2, y + 87);
-
-            ctx.font = "italic 8px Arial, sans-serif";
-            ctx.fillText("MyFaraidLot", x + w / 2, y + 104);
-            ctx.restore();
-        }
-
-        function paDrawBottomTitleBlock(ctx, W, H, meta, senaraiWaris) {
-            const top = H - 205;
-            const left = 48;
-            const right = W - 48;
-            const width = right - left;
-
-            ctx.save();
-            ctx.strokeStyle = "#111";
-            ctx.fillStyle = "#111";
-            ctx.lineWidth = 1;
-
-            ctx.beginPath();
-            ctx.moveTo(left, top);
-            ctx.lineTo(right, top);
-            ctx.stroke();
-
-            const col1 = left;
-            const col2 = left + width * 0.36;
-            const col3 = left + width * 0.68;
-
-            ctx.beginPath();
-            ctx.moveTo(col2, top);
-            ctx.lineTo(col2, H - 38);
-            ctx.moveTo(col3, top);
-            ctx.lineTo(col3, H - 38);
-            ctx.stroke();
-
-            /* Kolum 1: metadata lot */
-            ctx.textAlign = "left";
-            ctx.font = "bold 10px Arial, sans-serif";
-            ctx.fillText("MAKLUMAT LOT", col1 + 8, top + 18);
-
-            ctx.font = "9px Arial, sans-serif";
-            const metaLines = [
-                "No. Lot : " + meta.lot,
-                "Mukim   : " + meta.mukim,
-                "Daerah  : " + meta.daerah,
-                "Negeri  : " + meta.negeri,
-                "Luas    : " + (meta.area ? meta.area.toFixed(3) + " m²" : "-"),
-                "Pemilik : " + meta.owner
-            ];
-            metaLines.forEach(function(t, i) {
-                ctx.fillText(t, col1 + 8, top + 39 + i * 16);
-            });
-
-            /* Kolum 2: nota */
-            ctx.font = "bold 10px Arial, sans-serif";
-            ctx.fillText("NOTA TEKNIKAL", col2 + 8, top + 18);
-
-            ctx.font = "8.5px Arial, sans-serif";
-            const notes = [
-                "1. Garisan pecahan menunjukkan simulasi bahagian waris.",
-                "2. Bentuk dan orientasi lot dikekalkan north-up mengikut lot WebGIS terpilih.",
-                "3. Bearing dan jarak adalah anggaran daripada koordinat sempadan WebGIS.",
-                "4. Rizab jalan dipaparkan secara skematik dan tidak menolak saham Faraid.",
-                "5. Pelan ini bukan Pelan Akui, Pelan Hakmilik atau pelan ukur rasmi.",
-                "6. Pengesahan sebenar memerlukan proses dan pihak berkuasa berkaitan."
-            ];
-            notes.forEach(function(t, i) {
-                ctx.fillText(t, col2 + 8, top + 39 + i * 17);
-            });
-
-            /* Kolum 3: nombor pelan / status */
-            const simNo =
-                "SIM-" +
-                String(meta.lot).replace(/[^0-9A-Za-z_-]/g, "") +
-                "-01";
-
-            ctx.font = "bold 10px Arial, sans-serif";
-            ctx.fillText("BUTIRAN PELAN", col3 + 8, top + 18);
-
-            ctx.font = "9px Arial, sans-serif";
-            ctx.fillText("No. Pelan Simulasi : " + simNo, col3 + 8, top + 41);
-            ctx.fillText("Helaian            : 1 / 1", col3 + 8, top + 58);
-            ctx.fillText("Bil. Bahagian      : " + senaraiWaris.length, col3 + 8, top + 75);
-            ctx.fillText("Disediakan oleh    : MyFaraidLot", col3 + 8, top + 92);
-
-            ctx.font = "bold 9px Arial, sans-serif";
-            ctx.fillText("STATUS:", col3 + 8, top + 119);
-
-            ctx.font = "bold 11px Arial, sans-serif";
-            ctx.fillText(
-                "SIMULASI AKADEMIK — TIDAK DISAHKAN JUPEM",
-                col3 + 8,
-                top + 139
-            );
-
-            ctx.font = "italic 8px Arial, sans-serif";
-            ctx.fillText(
-                "Ruang pengesahan rasmi: TIDAK BERKENAAN",
-                col3 + 8,
-                top + 158
-            );
-
-            /* Garis bawah title block */
-            ctx.beginPath();
-            ctx.moveTo(left, H - 38);
-            ctx.lineTo(right, H - 38);
-            ctx.stroke();
-
-            ctx.textAlign = "center";
-            ctx.font = "8px Arial, sans-serif";
-            ctx.fillText(
-                "MYFARAIDLOT • PELAN PEMBAHAGIAN LOT BERDASARKAN PENGIRAAN FARAID • UNTUK TUJUAN PEMBELAJARAN",
-                W / 2,
-                H - 19
-            );
-
-            ctx.restore();
-        }
-
-        function paDrawFallback(ctx, W, H, senaraiWaris, meta) {
-            ctx.save();
-
-            ctx.fillStyle = "#fff";
-            ctx.fillRect(0, 0, W, H);
-
-            ctx.strokeStyle = "#111";
-            ctx.lineWidth = 1.4;
-            ctx.strokeRect(22, 22, W - 44, H - 44);
-
-            paDrawTitleAndNorth(ctx, W, meta);
-            paDrawSimulationStamp(ctx, W);
-
-            ctx.fillStyle = "#111";
-            ctx.textAlign = "center";
-            ctx.font = "bold 17px Arial, sans-serif";
-            ctx.fillText(
-                "GEOMETRI LOT TIDAK TERSEDIA UNTUK DILUKIS",
-                W / 2,
-                H / 2 - 15
-            );
-
-            ctx.font = "11px Arial, sans-serif";
-            ctx.fillText(
-                "Sila pilih semula lot daripada Peta Lot sebelum menjalankan pengiraan.",
-                W / 2,
-                H / 2 + 10
-            );
-
-            paDrawBottomTitleBlock(ctx, W, H, meta, senaraiWaris);
-            ctx.restore();
+            return {
+                roadY,
+                lotH: roadY
+            };
         }
 
         function lukisPelanLot(senaraiWaris, selectedLayer) {
 
+            /* Pastikan lot semasa sentiasa digunakan. */
             selectedLayer = selectedLayer || highlightLayer;
 
-            const canvas = document.getElementById("lotCanvas");
+            const canvas =
+                document.getElementById("lotCanvas");
+
             if (!canvas) return;
 
-            /*
-             * Gunakan helaian yang lebih besar supaya gaya pelan
-             * teknikal, bearing, jarak dan title block boleh dibaca.
-             */
-            if (canvas.width !== 1400) canvas.width = 1400;
-            if (canvas.height !== 980) canvas.height = 980;
+            const ctx =
+                canvas.getContext("2d");
 
-            const ctx = canvas.getContext("2d");
             const W = canvas.width;
             const H = canvas.height;
 
-            ctx.clearRect(0, 0, W, H);
-            ctx.fillStyle = "#ffffff";
-            ctx.fillRect(0, 0, W, H);
+            ctx.clearRect(
+                0,
+                0,
+                W,
+                H
+            );
 
-            /* Bingkai helaian seperti pelan ukur. */
-            ctx.strokeStyle = "#111";
-            ctx.lineWidth = 1.5;
-            ctx.strokeRect(22, 22, W - 44, H - 44);
-            ctx.lineWidth = 0.55;
-            ctx.strokeRect(30, 30, W - 60, H - 60);
+            const colors = [
+                "#79502b",
+                "#2563eb",
+                "#d97706",
+                "#db2777",
+                "#9333ea",
+                "#0d9488",
+                "#dc2626"
+            ];
 
-            const meta = paGetLotMeta(selectedLayer);
-            const geometry = prepareLotGeometry(selectedLayer);
-            const geoRings = extractLotRings(selectedLayer);
+            /*
+             * Cuba mendapatkan bentuk lot sebenar daripada polygon
+             * yang sedang dipilih.
+             */
+            let geometry =
+                prepareLotGeometry(selectedLayer);
 
-            paDrawTitleAndNorth(ctx, W, meta);
-            paDrawSimulationStamp(ctx, W);
-
+            /*
+             * Jika geometry tidak tersedia, gunakan visual lama
+             * sebagai fallback supaya fungsi asal tidak rosak.
+             */
             if (!geometry) {
-                paDrawFallback(ctx, W, H, senaraiWaris, meta);
+
+                const roadH = 34;
+                const lotH = H - roadH;
+                let currentX = 0;
+
+                ctx.fillStyle = "#fffdf8";
+                ctx.fillRect(
+                    0,
+                    0,
+                    W,
+                    lotH
+                );
+
+                senaraiWaris.forEach((w, index) => {
+
+                    const lebar =
+                        W * w.peratus;
+
+                    ctx.fillStyle =
+                        colors[index % colors.length];
+
+                    ctx.fillRect(
+                        currentX,
+                        0,
+                        lebar,
+                        lotH
+                    );
+
+                    ctx.strokeStyle =
+                        "#ffffff";
+
+                    ctx.lineWidth = 2;
+
+                    ctx.strokeRect(
+                        currentX,
+                        0,
+                        lebar,
+                        lotH
+                    );
+
+                    if (lebar > 25) {
+
+                        ctx.fillStyle =
+                            "#ffffff";
+
+                        ctx.font =
+                            "bold 10px Poppins, sans-serif";
+
+                        ctx.textAlign =
+                            "center";
+
+                        ctx.textBaseline =
+                            "middle";
+
+                        ctx.save();
+
+                        ctx.translate(
+                            currentX + lebar / 2,
+                            lotH / 2
+                        );
+
+                        ctx.rotate(-Math.PI / 2);
+
+                        ctx.fillText(
+                            w.nama,
+                            0,
+                            -3
+                        );
+
+                        ctx.font =
+                            "9px Poppins, sans-serif";
+
+                        ctx.fillText(
+                            w.luas.toFixed(1) + "m²",
+                            0,
+                            10
+                        );
+
+                        ctx.restore();
+                    }
+
+                    currentX += lebar;
+                });
+
+                drawRoadAndFrame(
+                    ctx,
+                    W,
+                    H
+                );
+
                 return;
             }
 
             /*
-             * Kawasan lukisan utama.
-             * Ruang kiri/kanan lebih besar untuk bearing & jarak.
+             * Padding supaya sempadan lot tidak melekat pada tepi
+             * canvas.
              */
-            const drawing = {
-                x: 90,
-                y: 245,
-                w: W - 180,
-                h: 400
-            };
+            const padding = 10;
 
-            const geomWidth = geometry.maxU - geometry.minU;
-            const geomHeight = geometry.maxV - geometry.minV;
+            const lotH =
+                H - 34;
 
-            const scale = Math.min(
-                drawing.w / geomWidth,
-                drawing.h / geomHeight
-            );
+            const geomWidth =
+                geometry.maxU -
+                geometry.minU;
 
-            const drawWidth = geomWidth * scale;
-            const drawHeight = geomHeight * scale;
+            const geomHeight =
+                geometry.maxV -
+                geometry.minV;
+
+            const scale =
+                Math.min(
+                    (W - padding * 2) / geomWidth,
+                    (lotH - padding * 2) / geomHeight
+                );
+
+            const drawWidth =
+                geomWidth * scale;
+
+            const drawHeight =
+                geomHeight * scale;
 
             const offsetX =
-                drawing.x +
-                (drawing.w - drawWidth) / 2;
+                (W - drawWidth) / 2;
 
             const offsetY =
-                drawing.y +
-                (drawing.h - drawHeight) / 2;
+                padding +
+                (lotH - drawHeight - padding) / 2;
 
             /*
-             * Caption lot asal.
+             * Latar lot.
              */
-            ctx.save();
-            ctx.fillStyle = "#111";
-            ctx.font = "bold 10px Arial, sans-serif";
-            ctx.textAlign = "left";
-            ctx.fillText(
-                "LOT ASAL " + meta.lot +
-                (meta.area ? "   •   " + meta.area.toFixed(3) + " m²" : ""),
-                drawing.x,
-                drawing.y - 25
+            ctx.fillStyle = "#fffdf8";
+            ctx.fillRect(
+                0,
+                0,
+                W,
+                lotH
             );
-            ctx.font = "8.5px Arial, sans-serif";
-            ctx.fillText(
-                "GARISAN LUAR = SEMPADAN LOT ASAL   |   GARISAN DALAM = CADANGAN PEMBAHAGIAN FARAID",
-                drawing.x,
-                drawing.y - 10
-            );
-
-            ctx.fillStyle = "#111";
-            ctx.font = "bold 8.5px Arial, sans-serif";
-            ctx.textAlign = "right";
-            ctx.fillText(
-                "ORIENTASI: NORTH-UP • BENTUK & ARAH MENGIKUT LOT WEBGIS TERPILIH",
-                drawing.x + drawing.w,
-                drawing.y - 10
-            );
-            ctx.restore();
 
             /*
-             * Bahagikan polygon mengikut saham Faraid.
+             * Cari sempadan U untuk setiap bahagian waris.
+             * Setiap bahagian menggunakan luas sebenar polygon,
+             * bukan sekadar lebar rectangle.
              */
-            let lowerU = geometry.minU;
+            let lowerU =
+                geometry.minU;
+
             let cumulativeFraction = 0;
 
-            senaraiWaris.forEach(function(w, index) {
+            senaraiWaris.forEach((w, index) => {
 
                 const fraction =
-                    Math.max(0, Number(w.peratus) || 0);
+                    Math.max(
+                        0,
+                        Number(w.peratus) || 0
+                    );
 
                 const isLast =
-                    index === senaraiWaris.length - 1;
+                    index ===
+                    senaraiWaris.length - 1;
 
                 let upperU;
 
                 if (isLast) {
                     upperU = geometry.maxU;
                 } else {
-                    cumulativeFraction += fraction;
+
+                    cumulativeFraction +=
+                        fraction;
 
                     const targetArea =
                         geometry.totalArea *
-                        Math.min(1, cumulativeFraction);
+                        Math.min(
+                            1,
+                            cumulativeFraction
+                        );
 
                     upperU =
                         findAreaCut(
@@ -11886,80 +10632,124 @@ body.cover-active{
                         upperU
                     );
 
-                pieceRings.forEach(function(ring) {
-                    paDrawHatch(
+                const color =
+                    colors[index % colors.length];
+
+                /*
+                 * Lukis setiap komponen polygon yang dimiliki
+                 * oleh bahagian waris.
+                 */
+                pieceRings.forEach(ring => {
+
+                    drawPolygonPath(
                         ctx,
                         ring,
                         geometry,
                         scale,
                         offsetX,
-                        offsetY,
-                        index
+                        offsetY
                     );
+
+                    ctx.fillStyle =
+                        color;
+
+                    ctx.fill();
+
+                    ctx.strokeStyle =
+                        "#ffffff";
+
+                    ctx.lineWidth = 2;
+
+                    ctx.stroke();
                 });
 
+                /*
+                 * Cari centroid untuk label.
+                 */
                 const centroid =
-                    getPieceCentroid(pieceRings);
+                    getPieceCentroid(
+                        pieceRings
+                    );
 
                 if (centroid) {
+
                     const labelX =
                         offsetX +
-                        (centroid.u - geometry.minU) *
+                        (centroid.u -
+                            geometry.minU) *
                         scale;
 
                     const labelY =
                         offsetY +
-                        (geometry.maxV - centroid.v) *
+                        (geometry.maxV -
+                            centroid.v) *
                         scale;
 
-                    const areaText =
-                        Number.isFinite(Number(w.luas))
-                            ? Number(w.luas).toFixed(2) + " m²"
-                            : "-";
+                    /*
+                     * Label hanya dipaparkan jika bahagian cukup
+                     * besar supaya tidak bertindih.
+                     */
+                    const approxWidth =
+                        Math.max(
+                            18,
+                            (upperU - lowerU) *
+                            scale
+                        );
 
-                    const shareText =
-                        w.nisbahText ||
-                        ((Number(w.peratus) * 100).toFixed(2) + "%");
+                    if (approxWidth > 35) {
 
-                    paDrawTextBox(
-                        ctx,
-                        labelX,
-                        labelY,
-                        [
-                            {
-                                text:
-                                    "BAHAGIAN " +
-                                    String(index + 1).padStart(2, "0"),
-                                bold:true
-                            },
-                            {
-                                text:w.nama,
-                                bold:true
-                            },
-                            {
-                                text:"Saham: " + shareText
-                            },
-                            {
-                                text:"Luas: " + areaText
-                            }
-                        ],
-                        {
-                            font:"9px Arial, sans-serif",
-                            fontBold:"bold 10px Arial, sans-serif",
-                            lineH:13,
-                            padX:6,
-                            padY:5
-                        }
-                    );
+                        ctx.fillStyle =
+                            "#ffffff";
+
+                        ctx.textAlign =
+                            "center";
+
+                        ctx.textBaseline =
+                            "middle";
+
+                        ctx.font =
+                            "bold 9px Poppins, sans-serif";
+
+                        ctx.save();
+
+                        ctx.translate(
+                            labelX,
+                            labelY
+                        );
+
+                        /*
+                         * Tidak lagi dipaksa menegak seperti visual
+                         * lama; label mengikuti ruang polygon.
+                         */
+                        ctx.fillText(
+                            w.nama,
+                            0,
+                            -5
+                        );
+
+                        ctx.font =
+                            "8px Poppins, sans-serif";
+
+                        ctx.fillText(
+                            w.luas.toFixed(1) +
+                            " m²",
+                            0,
+                            7
+                        );
+
+                        ctx.restore();
+                    }
                 }
 
-                lowerU = upperU;
+                lowerU =
+                    upperU;
             });
 
             /*
-             * Garisan luar lot asal dibuat lebih tebal.
+             * Garisan luar lot asal.
              */
-            geometry.rings.forEach(function(ring) {
+            geometry.rings.forEach(ring => {
+
                 drawPolygonPath(
                     ctx,
                     ring,
@@ -11969,73 +10759,22 @@ body.cover-active{
                     offsetY
                 );
 
-                ctx.strokeStyle = "#000";
-                ctx.lineWidth = 2.5;
+                ctx.strokeStyle =
+                    "#6b4b2a";
+
+                ctx.lineWidth =
+                    2.2;
+
                 ctx.stroke();
             });
 
             /*
-             * Bearing, jarak dan titik sempadan.
+             * Rizab jalan kekal sebagai komponen berasingan.
              */
-            paDrawBoundaryAnnotations(
-                ctx,
-                geoRings,
-                geometry,
-                scale,
-                offsetX,
-                offsetY
-            );
-
-            /*
-             * Skala grafik.
-             * Geometry north-up sekarang menggunakan projected meter,
-             * maka nilai scale terus bersamaan pixel per meter.
-             */
-            const pxPerMeter = scale;
-            paDrawScaleBar(
-                ctx,
-                drawing.x,
-                674,
-                pxPerMeter,
-                190
-            );
-
-            /*
-             * Rizab jalan daripada visual sistem asal dikekalkan
-             * tetapi ditukar kepada gaya linework Pelan Akui.
-             */
-            paDrawRoad(
-                ctx,
-                drawing.x,
-                706,
-                drawing.w,
-                40
-            );
-
-            /*
-             * Label umum di luar kawasan lot.
-             */
-            ctx.save();
-            ctx.fillStyle = "#111";
-            ctx.font = "9px Arial, sans-serif";
-            ctx.textAlign = "right";
-            ctx.fillText(
-                "Bearing / jarak: anggaran geometri WebGIS",
-                drawing.x + drawing.w,
-                683
-            );
-            ctx.restore();
-
-            /*
-             * Blok maklumat di bawah, diinspirasikan susunan helaian
-             * pelan ukur tanpa meniru cop/tandatangan rasmi.
-             */
-            paDrawBottomTitleBlock(
+            drawRoadAndFrame(
                 ctx,
                 W,
-                H,
-                meta,
-                senaraiWaris
+                H
             );
         }
 
@@ -12470,632 +11209,6 @@ function focusDashboardSearch(e){
 
     /* Pastikan menu SENTIASA tertutup semasa halaman mula dimuatkan. */
     closeMobileMenu();
-
-})();
-</script>
-
-
-
-<script>
-/* =========================================================
-   MYFARAIDLOT MOBILE MENU CONTROLLER - HARD FIX V2
-   Controller ini menggunakan ID baharu:
-   #mflMobileMenuToggle
-   dan class:
-   .mfl-mobile-open
-   supaya tidak bertembung dengan controller lama.
-========================================================= */
-(function(){
-
-    var MOBILE_MAX_WIDTH = 960;
-
-    var nav = document.getElementById('mflMainNavigation');
-    var oldToggle = document.getElementById('mflMobileMenuToggle');
-
-    if(!nav || !oldToggle){
-        return;
-    }
-
-    /*
-     * Clone butang sekali.
-     * Ini membuang SEMUA event listener lama yang mungkin masih
-     * tersambung pada elemen akibat versi terdahulu.
-     */
-    var toggle = oldToggle.cloneNode(true);
-    oldToggle.parentNode.replaceChild(toggle, oldToggle);
-
-    var backdrop = document.getElementById('mflMobileMenuBackdrop');
-
-    if(!backdrop){
-        backdrop = document.createElement('div');
-        backdrop.id = 'mflMobileMenuBackdrop';
-        backdrop.setAttribute('aria-hidden','true');
-        document.body.appendChild(backdrop);
-    }
-
-    function isMobileLayout(){
-        return window.innerWidth <= MOBILE_MAX_WIDTH;
-    }
-
-    function menuIsOpen(){
-        return nav.classList.contains('mfl-mobile-open');
-    }
-
-    function renderState(opened){
-        nav.classList.toggle('mfl-mobile-open', opened);
-        document.body.classList.toggle(
-            'mfl-mobile-menu-open',
-            opened && isMobileLayout()
-        );
-
-        toggle.setAttribute(
-            'aria-expanded',
-            opened ? 'true' : 'false'
-        );
-
-        toggle.setAttribute(
-            'aria-label',
-            opened ? 'Tutup menu navigasi' : 'Buka menu navigasi'
-        );
-
-        toggle.innerHTML = opened
-            ? '<i class="fas fa-times"></i>'
-            : '<i class="fas fa-bars"></i>';
-
-        backdrop.setAttribute(
-            'aria-hidden',
-            opened ? 'false' : 'true'
-        );
-    }
-
-    function openMenu(){
-        if(!isMobileLayout()){
-            return;
-        }
-
-        renderState(true);
-    }
-
-    function closeMenu(){
-        renderState(false);
-
-        /*
-         * Buang juga class lama sekiranya controller lama pernah
-         * meninggalkannya pada nav.
-         */
-        nav.classList.remove('open');
-
-        document
-            .querySelectorAll('#mflMainNavigation .nav-item.open')
-            .forEach(function(item){
-                item.classList.remove('open');
-            });
-    }
-
-    function toggleMenu(event){
-        if(event){
-            event.preventDefault();
-            event.stopPropagation();
-        }
-
-        if(!isMobileLayout()){
-            closeMenu();
-            return;
-        }
-
-        if(menuIsOpen()){
-            closeMenu();
-        }else{
-            openMenu();
-        }
-    }
-
-    /* Butang hamburger: ON / OFF */
-    toggle.addEventListener('click', toggleMenu, false);
-
-    /*
-     * Selepas pengguna memilih feature, menu terus OFF.
-     * Link asal masih menjalankan fungsi showPage/openMapView sedia ada.
-     */
-    nav.addEventListener('click', function(event){
-        if(!isMobileLayout()){
-            return;
-        }
-
-        var link = event.target.closest
-            ? event.target.closest('a')
-            : null;
-
-        if(!link){
-            return;
-        }
-
-        window.setTimeout(function(){
-            closeMenu();
-        }, 40);
-    }, false);
-
-    /* Klik kawasan luar menu = OFF */
-    backdrop.addEventListener('click', function(event){
-        event.preventDefault();
-        closeMenu();
-    }, false);
-
-    /*
-     * Jika pengguna sentuh bahagian header selain menu/toggle
-     * ketika menu dibuka, tutup menu.
-     */
-    document.addEventListener('pointerdown', function(event){
-        if(!isMobileLayout() || !menuIsOpen()){
-            return;
-        }
-
-        if(nav.contains(event.target) || toggle.contains(event.target)){
-            return;
-        }
-
-        closeMenu();
-    }, false);
-
-    /* Escape = OFF */
-    document.addEventListener('keydown', function(event){
-        if(event.key === 'Escape' && menuIsOpen()){
-            closeMenu();
-            try{
-                toggle.focus({preventScroll:true});
-            }catch(err){
-                toggle.focus();
-            }
-        }
-    }, false);
-
-    /*
-     * Bila orientation berubah, menu sentiasa reset OFF.
-     * Ini mengelakkan panel tersangkut selepas portrait/landscape.
-     */
-    window.addEventListener('orientationchange', function(){
-        window.setTimeout(function(){
-            closeMenu();
-        }, 120);
-    });
-
-    /*
-     * Desktop/laptop:
-     * nav kembali kepada gaya desktop asal.
-     * Class mobile dibuang dan tidak menyentuh fungsi desktop.
-     */
-    var resizeTimer = null;
-
-    window.addEventListener('resize', function(){
-        clearTimeout(resizeTimer);
-
-        resizeTimer = window.setTimeout(function(){
-            if(!isMobileLayout()){
-                closeMenu();
-            }
-        }, 80);
-    });
-
-    /*
-     * Jika halaman dibuka semula dari BFCache / history browser,
-     * paksa keadaan awal OFF pada telefon.
-     */
-    window.addEventListener('pageshow', function(){
-        closeMenu();
-    });
-
-    /* Keadaan mula = OFF */
-    closeMenu();
-
-})();
-</script>
-
-
-
-<script>
-/* =========================================================
-   MYFARAIDLOT - MOBILE MENU ISOLATED CONTROLLER V4
-   Menu telefon ini BEBAS daripada .top-nav desktop.
-========================================================= */
-(function(){
-
-    var MOBILE_MAX_WIDTH = 960;
-
-    var desktopNav = document.getElementById('mflMainNavigation');
-    var currentToggle = document.getElementById('mflMobileMenuToggle');
-
-    if(!desktopNav || !currentToggle){
-        return;
-    }
-
-    /*
-     * Gantikan butang dengan clone.
-     * Ini membuang SEMUA event listener mobile lama pada hamburger
-     * tanpa mengubah rupa / struktur HTML lain.
-     */
-    var newToggle = currentToggle.cloneNode(true);
-    currentToggle.parentNode.replaceChild(newToggle, currentToggle);
-
-    var toggle = newToggle;
-
-    /*
-     * Pastikan controller lama tidak boleh membuka menu desktop
-     * pada telefon.
-     */
-    desktopNav.classList.remove('open');
-    desktopNav.classList.remove('mfl-mobile-open');
-
-    /*
-     * Bina menu telefon BARU di luar header.
-     */
-    var oldPhoneMenu = document.getElementById('mflPhoneMenu');
-    if(oldPhoneMenu){
-        oldPhoneMenu.remove();
-    }
-
-    var oldPhoneBackdrop = document.getElementById('mflPhoneBackdrop');
-    if(oldPhoneBackdrop){
-        oldPhoneBackdrop.remove();
-    }
-
-    var phoneMenu = document.createElement('nav');
-    phoneMenu.id = 'mflPhoneMenu';
-    phoneMenu.setAttribute('aria-label','Navigasi telefon');
-
-    var backdrop = document.createElement('div');
-    backdrop.id = 'mflPhoneBackdrop';
-    backdrop.setAttribute('aria-hidden','true');
-
-    /*
-     * Senarai feature dibuat secara eksplisit supaya setiap item
-     * benar-benar mempunyai tindakan sendiri pada telefon.
-     */
-    var menuItems = [
-        {
-            label:'Utama',
-            icon:'fas fa-home',
-            action:'page',
-            page:'home'
-        },
-        {
-            label:'Tentang',
-            icon:'fas fa-info-circle',
-            action:'page',
-            page:'tentang'
-        },
-        {
-            label:'Kiraan Faraid',
-            icon:'fas fa-calculator',
-            action:'page',
-            page:'kiraan-faraid'
-        },
-        {
-            label:'Peta Lot',
-            icon:'fas fa-map-marker-alt',
-            action:'map'
-        },
-        {
-            label:'Panduan',
-            icon:'fas fa-book-open',
-            action:'page',
-            page:'informasi'
-        },
-        {
-            label:'Hubungi',
-            icon:'fas fa-phone-alt',
-            action:'page',
-            page:'hubungi'
-        },
-        {
-            label:'Log Masuk',
-            icon:'fas fa-user',
-            action:'page',
-            page:'login',
-            extraClass:'mfl-phone-login'
-        }
-    ];
-
-    menuItems.forEach(function(item){
-
-        var link = document.createElement('a');
-
-        link.href = '#';
-        link.className =
-            'mfl-phone-menu-link' +
-            (item.extraClass ? ' ' + item.extraClass : '');
-
-        link.dataset.mobileAction = item.action;
-
-        if(item.page){
-            link.dataset.mobilePage = item.page;
-        }
-
-        link.innerHTML =
-            '<i class="' + item.icon + '"></i>' +
-            '<span>' + item.label + '</span>';
-
-        phoneMenu.appendChild(link);
-    });
-
-    /*
-     * Append terus ke BODY.
-     * Ini penting supaya menu tidak lagi terperangkap dalam
-     * stacking context header yang menyebabkan masalah sebelum ini.
-     */
-    document.body.appendChild(backdrop);
-    document.body.appendChild(phoneMenu);
-
-
-    function isMobile(){
-        return window.innerWidth <= MOBILE_MAX_WIDTH;
-    }
-
-    function isOpen(){
-        return phoneMenu.classList.contains('is-open');
-    }
-
-    function setToggleIcon(opened){
-
-        toggle.setAttribute(
-            'aria-expanded',
-            opened ? 'true' : 'false'
-        );
-
-        toggle.setAttribute(
-            'aria-label',
-            opened
-                ? 'Tutup menu navigasi'
-                : 'Buka menu navigasi'
-        );
-
-        toggle.innerHTML = opened
-            ? '<i class="fas fa-times"></i>'
-            : '<i class="fas fa-bars"></i>';
-    }
-
-    function openPhoneMenu(){
-
-        if(!isMobile()){
-            return;
-        }
-
-        phoneMenu.classList.add('is-open');
-        backdrop.classList.add('is-open');
-
-        backdrop.setAttribute('aria-hidden','false');
-
-        document.body.classList.add('mfl-phone-menu-open');
-
-        setToggleIcon(true);
-    }
-
-    function closePhoneMenu(){
-
-        phoneMenu.classList.remove('is-open');
-        backdrop.classList.remove('is-open');
-
-        backdrop.setAttribute('aria-hidden','true');
-
-        document.body.classList.remove('mfl-phone-menu-open');
-
-        setToggleIcon(false);
-
-        /*
-         * Pastikan class daripada sistem lama juga dibersihkan.
-         */
-        desktopNav.classList.remove('open');
-        desktopNav.classList.remove('mfl-mobile-open');
-    }
-
-    function togglePhoneMenu(event){
-
-        if(event){
-            event.preventDefault();
-            event.stopPropagation();
-        }
-
-        if(!isMobile()){
-            closePhoneMenu();
-            return;
-        }
-
-        if(isOpen()){
-            closePhoneMenu();
-        }else{
-            openPhoneMenu();
-        }
-    }
-
-
-    /* =====================================================
-       HAMBURGER ON / OFF
-    ===================================================== */
-    toggle.addEventListener('click', togglePhoneMenu, false);
-
-
-    /* =====================================================
-       PILIH FEATURE
-       Handler ini sendiri membuka feature yang dipilih.
-    ===================================================== */
-    phoneMenu.addEventListener('click', function(event){
-
-        var link = event.target.closest
-            ? event.target.closest('.mfl-phone-menu-link')
-            : null;
-
-        if(!link || !phoneMenu.contains(link)){
-            return;
-        }
-
-        event.preventDefault();
-        event.stopPropagation();
-
-        var action = link.dataset.mobileAction;
-        var page = link.dataset.mobilePage;
-
-        /*
-         * Tutup dahulu menu telefon.
-         * Kemudian buka feature selepas satu frame supaya browser
-         * tidak kehilangan tap/click pada peranti sentuh.
-         */
-        closePhoneMenu();
-
-        window.setTimeout(function(){
-
-            if(action === 'map'){
-
-                /*
-                 * Guna fungsi asal projek.
-                 */
-                if(typeof openMapView === 'function'){
-                    openMapView({
-                        preventDefault:function(){},
-                        stopPropagation:function(){}
-                    });
-                }
-                else if(typeof showPage === 'function'){
-                    showPage('utama');
-                }
-
-                return;
-            }
-
-            if(action === 'page' && page){
-
-                /*
-                 * Guna fungsi showPage ASAL projek.
-                 * Tiada coding feature lain diubah.
-                 */
-                if(typeof showPage === 'function'){
-                    showPage(page);
-                }
-
-                /*
-                 * Kiraan Faraid: fokus input pertama seperti fungsi asal.
-                 */
-                if(page === 'kiraan-faraid'){
-                    window.setTimeout(function(){
-                        var input = document.getElementById('warisIbu');
-                        if(input){
-                            try{
-                                input.focus({preventScroll:true});
-                            }catch(err){}
-                        }
-
-                        var kiraanPage =
-                            document.getElementById('page-kiraan-faraid');
-
-                        if(kiraanPage){
-                            kiraanPage.scrollTop = 0;
-                        }
-                    },120);
-                }
-            }
-
-            /*
-             * Sync active state menu telefon.
-             */
-            phoneMenu
-                .querySelectorAll('.mfl-phone-menu-link')
-                .forEach(function(a){
-                    a.classList.remove('active');
-                });
-
-            link.classList.add('active');
-
-        }, 20);
-
-    }, false);
-
-
-    /*
-     * Touch handler sengaja TIDAK menggunakan preventDefault().
-     * Browser masih akan menghasilkan click normal di atas.
-     */
-    phoneMenu.addEventListener('touchstart', function(event){
-        var link = event.target.closest
-            ? event.target.closest('.mfl-phone-menu-link')
-            : null;
-
-        if(link){
-            link.style.opacity = '.84';
-        }
-    }, {passive:true});
-
-    phoneMenu.addEventListener('touchend', function(event){
-        var link = event.target.closest
-            ? event.target.closest('.mfl-phone-menu-link')
-            : null;
-
-        if(link){
-            link.style.opacity = '';
-        }
-    }, {passive:true});
-
-
-    /* =====================================================
-       KLIK LUAR MENU = OFF
-    ===================================================== */
-    backdrop.addEventListener('click', function(event){
-        event.preventDefault();
-        event.stopPropagation();
-        closePhoneMenu();
-    }, false);
-
-
-    /* ESC = OFF */
-    document.addEventListener('keydown', function(event){
-        if(event.key === 'Escape' && isOpen()){
-            closePhoneMenu();
-        }
-    }, false);
-
-
-    /*
-     * Tukar orientation = OFF.
-     */
-    window.addEventListener('orientationchange', function(){
-        window.setTimeout(function(){
-            closePhoneMenu();
-        },100);
-    });
-
-
-    /*
-     * Resize ke desktop:
-     * mobile menu OFF.
-     * Menu desktop asal kembali digunakan melalui CSS desktop asal.
-     */
-    var resizeTimer = null;
-
-    window.addEventListener('resize', function(){
-
-        clearTimeout(resizeTimer);
-
-        resizeTimer = window.setTimeout(function(){
-
-            if(!isMobile()){
-                closePhoneMenu();
-            }
-
-        },80);
-
-    });
-
-
-    /*
-     * Jika user kembali melalui browser history/BFCache.
-     */
-    window.addEventListener('pageshow', function(){
-        closePhoneMenu();
-    });
-
-
-    /*
-     * Halaman mula:
-     * menu telefon OFF.
-     */
-    closePhoneMenu();
 
 })();
 </script>
