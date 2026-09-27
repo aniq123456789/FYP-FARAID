@@ -10809,96 +10809,206 @@ body.cover-active{
             return { minU, maxU, minV, maxV };
         }
 
+        /*
+         * Pilih satu garisan sempadan sebenar sebagai frontage rizab jalan.
+         * Berbeza daripada versi lama yang memotong berdasarkan bounding box,
+         * kaedah ini mengikuti bearing sisi lot yang dipilih.
+         */
+        function roadReserveSelectBoundaryEdge(geometry, side) {
+
+            const rings = geometry && geometry.rings ? geometry.rings : [];
+            if (!rings.length) return null;
+
+            const lotCenter = {
+                u: (geometry.minU + geometry.maxU) / 2,
+                v: (geometry.minV + geometry.maxV) / 2
+            };
+
+            const candidates = [];
+
+            rings.forEach(function(ring, ringIndex) {
+                for (let i = 0; i < ring.length; i++) {
+                    const a = ring[i];
+                    const b = ring[(i + 1) % ring.length];
+                    const du = b.u - a.u;
+                    const dv = b.v - a.v;
+                    const len = Math.hypot(du, dv);
+                    if (!(len > 0.001)) continue;
+
+                    const midU = (a.u + b.u) / 2;
+                    const midV = (a.v + b.v) / 2;
+
+                    let sideScore = 0;
+                    if (side === 'SELATAN') sideScore = midV - geometry.minV;
+                    else if (side === 'UTARA') sideScore = geometry.maxV - midV;
+                    else if (side === 'BARAT') sideScore = midU - geometry.minU;
+                    else sideScore = geometry.maxU - midU;
+
+                    candidates.push({
+                        ringIndex,
+                        edgeIndex: i,
+                        a, b, du, dv, len, midU, midV, sideScore
+                    });
+                }
+            });
+
+            if (!candidates.length) return null;
+
+            /* Ambil edge yang dekat dengan sisi diminta. Daripada edge-edge
+               tersebut, utamakan yang lebih panjang supaya frontage stabil. */
+            const span = (side === 'SELATAN' || side === 'UTARA')
+                ? Math.max(geometry.maxV - geometry.minV, 1)
+                : Math.max(geometry.maxU - geometry.minU, 1);
+
+            const nearLimit = span * 0.28;
+            let pool = candidates.filter(e => e.sideScore <= nearLimit);
+            if (!pool.length) pool = candidates;
+
+            pool.sort(function(e1, e2) {
+                const score1 = e1.sideScore - e1.len * 0.12;
+                const score2 = e2.sideScore - e2.len * 0.12;
+                return score1 - score2;
+            });
+
+            const edge = pool[0];
+
+            /* Unit normal. Pilih normal yang menghala ke tengah lot. */
+            let nx = -edge.dv / edge.len;
+            let ny =  edge.du / edge.len;
+
+            const toCenterU = lotCenter.u - edge.midU;
+            const toCenterV = lotCenter.v - edge.midV;
+            if ((nx * toCenterU + ny * toCenterV) < 0) {
+                nx *= -1;
+                ny *= -1;
+            }
+
+            return {
+                ...edge,
+                nx,
+                ny,
+                bearingDeg: (Math.atan2(edge.du, edge.dv) * 180 / Math.PI + 360) % 360
+            };
+        }
+
+        function roadReserveSignedDistance(p, edge) {
+            return (p.u - edge.a.u) * edge.nx + (p.v - edge.a.v) * edge.ny;
+        }
+
+        /*
+         * Clip polygon terhadap garisan selari dengan frontage:
+         * signedDistance <= limit  atau >= limit.
+         */
+        function clipPolygonByRoadLine(points, edge, limit, keepLess) {
+            if (!points || points.length < 3) return [];
+
+            const output = [];
+            const eps = 1e-9;
+
+            function value(p) {
+                return roadReserveSignedDistance(p, edge);
+            }
+
+            function inside(p) {
+                const d = value(p);
+                return keepLess ? d <= limit + eps : d >= limit - eps;
+            }
+
+            function intersection(a, b) {
+                const da = value(a);
+                const db = value(b);
+                const denom = db - da;
+                if (Math.abs(denom) < 1e-12) return { ...a };
+
+                const t = (limit - da) / denom;
+                return {
+                    x: a.x + (b.x - a.x) * t,
+                    y: a.y + (b.y - a.y) * t,
+                    u: a.u + (b.u - a.u) * t,
+                    v: a.v + (b.v - a.v) * t,
+                    east: Number.isFinite(a.east) && Number.isFinite(b.east)
+                        ? a.east + (b.east - a.east) * t : undefined,
+                    north: Number.isFinite(a.north) && Number.isFinite(b.north)
+                        ? a.north + (b.north - a.north) * t : undefined
+                };
+            }
+
+            let prev = points[points.length - 1];
+            let prevInside = inside(prev);
+
+            for (let i = 0; i < points.length; i++) {
+                const cur = points[i];
+                const curInside = inside(cur);
+
+                if (curInside) {
+                    if (!prevInside) output.push(intersection(prev, cur));
+                    output.push(cur);
+                } else if (prevInside) {
+                    output.push(intersection(prev, cur));
+                }
+
+                prev = cur;
+                prevInside = curInside;
+            }
+
+            return output;
+        }
+
         function createRoadReserveGeometry(geometry, selectedLayer) {
 
             if (!geometry || !geometry.rings || !geometry.rings.length) {
                 return null;
             }
 
-            const settings =
-                roadReserveGetSettings(selectedLayer, geometry);
+            const settings = roadReserveGetSettings(selectedLayer, geometry);
+            const frontage = roadReserveSelectBoundaryEdge(geometry, settings.side);
+            if (!frontage) return null;
+
+            /* Hadkan lebar mengikut kedalaman sebenar lot dari frontage,
+               bukan lagi semata-mata bounding-box. */
+            let maxInteriorDistance = 0;
+            geometry.rings.forEach(function(ring) {
+                ring.forEach(function(p) {
+                    maxInteriorDistance = Math.max(
+                        maxInteriorDistance,
+                        roadReserveSignedDistance(p, frontage)
+                    );
+                });
+            });
+
+            let widthM = settings.widthM;
+            const maxSafeWidth = Math.max(0, maxInteriorDistance * 0.45);
+            if (maxSafeWidth > 0 && widthM > maxSafeWidth) {
+                widthM = maxSafeWidth;
+            }
 
             const reserveRings = [];
             const usableRings = [];
 
             geometry.rings.forEach(function(ring) {
+                const reserve = clipPolygonByRoadLine(ring, frontage, widthM, true);
+                const usable  = clipPolygonByRoadLine(ring, frontage, widthM, false);
 
-                let reserve = [];
-                let usable = [];
-
-                if (settings.side === "SELATAN") {
-
-                    const cutV =
-                        geometry.minV + settings.widthM;
-
-                    reserve =
-                        clipPolygonByV(ring, cutV, true);
-
-                    usable =
-                        clipPolygonByV(ring, cutV, false);
-
-                } else if (settings.side === "UTARA") {
-
-                    const cutV =
-                        geometry.maxV - settings.widthM;
-
-                    reserve =
-                        clipPolygonByV(ring, cutV, false);
-
-                    usable =
-                        clipPolygonByV(ring, cutV, true);
-
-                } else if (settings.side === "BARAT") {
-
-                    const cutU =
-                        geometry.minU + settings.widthM;
-
-                    reserve =
-                        clipPolygonByU(ring, cutU, true);
-
-                    usable =
-                        clipPolygonByU(ring, cutU, false);
-
-                } else {
-
-                    const cutU =
-                        geometry.maxU - settings.widthM;
-
-                    reserve =
-                        clipPolygonByU(ring, cutU, false);
-
-                    usable =
-                        clipPolygonByU(ring, cutU, true);
-                }
-
-                if (reserve.length >= 3) {
+                if (reserve.length >= 3 && polygonAreaUV(reserve) > 0.001) {
                     reserveRings.push(reserve);
                 }
-
-                if (usable.length >= 3) {
+                if (usable.length >= 3 && polygonAreaUV(usable) > 0.001) {
                     usableRings.push(usable);
                 }
             });
 
-            const reserveArea =
-                reserveRings.reduce(
-                    (sum, ring) => sum + polygonAreaUV(ring),
-                    0
-                );
+            const reserveArea = reserveRings.reduce(
+                (sum, ring) => sum + polygonAreaUV(ring), 0
+            );
+            const usableArea = usableRings.reduce(
+                (sum, ring) => sum + polygonAreaUV(ring), 0
+            );
 
-            const usableArea =
-                usableRings.reduce(
-                    (sum, ring) => sum + polygonAreaUV(ring),
-                    0
-                );
-
-            if (!usableRings.length || usableArea <= 0) {
+            if (!reserveRings.length || !usableRings.length || usableArea <= 0) {
                 return null;
             }
 
-            const bounds =
-                roadReserveComputeBounds(usableRings);
-
+            const bounds = roadReserveComputeBounds(usableRings);
             const usableGeometry = {
                 ...geometry,
                 rings: usableRings,
@@ -10911,6 +11021,8 @@ body.cover-active{
 
             return {
                 ...settings,
+                widthM,
+                frontage,
                 reserveRings,
                 reserveArea,
                 usableRings,
