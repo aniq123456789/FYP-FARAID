@@ -10414,35 +10414,54 @@ body.cover-active{
         ========================================================== */
 
         /* =========================================================
-           VISUAL PEMBAHAGIAN LOT + RIZAB JALAN
-           Rizab jalan dipaparkan sebagai komponen berasingan dan
-           TIDAK ditolak daripada saham waris. Visual ini bersifat
-           skematik kerana data lot sedia ada hanya menyimpan keluasan,
-           bukan dimensi panjang/lebar lot.
-
-           NOTA TEKNIKAL:
-           JUPEM mengawal aspek ukur kadaster dan penyediaan maklumat
-           rizab, tetapi tidak menetapkan satu lebar rizab jalan yang
-           seragam untuk semua kategori jalan. Untuk visual sistem ini,
-           nilai lalai 20 m digunakan sebagai rizab jalan akses minimum
-           yang dirujuk dalam garis panduan pembangunan jalan JKR.
-           ========================================================== */
-        
-
-        
-        /* =========================================================
-           VISUAL PEMBAHAGIAN LOT MENGIKUT BENTUK LOT ASAL
+           VISUAL PEMBAHAGIAN LOT + RIZAB JALAN (DALAM LOT)
            ---------------------------------------------------------
-           PEMBAIKAN:
-           - Bentuk asal lot diambil terus daripada polygon Leaflet.
-           - Setiap bahagian waris dipotong daripada polygon asal.
-           - Luas setiap bahagian mengikut peratus Faraid.
-           - Garisan pecahan mengikuti bentuk sebenar lot, jadi lot
-             tidak lagi dipaparkan sebagai segi empat tepat.
-           - Rizab jalan kekal sebagai komponen visual berasingan.
+           RUJUKAN JUPEM:
+           Pekeliling Ketua Pengarah Ukur dan Pemetaan Bil. 6 Tahun
+           2009 menyatakan bahawa semasa penyediaan SKL, rizab jalan
+           dan parit hendaklah selari (kecuali kerja pengambilan).
+
+           PENTING:
+           - Pekeliling tersebut tidak menetapkan satu lebar rizab
+             jalan yang seragam untuk semua kategori pembangunan.
+           - Lebar sebenar hendaklah dirujuk kepada pelan diluluskan,
+             PBT atau agensi jalan yang berkaitan.
+           - Sistem membaca lebar daripada atribut lot jika tersedia.
+           - Jika tiada, nilai lalai projek digunakan untuk simulasi.
+           - Rizab jalan dibentuk DI DALAM polygon lot.
+           - Nisbah Faraid kekal; hanya keluasan fizikal boleh diagih
+             dikira selepas keluasan rizab jalan diketepikan.
         ========================================================== */
 
-        const RIZAB_JALAN_LEBAR_M = 20;
+        const RIZAB_JALAN_CONFIG = {
+            // Fallback projek sahaja — BUKAN standard lebar JUPEM.
+            lebarLalaiM: 20,
+
+            // Pilihan: SELATAN / UTARA / BARAT / TIMUR.
+            sisiLalai: "SELATAN",
+
+            atributLebar: [
+                "LEBAR_RIZAB_JALAN",
+                "RIZAB_JALAN_M",
+                "ROAD_RESERVE_M",
+                "ROAD_RESERVE_WIDTH"
+            ],
+
+            atributSisi: [
+                "SISI_RIZAB_JALAN",
+                "ARAH_RIZAB_JALAN",
+                "ROAD_RESERVE_SIDE"
+            ],
+
+            rujukan: "Pekeliling KPUP Bil. 6 Tahun 2009"
+        };
+
+        /*
+         * Alias ini dikekalkan untuk fungsi lama paDrawRoad().
+         * Fungsi tersebut tidak lagi digunakan untuk melukis jalan
+         * di luar lot, tetapi alias mengelakkan rujukan lama rosak.
+         */
+        const RIZAB_JALAN_LEBAR_M = RIZAB_JALAN_CONFIG.lebarLalaiM;
 
         function polygonSignedArea(points) {
             let area = 0;
@@ -10607,6 +10626,406 @@ body.cover-active{
             }
 
             return output;
+        }
+
+
+        /*
+         * Clipping polygon terhadap garisan V (Northing):
+         *      v <= limit  atau  v >= limit
+         * Digunakan untuk membentuk rizab jalan di sisi UTARA/SELATAN.
+         */
+        function clipPolygonByV(points, limit, keepLess) {
+
+            if (!points || points.length < 3) {
+                return [];
+            }
+
+            const output = [];
+
+            function inside(p) {
+                return keepLess
+                    ? p.v <= limit + 1e-10
+                    : p.v >= limit - 1e-10;
+            }
+
+            function intersection(a, b) {
+
+                const dv = b.v - a.v;
+
+                if (Math.abs(dv) < 1e-12) {
+                    return {
+                        x: a.x,
+                        y: a.y,
+                        u: a.u,
+                        v: limit
+                    };
+                }
+
+                const t = (limit - a.v) / dv;
+
+                return {
+                    x: a.x + (b.x - a.x) * t,
+                    y: a.y + (b.y - a.y) * t,
+                    u: a.u + (b.u - a.u) * t,
+                    v: limit
+                };
+            }
+
+            let previous = points[points.length - 1];
+            let previousInside = inside(previous);
+
+            for (let i = 0; i < points.length; i++) {
+
+                const current = points[i];
+                const currentInside = inside(current);
+
+                if (currentInside) {
+
+                    if (!previousInside) {
+                        output.push(intersection(previous, current));
+                    }
+
+                    output.push(current);
+
+                } else if (previousInside) {
+
+                    output.push(intersection(previous, current));
+                }
+
+                previous = current;
+                previousInside = currentInside;
+            }
+
+            return output;
+        }
+
+        function roadReserveReadProperty(selectedLayer, names) {
+
+            const p =
+                selectedLayer &&
+                selectedLayer.feature &&
+                selectedLayer.feature.properties
+                    ? selectedLayer.feature.properties
+                    : {};
+
+            for (let i = 0; i < names.length; i++) {
+
+                const v = p[names[i]];
+
+                if (
+                    v !== undefined &&
+                    v !== null &&
+                    String(v).trim() !== ""
+                ) {
+                    return v;
+                }
+            }
+
+            return null;
+        }
+
+        function roadReserveGetSettings(selectedLayer, geometry) {
+
+            const rawWidth =
+                roadReserveReadProperty(
+                    selectedLayer,
+                    RIZAB_JALAN_CONFIG.atributLebar
+                );
+
+            const parsedWidth =
+                Number(
+                    String(rawWidth ?? "")
+                        .replace(",", ".")
+                        .replace(/[^\d.\-]/g, "")
+                );
+
+            let widthM =
+                Number.isFinite(parsedWidth) && parsedWidth > 0
+                    ? parsedWidth
+                    : RIZAB_JALAN_CONFIG.lebarLalaiM;
+
+            const rawSide =
+                String(
+                    roadReserveReadProperty(
+                        selectedLayer,
+                        RIZAB_JALAN_CONFIG.atributSisi
+                    ) ??
+                    RIZAB_JALAN_CONFIG.sisiLalai
+                )
+                .trim()
+                .toUpperCase();
+
+            const allowed = ["SELATAN", "UTARA", "BARAT", "TIMUR"];
+
+            const side =
+                allowed.includes(rawSide)
+                    ? rawSide
+                    : RIZAB_JALAN_CONFIG.sisiLalai;
+
+            /*
+             * Elakkan rizab menelan keseluruhan lot jika lot lebih kecil
+             * daripada nilai fallback. Had 45% ini hanyalah perlindungan
+             * sistem untuk visual simulasi, bukan ukuran undang-undang.
+             */
+            const lotDepthM =
+                (side === "SELATAN" || side === "UTARA")
+                    ? (geometry.maxV - geometry.minV)
+                    : (geometry.maxU - geometry.minU);
+
+            const maxSafeWidth =
+                Math.max(0, lotDepthM * 0.45);
+
+            if (widthM > maxSafeWidth && maxSafeWidth > 0) {
+                widthM = maxSafeWidth;
+            }
+
+            return {
+                widthM,
+                side,
+                source:
+                    Number.isFinite(parsedWidth) && parsedWidth > 0
+                        ? "ATRIBUT LOT / PELAN"
+                        : "NILAI LALAI SIMULASI",
+                reference: RIZAB_JALAN_CONFIG.rujukan
+            };
+        }
+
+        function roadReserveComputeBounds(rings) {
+
+            let minU = Infinity;
+            let maxU = -Infinity;
+            let minV = Infinity;
+            let maxV = -Infinity;
+
+            rings.forEach(function(ring) {
+                ring.forEach(function(p) {
+                    minU = Math.min(minU, p.u);
+                    maxU = Math.max(maxU, p.u);
+                    minV = Math.min(minV, p.v);
+                    maxV = Math.max(maxV, p.v);
+                });
+            });
+
+            return { minU, maxU, minV, maxV };
+        }
+
+        function createRoadReserveGeometry(geometry, selectedLayer) {
+
+            if (!geometry || !geometry.rings || !geometry.rings.length) {
+                return null;
+            }
+
+            const settings =
+                roadReserveGetSettings(selectedLayer, geometry);
+
+            const reserveRings = [];
+            const usableRings = [];
+
+            geometry.rings.forEach(function(ring) {
+
+                let reserve = [];
+                let usable = [];
+
+                if (settings.side === "SELATAN") {
+
+                    const cutV =
+                        geometry.minV + settings.widthM;
+
+                    reserve =
+                        clipPolygonByV(ring, cutV, true);
+
+                    usable =
+                        clipPolygonByV(ring, cutV, false);
+
+                } else if (settings.side === "UTARA") {
+
+                    const cutV =
+                        geometry.maxV - settings.widthM;
+
+                    reserve =
+                        clipPolygonByV(ring, cutV, false);
+
+                    usable =
+                        clipPolygonByV(ring, cutV, true);
+
+                } else if (settings.side === "BARAT") {
+
+                    const cutU =
+                        geometry.minU + settings.widthM;
+
+                    reserve =
+                        clipPolygonByU(ring, cutU, true);
+
+                    usable =
+                        clipPolygonByU(ring, cutU, false);
+
+                } else {
+
+                    const cutU =
+                        geometry.maxU - settings.widthM;
+
+                    reserve =
+                        clipPolygonByU(ring, cutU, false);
+
+                    usable =
+                        clipPolygonByU(ring, cutU, true);
+                }
+
+                if (reserve.length >= 3) {
+                    reserveRings.push(reserve);
+                }
+
+                if (usable.length >= 3) {
+                    usableRings.push(usable);
+                }
+            });
+
+            const reserveArea =
+                reserveRings.reduce(
+                    (sum, ring) => sum + polygonAreaUV(ring),
+                    0
+                );
+
+            const usableArea =
+                usableRings.reduce(
+                    (sum, ring) => sum + polygonAreaUV(ring),
+                    0
+                );
+
+            if (!usableRings.length || usableArea <= 0) {
+                return null;
+            }
+
+            const bounds =
+                roadReserveComputeBounds(usableRings);
+
+            const usableGeometry = {
+                ...geometry,
+                rings: usableRings,
+                minU: bounds.minU,
+                maxU: bounds.maxU,
+                minV: bounds.minV,
+                maxV: bounds.maxV,
+                totalArea: usableArea
+            };
+
+            return {
+                ...settings,
+                reserveRings,
+                reserveArea,
+                usableRings,
+                usableArea,
+                usableGeometry
+            };
+        }
+
+        function drawRoadReserveInsideLot(
+            ctx,
+            roadInfo,
+            originalGeometry,
+            scale,
+            offsetX,
+            offsetY
+        ) {
+
+            if (
+                !roadInfo ||
+                !roadInfo.reserveRings ||
+                !roadInfo.reserveRings.length
+            ) {
+                return;
+            }
+
+            ctx.save();
+
+            roadInfo.reserveRings.forEach(function(ring) {
+
+                drawPolygonPath(
+                    ctx,
+                    ring,
+                    originalGeometry,
+                    scale,
+                    offsetX,
+                    offsetY
+                );
+
+                ctx.fillStyle = "rgba(120,120,120,0.26)";
+                ctx.fill();
+
+                ctx.strokeStyle = "#111";
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+
+                ctx.save();
+                ctx.clip();
+
+                ctx.strokeStyle = "rgba(70,70,70,0.45)";
+                ctx.lineWidth = 0.8;
+
+                const step = 12;
+
+                for (
+                    let x = offsetX - 500;
+                    x < offsetX + 2500;
+                    x += step
+                ) {
+                    ctx.beginPath();
+                    ctx.moveTo(x, offsetY - 500);
+                    ctx.lineTo(x + 700, offsetY + 1200);
+                    ctx.stroke();
+                }
+
+                ctx.restore();
+            });
+
+            const centroid =
+                getPieceCentroid(roadInfo.reserveRings);
+
+            if (centroid) {
+
+                const labelX =
+                    offsetX +
+                    (centroid.u - originalGeometry.minU) *
+                    scale;
+
+                const labelY =
+                    offsetY +
+                    (originalGeometry.maxV - centroid.v) *
+                    scale;
+
+                paDrawTextBox(
+                    ctx,
+                    labelX,
+                    labelY,
+                    [
+                        {
+                            text: "RIZAB JALAN",
+                            bold: true
+                        },
+                        {
+                            text:
+                                roadInfo.widthM.toFixed(2) +
+                                " m • " +
+                                roadInfo.side
+                        },
+                        {
+                            text:
+                                "± " +
+                                roadInfo.reserveArea.toFixed(2) +
+                                " m²"
+                        }
+                    ],
+                    {
+                        font: "8px Arial, sans-serif",
+                        fontBold: "bold 9px Arial, sans-serif",
+                        lineH: 12,
+                        padX: 5,
+                        padY: 4
+                    }
+                );
+            }
+
+            ctx.restore();
         }
 
         /*
@@ -11648,17 +12067,32 @@ body.cover-active{
             ctx.font = "bold 10px Arial, sans-serif";
             ctx.fillText("MAKLUMAT LOT", col1 + 8, top + 18);
 
-            ctx.font = "9px Arial, sans-serif";
+            ctx.font = "8.2px Arial, sans-serif";
             const metaLines = [
                 "No. Lot : " + meta.lot,
                 "Mukim   : " + meta.mukim,
                 "Daerah  : " + meta.daerah,
                 "Negeri  : " + meta.negeri,
                 "Luas    : " + (meta.area ? meta.area.toFixed(3) + " m²" : "-"),
-                "Pemilik : " + meta.owner
+                "Pemilik : " + meta.owner,
+                "Rizab   : " + (
+                    meta.roadReserveWidth
+                        ? meta.roadReserveWidth.toFixed(2) + " m (" + meta.roadReserveSide + ")"
+                        : "-"
+                ),
+                "Luas Rizab : " + (
+                    meta.roadReserveArea
+                        ? "± " + meta.roadReserveArea.toFixed(2) + " m²"
+                        : "-"
+                ),
+                "Baki Agih  : " + (
+                    meta.distributableArea
+                        ? "± " + meta.distributableArea.toFixed(2) + " m²"
+                        : "-"
+                )
             ];
             metaLines.forEach(function(t, i) {
-                ctx.fillText(t, col1 + 8, top + 39 + i * 16);
+                ctx.fillText(t, col1 + 8, top + 37 + i * 13);
             });
 
             /* Kolum 2: nota */
@@ -11670,7 +12104,7 @@ body.cover-active{
                 "1. Garisan pecahan menunjukkan simulasi bahagian waris.",
                 "2. Bentuk dan orientasi lot dikekalkan north-up mengikut lot WebGIS terpilih.",
                 "3. Bearing dan jarak adalah anggaran daripada koordinat sempadan WebGIS.",
-                "4. Rizab jalan dipaparkan secara skematik dan tidak menolak saham Faraid.",
+                "4. Rizab jalan berada dalam lot; keluasan fizikalnya dikeluarkan sebelum simulasi pecahan.",
                 "5. Pelan ini bukan Pelan Akui, Pelan Hakmilik atau pelan ukur rasmi.",
                 "6. Pengesahan sebenar memerlukan proses dan pihak berkuasa berkaitan."
             ];
@@ -11802,6 +12236,39 @@ body.cover-active{
             }
 
             /*
+             * Bina rizab jalan DI DALAM lot.
+             * Nisbah Faraid kekal, tetapi keluasan fizikal bahagian
+             * waris menggunakan baki selepas rizab jalan.
+             */
+            const roadInfo =
+                createRoadReserveGeometry(
+                    geometry,
+                    selectedLayer
+                );
+
+            const distributionGeometry =
+                roadInfo && roadInfo.usableGeometry
+                    ? roadInfo.usableGeometry
+                    : geometry;
+
+            meta.roadReserveWidth =
+                roadInfo ? roadInfo.widthM : 0;
+
+            meta.roadReserveArea =
+                roadInfo ? roadInfo.reserveArea : 0;
+
+            meta.distributableArea =
+                roadInfo
+                    ? roadInfo.usableArea
+                    : geometry.totalArea;
+
+            meta.roadReserveSide =
+                roadInfo ? roadInfo.side : "-";
+
+            meta.roadReserveSource =
+                roadInfo ? roadInfo.source : "-";
+
+            /*
              * Kawasan lukisan utama.
              * Ruang kiri/kanan lebih besar untuk bearing & jarak.
              */
@@ -11851,6 +12318,22 @@ body.cover-active{
                 drawing.y - 10
             );
 
+            if (roadInfo) {
+                ctx.fillText(
+                    "Rizab jalan dalam lot: " +
+                    roadInfo.widthM.toFixed(2) +
+                    " m (" +
+                    roadInfo.side +
+                    ") • Luas rizab ± " +
+                    roadInfo.reserveArea.toFixed(2) +
+                    " m² • Baki boleh diagih ± " +
+                    roadInfo.usableArea.toFixed(2) +
+                    " m²",
+                    drawing.x,
+                    drawing.y + 5
+                );
+            }
+
             ctx.fillStyle = "#111";
             ctx.font = "bold 8.5px Arial, sans-serif";
             ctx.textAlign = "right";
@@ -11862,15 +12345,38 @@ body.cover-active{
             ctx.restore();
 
             /*
-             * Bahagikan polygon mengikut saham Faraid.
+             * Lukis rizab jalan terlebih dahulu supaya ia benar-benar
+             * kelihatan sebagai sebahagian daripada lot.
              */
-            let lowerU = geometry.minU;
+            drawRoadReserveInsideLot(
+                ctx,
+                roadInfo,
+                geometry,
+                scale,
+                offsetX,
+                offsetY
+            );
+
+            /*
+             * Bahagikan BAKI polygon mengikut saham Faraid.
+             * Peratus / nisbah Faraid tidak diubah; hanya luas fizikal
+             * yang tersedia selepas rizab jalan digunakan.
+             */
+            let lowerU = distributionGeometry.minU;
             let cumulativeFraction = 0;
+
+            const totalShareFraction =
+                senaraiWaris.reduce(function(sum, w) {
+                    return sum + Math.max(0, Number(w.peratus) || 0);
+                }, 0) || 1;
 
             senaraiWaris.forEach(function(w, index) {
 
-                const fraction =
+                const rawFraction =
                     Math.max(0, Number(w.peratus) || 0);
+
+                const fraction =
+                    rawFraction / totalShareFraction;
 
                 const isLast =
                     index === senaraiWaris.length - 1;
@@ -11878,27 +12384,31 @@ body.cover-active{
                 let upperU;
 
                 if (isLast) {
-                    upperU = geometry.maxU;
+
+                    upperU =
+                        distributionGeometry.maxU;
+
                 } else {
+
                     cumulativeFraction += fraction;
 
                     const targetArea =
-                        geometry.totalArea *
+                        distributionGeometry.totalArea *
                         Math.min(1, cumulativeFraction);
 
                     upperU =
                         findAreaCut(
-                            geometry.rings,
+                            distributionGeometry.rings,
                             targetArea,
-                            geometry.minU,
-                            geometry.maxU,
-                            geometry.totalArea
+                            distributionGeometry.minU,
+                            distributionGeometry.maxU,
+                            distributionGeometry.totalArea
                         );
                 }
 
                 const pieceRings =
                     getPieceRings(
-                        geometry,
+                        distributionGeometry,
                         lowerU,
                         upperU
                     );
@@ -11919,6 +12429,7 @@ body.cover-active{
                     getPieceCentroid(pieceRings);
 
                 if (centroid) {
+
                     const labelX =
                         offsetX +
                         (centroid.u - geometry.minU) *
@@ -11929,9 +12440,13 @@ body.cover-active{
                         (geometry.maxV - centroid.v) *
                         scale;
 
+                    const physicalArea =
+                        distributionGeometry.totalArea *
+                        fraction;
+
                     const areaText =
-                        Number.isFinite(Number(w.luas))
-                            ? Number(w.luas).toFixed(2) + " m²"
+                        Number.isFinite(physicalArea)
+                            ? physicalArea.toFixed(2) + " m²"
                             : "-";
 
                     const shareText =
@@ -11954,10 +12469,10 @@ body.cover-active{
                                 bold:true
                             },
                             {
-                                text:"Saham: " + shareText
+                                text:"Saham Faraid: " + shareText
                             },
                             {
-                                text:"Luas: " + areaText
+                                text:"Luas selepas rizab: " + areaText
                             }
                         ],
                         {
@@ -12018,16 +12533,30 @@ body.cover-active{
             );
 
             /*
-             * Rizab jalan daripada visual sistem asal dikekalkan
-             * tetapi ditukar kepada gaya linework Pelan Akui.
+             * Rizab jalan kini dilukis DI DALAM polygon lot.
+             * Tiada lagi jalur jalan skematik di luar lot.
              */
-            paDrawRoad(
-                ctx,
+            ctx.save();
+            ctx.fillStyle = "#111";
+            ctx.font = "8px Arial, sans-serif";
+            ctx.textAlign = "left";
+            ctx.fillText(
+                roadInfo
+                    ? (
+                        "Rizab jalan: " +
+                        roadInfo.widthM.toFixed(2) +
+                        " m • " +
+                        roadInfo.side +
+                        " • " +
+                        roadInfo.source +
+                        " • Rujukan ukur: " +
+                        roadInfo.reference
+                    )
+                    : "Rizab jalan tidak dapat dibentuk daripada geometri lot.",
                 drawing.x,
-                706,
-                drawing.w,
-                40
+                714
             );
+            ctx.restore();
 
             /*
              * Label umum di luar kawasan lot.
