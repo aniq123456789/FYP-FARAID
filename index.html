@@ -12101,12 +12101,12 @@ body.cover-active{
                     ctx.fillStyle = "#111";
                     ctx.textAlign = "center";
                     ctx.textBaseline = "bottom";
-                    ctx.font = "9px Arial, sans-serif";
-                    ctx.fillText(paBearingToDMS(bearing), 0, -1);
+                    ctx.font = "11px Arial, sans-serif";
+                    ctx.fillText(paBearingToDMS(bearing), 0, -2);
 
                     ctx.textBaseline = "top";
-                    ctx.font = "8.5px Arial, sans-serif";
-                    ctx.fillText(dist.toFixed(2) + " m", 0, 2);
+                    ctx.font = "10.5px Arial, sans-serif";
+                    ctx.fillText(dist.toFixed(2) + " m", 0, 3);
                     ctx.restore();
                 }
 
@@ -12125,7 +12125,7 @@ body.cover-active{
                     ctx.stroke();
 
                     ctx.fillStyle = "#111";
-                    ctx.font = "7px Arial, sans-serif";
+                    ctx.font = "9px Arial, sans-serif";
                     ctx.textAlign = "left";
                     ctx.textBaseline = "bottom";
                     ctx.fillText("P" + (i + 1), p.x + 5, p.y - 3);
@@ -12164,7 +12164,7 @@ body.cover-active{
             ctx.setLineDash([]);
 
             ctx.fillStyle = "#111";
-            ctx.font = "bold 10px Arial, sans-serif";
+            ctx.font = "bold 12px Arial, sans-serif";
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
             ctx.fillText(
@@ -12185,17 +12185,17 @@ body.cover-active{
             ctx.textAlign = "center";
             ctx.textBaseline = "alphabetic";
 
-            ctx.font = "bold 23px Georgia, serif";
+            ctx.font = "bold 27px Georgia, serif";
             ctx.fillText("PELAN PEMBAHAGIAN LOT", W / 2, 145);
 
-            ctx.font = "bold 17px Georgia, serif";
+            ctx.font = "bold 20px Georgia, serif";
             ctx.fillText(
                 "LOT " + meta.lot,
                 W / 2,
                 170
             );
 
-            ctx.font = "12px Arial, sans-serif";
+            ctx.font = "14px Arial, sans-serif";
             ctx.fillText(
                 "MUKIM " + String(meta.mukim).toUpperCase() +
                 "  •  DAERAH " + String(meta.daerah).toUpperCase() +
@@ -12228,17 +12228,17 @@ body.cover-active{
             ctx.fillStyle = "#111";
             ctx.textAlign = "center";
 
-            ctx.font = "bold 12px Arial, sans-serif";
+            ctx.font = "bold 14px Arial, sans-serif";
             ctx.fillText("SIMULASI AKADEMIK", x + w / 2, y + 26);
 
-            ctx.font = "bold 11px Arial, sans-serif";
+            ctx.font = "bold 12px Arial, sans-serif";
             ctx.fillText("BUKAN PELAN AKUI RASMI JUPEM", x + w / 2, y + 48);
 
-            ctx.font = "9px Arial, sans-serif";
+            ctx.font = "10px Arial, sans-serif";
             ctx.fillText("Tidak untuk ukur, pendaftaran,", x + w / 2, y + 72);
             ctx.fillText("hak milik atau urus niaga tanah.", x + w / 2, y + 87);
 
-            ctx.font = "italic 8px Arial, sans-serif";
+            ctx.font = "italic 9px Arial, sans-serif";
             ctx.fillText("MyFaraidLot", x + w / 2, y + 104);
             ctx.restore();
         }
@@ -12272,10 +12272,10 @@ body.cover-active{
 
             /* Kolum 1: metadata lot */
             ctx.textAlign = "left";
-            ctx.font = "bold 10px Arial, sans-serif";
+            ctx.font = "bold 12px Arial, sans-serif";
             ctx.fillText("MAKLUMAT LOT", col1 + 8, top + 18);
 
-            ctx.font = "8.2px Arial, sans-serif";
+            ctx.font = "10px Arial, sans-serif";
             const metaLines = [
                 "No. Lot : " + meta.lot,
                 "Mukim   : " + meta.mukim,
@@ -12304,10 +12304,10 @@ body.cover-active{
             });
 
             /* Kolum 2: nota */
-            ctx.font = "bold 10px Arial, sans-serif";
+            ctx.font = "bold 12px Arial, sans-serif";
             ctx.fillText("NOTA TEKNIKAL", col2 + 8, top + 18);
 
-            ctx.font = "8.5px Arial, sans-serif";
+            ctx.font = "10px Arial, sans-serif";
             const notes = [
                 "1. Garisan pecahan menunjukkan simulasi bahagian waris.",
                 "2. Bentuk dan orientasi lot dikekalkan north-up mengikut lot WebGIS terpilih.",
@@ -12326,26 +12326,26 @@ body.cover-active{
                 String(meta.lot).replace(/[^0-9A-Za-z_-]/g, "") +
                 "-01";
 
-            ctx.font = "bold 10px Arial, sans-serif";
+            ctx.font = "bold 12px Arial, sans-serif";
             ctx.fillText("BUTIRAN PELAN", col3 + 8, top + 18);
 
-            ctx.font = "9px Arial, sans-serif";
+            ctx.font = "10.5px Arial, sans-serif";
             ctx.fillText("No. Pelan Simulasi : " + simNo, col3 + 8, top + 41);
             ctx.fillText("Helaian            : 1 / 1", col3 + 8, top + 58);
             ctx.fillText("Bil. Bahagian      : " + senaraiWaris.length, col3 + 8, top + 75);
             ctx.fillText("Disediakan oleh    : MyFaraidLot", col3 + 8, top + 92);
 
-            ctx.font = "bold 9px Arial, sans-serif";
+            ctx.font = "bold 10.5px Arial, sans-serif";
             ctx.fillText("STATUS:", col3 + 8, top + 119);
 
-            ctx.font = "bold 11px Arial, sans-serif";
+            ctx.font = "bold 12.5px Arial, sans-serif";
             ctx.fillText(
                 "SIMULASI AKADEMIK — TIDAK DISAHKAN JUPEM",
                 col3 + 8,
                 top + 139
             );
 
-            ctx.font = "italic 8px Arial, sans-serif";
+            ctx.font = "italic 9.5px Arial, sans-serif";
             ctx.fillText(
                 "Ruang pengesahan rasmi: TIDAK BERKENAAN",
                 col3 + 8,
@@ -12359,7 +12359,7 @@ body.cover-active{
             ctx.stroke();
 
             ctx.textAlign = "center";
-            ctx.font = "8px Arial, sans-serif";
+            ctx.font = "9.5px Arial, sans-serif";
             ctx.fillText(
                 "MYFARAIDLOT • PELAN PEMBAHAGIAN LOT BERDASARKAN PENGIRAAN FARAID • UNTUK TUJUAN PEMBELAJARAN",
                 W / 2,
@@ -12511,7 +12511,7 @@ body.cover-active{
              */
             ctx.save();
             ctx.fillStyle = "#111";
-            ctx.font = "bold 10px Arial, sans-serif";
+            ctx.font = "bold 12px Arial, sans-serif";
             ctx.textAlign = "left";
             ctx.fillText(
                 "LOT ASAL " + meta.lot +
@@ -12519,7 +12519,7 @@ body.cover-active{
                 drawing.x,
                 drawing.y - 25
             );
-            ctx.font = "8.5px Arial, sans-serif";
+            ctx.font = "10px Arial, sans-serif";
             ctx.fillText(
                 "GARISAN LUAR = SEMPADAN LOT ASAL   |   GARISAN DALAM = CADANGAN PEMBAHAGIAN FARAID",
                 drawing.x,
@@ -12543,7 +12543,7 @@ body.cover-active{
             }
 
             ctx.fillStyle = "#111";
-            ctx.font = "bold 8.5px Arial, sans-serif";
+            ctx.font = "bold 10px Arial, sans-serif";
             ctx.textAlign = "right";
             ctx.fillText(
                 "ORIENTASI: NORTH-UP • BENTUK & ARAH MENGIKUT LOT WEBGIS TERPILIH",
@@ -12684,11 +12684,11 @@ body.cover-active{
                             }
                         ],
                         {
-                            font:"9px Arial, sans-serif",
-                            fontBold:"bold 10px Arial, sans-serif",
-                            lineH:13,
-                            padX:6,
-                            padY:5
+                            font:"12px Arial, sans-serif",
+                            fontBold:"bold 13px Arial, sans-serif",
+                            lineH:17,
+                            padX:8,
+                            padY:7
                         }
                     );
                 }
@@ -12746,7 +12746,7 @@ body.cover-active{
              */
             ctx.save();
             ctx.fillStyle = "#111";
-            ctx.font = "8px Arial, sans-serif";
+            ctx.font = "10px Arial, sans-serif";
             ctx.textAlign = "left";
             ctx.fillText(
                 roadInfo
@@ -12771,7 +12771,7 @@ body.cover-active{
              */
             ctx.save();
             ctx.fillStyle = "#111";
-            ctx.font = "9px Arial, sans-serif";
+            ctx.font = "10.5px Arial, sans-serif";
             ctx.textAlign = "right";
             ctx.fillText(
                 "Bearing / jarak: anggaran geometri WebGIS",
