@@ -6947,7 +6947,14 @@ body.cover-active{
    Tiada PCA rotation / auto-rotate digunakan pada pelan.
 ========================================================= */
 
-</style>
+
+        /* Paparan Maklumat Lot dipermudahkan: hanya No. Lot dan Luas Lot. */
+        #lotInfoPanel .lot-info-location-grid,
+        #lotInfoPanel .lot-info-item.owner{
+            display:none !important;
+        }
+
+    </style>
 
 </head>
 
@@ -8609,28 +8616,6 @@ body.cover-active{
                         </div>
                     </div>
 
-                    <div class="lot-info-location-grid">
-                        <div class="lot-info-item">
-                            <span class="lot-info-label">Negeri</span>
-                            <span id="res-negeri" class="lot-info-value">-</span>
-                        </div>
-
-                        <div class="lot-info-item">
-                            <span class="lot-info-label">Daerah</span>
-                            <span id="res-daerah" class="lot-info-value">-</span>
-                        </div>
-
-                        <div class="lot-info-item">
-                            <span class="lot-info-label">Mukim</span>
-                            <span id="res-mukim" class="lot-info-value">-</span>
-                        </div>
-                    </div>
-
-                    <div class="lot-info-item owner">
-                        <span class="lot-info-label">Pemilik Berdaftar</span>
-                        <span id="res-owner" class="lot-info-value">-</span>
-                    </div>
-
                     <!-- Button baharu: terus buka kalkulator Faraid menggunakan lot yang sedang dipilih. -->
                     <button type="button"
                         class="lot-info-faraid-btn"
@@ -8802,11 +8787,7 @@ body.cover-active{
             };
 
             setText('res-no-lot', lot);
-            setText('res-owner', owner);
             setText('res-luas', areaFormatted);
-            setText('res-negeri', negeri);
-            setText('res-daerah', daerah);
-            setText('res-mukim', mukim);
 
             if (Number.isFinite(rawArea)) {
                 const luasInput =
@@ -11914,7 +11895,7 @@ body.cover-active{
             ctx.strokeStyle = "#111";
             ctx.fillStyle = "#111";
             ctx.lineWidth = 1;
-            ctx.font = "10px Arial, sans-serif";
+            ctx.font = "12px Arial, sans-serif";
             ctx.textAlign = "center";
 
             ctx.fillText("SKALA GRAFIK (ANGGARAN)", x + totalPx / 2, y - 12);
@@ -12101,12 +12082,12 @@ body.cover-active{
                     ctx.fillStyle = "#111";
                     ctx.textAlign = "center";
                     ctx.textBaseline = "bottom";
-                    ctx.font = "11px Arial, sans-serif";
-                    ctx.fillText(paBearingToDMS(bearing), 0, -2);
+                    ctx.font = "13px Arial, sans-serif";
+                    ctx.fillText(paBearingToDMS(bearing), 0, -3);
 
                     ctx.textBaseline = "top";
-                    ctx.font = "10.5px Arial, sans-serif";
-                    ctx.fillText(dist.toFixed(2) + " m", 0, 3);
+                    ctx.font = "12.5px Arial, sans-serif";
+                    ctx.fillText(dist.toFixed(2) + " m", 0, 4);
                     ctx.restore();
                 }
 
@@ -12125,7 +12106,7 @@ body.cover-active{
                     ctx.stroke();
 
                     ctx.fillStyle = "#111";
-                    ctx.font = "9px Arial, sans-serif";
+                    ctx.font = "11px Arial, sans-serif";
                     ctx.textAlign = "left";
                     ctx.textBaseline = "bottom";
                     ctx.fillText("P" + (i + 1), p.x + 5, p.y - 3);
@@ -12164,7 +12145,7 @@ body.cover-active{
             ctx.setLineDash([]);
 
             ctx.fillStyle = "#111";
-            ctx.font = "bold 12px Arial, sans-serif";
+            ctx.font = "bold 14px Arial, sans-serif";
             ctx.textAlign = "center";
             ctx.textBaseline = "middle";
             ctx.fillText(
@@ -12185,17 +12166,17 @@ body.cover-active{
             ctx.textAlign = "center";
             ctx.textBaseline = "alphabetic";
 
-            ctx.font = "bold 27px Georgia, serif";
+            ctx.font = "bold 30px Georgia, serif";
             ctx.fillText("PELAN PEMBAHAGIAN LOT", W / 2, 145);
 
-            ctx.font = "bold 20px Georgia, serif";
+            ctx.font = "bold 23px Georgia, serif";
             ctx.fillText(
                 "LOT " + meta.lot,
                 W / 2,
                 170
             );
 
-            ctx.font = "14px Arial, sans-serif";
+            ctx.font = "16px Arial, sans-serif";
             ctx.fillText(
                 "MUKIM " + String(meta.mukim).toUpperCase() +
                 "  •  DAERAH " + String(meta.daerah).toUpperCase() +
@@ -12228,23 +12209,23 @@ body.cover-active{
             ctx.fillStyle = "#111";
             ctx.textAlign = "center";
 
-            ctx.font = "bold 14px Arial, sans-serif";
+            ctx.font = "bold 16px Arial, sans-serif";
             ctx.fillText("SIMULASI AKADEMIK", x + w / 2, y + 26);
 
-            ctx.font = "bold 12px Arial, sans-serif";
+            ctx.font = "bold 13px Arial, sans-serif";
             ctx.fillText("BUKAN PELAN AKUI RASMI JUPEM", x + w / 2, y + 48);
 
-            ctx.font = "10px Arial, sans-serif";
+            ctx.font = "12px Arial, sans-serif";
             ctx.fillText("Tidak untuk ukur, pendaftaran,", x + w / 2, y + 72);
             ctx.fillText("hak milik atau urus niaga tanah.", x + w / 2, y + 87);
 
-            ctx.font = "italic 9px Arial, sans-serif";
+            ctx.font = "italic 11px Arial, sans-serif";
             ctx.fillText("MyFaraidLot", x + w / 2, y + 104);
             ctx.restore();
         }
 
         function paDrawBottomTitleBlock(ctx, W, H, meta, senaraiWaris) {
-            const top = H - 205;
+            const top = H - 238;
             const left = 48;
             const right = W - 48;
             const width = right - left;
@@ -12272,10 +12253,10 @@ body.cover-active{
 
             /* Kolum 1: metadata lot */
             ctx.textAlign = "left";
-            ctx.font = "bold 12px Arial, sans-serif";
+            ctx.font = "bold 15px Arial, sans-serif";
             ctx.fillText("MAKLUMAT LOT", col1 + 8, top + 18);
 
-            ctx.font = "10px Arial, sans-serif";
+            ctx.font = "12px Arial, sans-serif";
             const metaLines = [
                 "No. Lot : " + meta.lot,
                 "Mukim   : " + meta.mukim,
@@ -12300,14 +12281,14 @@ body.cover-active{
                 )
             ];
             metaLines.forEach(function(t, i) {
-                ctx.fillText(t, col1 + 8, top + 37 + i * 13);
+                ctx.fillText(t, col1 + 8, top + 41 + i * 16);
             });
 
             /* Kolum 2: nota */
-            ctx.font = "bold 12px Arial, sans-serif";
+            ctx.font = "bold 15px Arial, sans-serif";
             ctx.fillText("NOTA TEKNIKAL", col2 + 8, top + 18);
 
-            ctx.font = "10px Arial, sans-serif";
+            ctx.font = "11.5px Arial, sans-serif";
             const notes = [
                 "1. Garisan pecahan menunjukkan simulasi bahagian waris.",
                 "2. Bentuk dan orientasi lot dikekalkan north-up mengikut lot WebGIS terpilih.",
@@ -12317,7 +12298,7 @@ body.cover-active{
                 "6. Pengesahan sebenar memerlukan proses dan pihak berkuasa berkaitan."
             ];
             notes.forEach(function(t, i) {
-                ctx.fillText(t, col2 + 8, top + 39 + i * 17);
+                ctx.fillText(t, col2 + 8, top + 43 + i * 20);
             });
 
             /* Kolum 3: nombor pelan / status */
@@ -12326,30 +12307,30 @@ body.cover-active{
                 String(meta.lot).replace(/[^0-9A-Za-z_-]/g, "") +
                 "-01";
 
-            ctx.font = "bold 12px Arial, sans-serif";
+            ctx.font = "bold 15px Arial, sans-serif";
             ctx.fillText("BUTIRAN PELAN", col3 + 8, top + 18);
 
-            ctx.font = "10.5px Arial, sans-serif";
-            ctx.fillText("No. Pelan Simulasi : " + simNo, col3 + 8, top + 41);
-            ctx.fillText("Helaian            : 1 / 1", col3 + 8, top + 58);
-            ctx.fillText("Bil. Bahagian      : " + senaraiWaris.length, col3 + 8, top + 75);
-            ctx.fillText("Disediakan oleh    : MyFaraidLot", col3 + 8, top + 92);
-
-            ctx.font = "bold 10.5px Arial, sans-serif";
-            ctx.fillText("STATUS:", col3 + 8, top + 119);
+            ctx.font = "12.5px Arial, sans-serif";
+            ctx.fillText("No. Pelan Simulasi : " + simNo, col3 + 8, top + 43);
+            ctx.fillText("Helaian            : 1 / 1", col3 + 8, top + 63);
+            ctx.fillText("Bil. Bahagian      : " + senaraiWaris.length, col3 + 8, top + 83);
+            ctx.fillText("Disediakan oleh    : MyFaraidLot", col3 + 8, top + 103);
 
             ctx.font = "bold 12.5px Arial, sans-serif";
+            ctx.fillText("STATUS:", col3 + 8, top + 134);
+
+            ctx.font = "bold 14px Arial, sans-serif";
             ctx.fillText(
                 "SIMULASI AKADEMIK — TIDAK DISAHKAN JUPEM",
                 col3 + 8,
-                top + 139
+                top + 157
             );
 
-            ctx.font = "italic 9.5px Arial, sans-serif";
+            ctx.font = "italic 11px Arial, sans-serif";
             ctx.fillText(
                 "Ruang pengesahan rasmi: TIDAK BERKENAAN",
                 col3 + 8,
-                top + 158
+                top + 180
             );
 
             /* Garis bawah title block */
@@ -12359,7 +12340,7 @@ body.cover-active{
             ctx.stroke();
 
             ctx.textAlign = "center";
-            ctx.font = "9.5px Arial, sans-serif";
+            ctx.font = "11.5px Arial, sans-serif";
             ctx.fillText(
                 "MYFARAIDLOT • PELAN PEMBAHAGIAN LOT BERDASARKAN PENGIRAAN FARAID • UNTUK TUJUAN PEMBELAJARAN",
                 W / 2,
@@ -12511,7 +12492,7 @@ body.cover-active{
              */
             ctx.save();
             ctx.fillStyle = "#111";
-            ctx.font = "bold 12px Arial, sans-serif";
+            ctx.font = "bold 14px Arial, sans-serif";
             ctx.textAlign = "left";
             ctx.fillText(
                 "LOT ASAL " + meta.lot +
@@ -12684,11 +12665,11 @@ body.cover-active{
                             }
                         ],
                         {
-                            font:"12px Arial, sans-serif",
-                            fontBold:"bold 13px Arial, sans-serif",
-                            lineH:17,
-                            padX:8,
-                            padY:7
+                            font:"14px Arial, sans-serif",
+                            fontBold:"bold 15px Arial, sans-serif",
+                            lineH:20,
+                            padX:9,
+                            padY:8
                         }
                     );
                 }
@@ -12746,7 +12727,7 @@ body.cover-active{
              */
             ctx.save();
             ctx.fillStyle = "#111";
-            ctx.font = "10px Arial, sans-serif";
+            ctx.font = "12px Arial, sans-serif";
             ctx.textAlign = "left";
             ctx.fillText(
                 roadInfo
@@ -12771,7 +12752,7 @@ body.cover-active{
              */
             ctx.save();
             ctx.fillStyle = "#111";
-            ctx.font = "10.5px Arial, sans-serif";
+            ctx.font = "12.5px Arial, sans-serif";
             ctx.textAlign = "right";
             ctx.fillText(
                 "Bearing / jarak: anggaran geometri WebGIS",
