@@ -10854,44 +10854,158 @@ body.cover-active{
 
             if (!candidates.length) return null;
 
-            /* Ambil edge yang dekat dengan sisi diminta. Daripada edge-edge
-               tersebut, utamakan yang lebih panjang supaya frontage stabil. */
-            const span = (side === 'SELATAN' || side === 'UTARA')
+            /*
+             * RIZAB JALAN GAYA KORIDOR PENUH
+             * --------------------------------
+             * Gambar rujukan menunjukkan rizab jalan sebagai satu jalur
+             * memanjang di sepanjang keseluruhan bahagian hadapan lot,
+             * bukannya jalur kecil yang hanya mengikut satu edge pendek.
+             *
+             * Oleh itu:
+             * 1. Ambil SEMUA edge yang dekat dengan sisi pilihan.
+             * 2. Utamakan edge yang orientasinya sesuai dengan sisi tersebut.
+             * 3. Kira satu bearing frontage dominan berwajaran panjang.
+             * 4. Bentuk satu garisan asas frontage dan offset ke dalam lot.
+             *
+             * Hasilnya ialah rizab jalan berbentuk koridor panjang seperti
+             * contoh pelan/kadaster yang diberikan pengguna.
+             */
+            const sideSpan = (side === 'SELATAN' || side === 'UTARA')
                 ? Math.max(geometry.maxV - geometry.minV, 1)
                 : Math.max(geometry.maxU - geometry.minU, 1);
 
-            const nearLimit = span * 0.28;
+            /* Ambil zon hadapan lebih luas supaya frontage yang terdiri
+               daripada beberapa segmen masih dapat dikenalpasti. */
+            const nearLimit = sideSpan * 0.36;
             let pool = candidates.filter(e => e.sideScore <= nearLimit);
-            if (!pool.length) pool = candidates;
+            if (!pool.length) pool = candidates.slice();
 
-            pool.sort(function(e1, e2) {
-                const score1 = e1.sideScore - e1.len * 0.12;
-                const score2 = e2.sideScore - e2.len * 0.12;
-                return score1 - score2;
+            /* Untuk SELATAN/UTARA cari segmen yang lebih mendatar;
+               untuk BARAT/TIMUR cari segmen yang lebih menegak. */
+            const oriented = pool.filter(function(e) {
+                if (side === 'SELATAN' || side === 'UTARA') {
+                    return Math.abs(e.du) >= Math.abs(e.dv) * 0.65;
+                }
+                return Math.abs(e.dv) >= Math.abs(e.du) * 0.65;
             });
 
-            const edge = pool[0];
+            if (oriented.length) pool = oriented;
 
-            /* Unit normal. Pilih normal yang menghala ke tengah lot. */
-            let nx = -edge.dv / edge.len;
-            let ny =  edge.du / edge.len;
+            /* Buang segmen yang terlalu pendek berbanding frontage utama.
+               Ini mengelakkan sisi kecil/serong terpilih sebagai arah jalan. */
+            const maxLen = Math.max.apply(null, pool.map(e => e.len));
+            const substantial = pool.filter(e => e.len >= maxLen * 0.22);
+            if (substantial.length) pool = substantial;
 
-            const toCenterU = lotCenter.u - edge.midU;
-            const toCenterV = lotCenter.v - edge.midV;
+            let sumTx = 0;
+            let sumTy = 0;
+            let totalWeight = 0;
+            let midUSum = 0;
+            let midVSum = 0;
+
+            pool.forEach(function(e) {
+                let tx = e.du / e.len;
+                let ty = e.dv / e.len;
+
+                /* Samakan arah tangent supaya segmen bertentangan tidak
+                   saling membatalkan ketika purata bearing dikira. */
+                if (side === 'SELATAN' || side === 'UTARA') {
+                    if (tx < 0) { tx *= -1; ty *= -1; }
+                } else {
+                    if (ty < 0) { tx *= -1; ty *= -1; }
+                }
+
+                const w = e.len;
+                sumTx += tx * w;
+                sumTy += ty * w;
+                midUSum += e.midU * w;
+                midVSum += e.midV * w;
+                totalWeight += w;
+            });
+
+            if (!(totalWeight > 0)) return null;
+
+            let tangentLen = Math.hypot(sumTx, sumTy);
+
+            /* Fallback jika bearing purata hampir sifar. */
+            if (!(tangentLen > 1e-9)) {
+                const longest = pool.slice().sort((a, b) => b.len - a.len)[0];
+                sumTx = longest.du / longest.len;
+                sumTy = longest.dv / longest.len;
+                tangentLen = 1;
+            }
+
+            const tx = sumTx / tangentLen;
+            const ty = sumTy / tangentLen;
+
+            /* Normal awal. */
+            let nx = -ty;
+            let ny =  tx;
+
+            const frontageMid = {
+                u: midUSum / totalWeight,
+                v: midVSum / totalWeight
+            };
+
+            /* Pastikan normal menghala MASUK ke tengah lot. */
+            const toCenterU = lotCenter.u - frontageMid.u;
+            const toCenterV = lotCenter.v - frontageMid.v;
+
             if ((nx * toCenterU + ny * toCenterV) < 0) {
                 nx *= -1;
                 ny *= -1;
             }
 
+            /*
+             * Garisan asas frontage ditetapkan pada projection paling luar
+             * bagi kumpulan edge frontage. Ini menjadikan jalur rizab
+             * merentasi frontage penuh walaupun sempadan mempunyai beberapa
+             * segmen kecil atau sedikit bengkok.
+             */
+            const projections = [];
+            pool.forEach(function(e) {
+                projections.push(e.a.u * nx + e.a.v * ny);
+                projections.push(e.b.u * nx + e.b.v * ny);
+            });
+
+            const baseC = Math.min.apply(null, projections);
+
+            /* Titik a berada tepat pada garisan dot(P,n)=baseC kerana n unit. */
+            const a = {
+                u: nx * baseC,
+                v: ny * baseC
+            };
+
+            const b = {
+                u: a.u + tx,
+                v: a.v + ty
+            };
+
             return {
-                ...edge,
+                ringIndex: pool[0].ringIndex,
+                edgeIndex: pool[0].edgeIndex,
+                a,
+                b,
+                du: tx,
+                dv: ty,
+                len: totalWeight,
+                midU: frontageMid.u,
+                midV: frontageMid.v,
                 nx,
                 ny,
-                bearingDeg: (Math.atan2(edge.du, edge.dv) * 180 / Math.PI + 360) % 360
+                c: baseC,
+                tx,
+                ty,
+                sourceEdges: pool,
+                bearingDeg: (Math.atan2(tx, ty) * 180 / Math.PI + 360) % 360
             };
         }
 
         function roadReserveSignedDistance(p, edge) {
+            if (edge && Number.isFinite(edge.c)) {
+                return (p.u * edge.nx + p.v * edge.ny) - edge.c;
+            }
+
             return (p.u - edge.a.u) * edge.nx + (p.v - edge.a.v) * edge.ny;
         }
 
@@ -10964,8 +11078,9 @@ body.cover-active{
             const frontage = roadReserveSelectBoundaryEdge(geometry, settings.side);
             if (!frontage) return null;
 
-            /* Hadkan lebar mengikut kedalaman sebenar lot dari frontage,
-               bukan lagi semata-mata bounding-box. */
+            /* Hadkan lebar mengikut kedalaman sebenar lot dari garisan
+               frontage dominan. Frontage kini mewakili keseluruhan koridor
+               sisi lot, bukan hanya satu edge pendek. */
             let maxInteriorDistance = 0;
             geometry.rings.forEach(function(ring) {
                 ring.forEach(function(p) {
@@ -11061,33 +11176,14 @@ body.cover-active{
                     offsetY
                 );
 
-                ctx.fillStyle = "rgba(120,120,120,0.26)";
+                /* Paparan rizab seperti jalur kadaster pada gambar rujukan:
+                   kosong/kemas, satu koridor memanjang dan sempadan jelas. */
+                ctx.fillStyle = "rgba(210, 218, 225, 0.42)";
                 ctx.fill();
 
-                ctx.strokeStyle = "#111";
-                ctx.lineWidth = 1.5;
+                ctx.strokeStyle = "#0b57ff";
+                ctx.lineWidth = 2.1;
                 ctx.stroke();
-
-                ctx.save();
-                ctx.clip();
-
-                ctx.strokeStyle = "rgba(70,70,70,0.45)";
-                ctx.lineWidth = 0.8;
-
-                const step = 12;
-
-                for (
-                    let x = offsetX - 500;
-                    x < offsetX + 2500;
-                    x += step
-                ) {
-                    ctx.beginPath();
-                    ctx.moveTo(x, offsetY - 500);
-                    ctx.lineTo(x + 700, offsetY + 1200);
-                    ctx.stroke();
-                }
-
-                ctx.restore();
             });
 
             const centroid =
